@@ -4,9 +4,10 @@
 "use strict";
 
 var Q = require("q");
-var UserSchema = require("./user");
 var mongoose = require("mongoose");
 var CONSTANTS = require("../utils/constants");
+var UserSchema = require("./user");
+mongoose.Promise = require('q').Promise;
 
 /**
  * 分页

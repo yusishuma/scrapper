@@ -48,10 +48,9 @@ passport.serializeUser(function (user, done) {
 
     done(null, user);
 });
-passport.deserializeUser(function (obj, done) {
+passport.deserializeUser(function (user, done) {
     "use strict";
-
-    done(null, obj);
+    done(null, user);
 });
 
 // 注册passport中间件

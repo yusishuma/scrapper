@@ -2,9 +2,10 @@
  * Created by matonghe on 14/03/2017.
  */
 var Q = require("q");
-var UserSchema = require("./user");
 var mongoose = require("mongoose");
 var CONSTANTS = require("../utils/constants");
+var UserSchema = require("./user");
+mongoose.Promise = require('q').Promise;
 
 /**
  * 分页

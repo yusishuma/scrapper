@@ -54,11 +54,10 @@ const UserSchema = new Schema({
     },
     password: {
         type: String,
-        trim: true,
-        set: function (password) {
-            this.salt = crypto.randomBytes(32).toString('base64');
-            this.password = this.encryptPassword(password);
-        }
+        trim: true
+    },
+    salt: {//密码加盐
+        type: String
     },
     createdAt: {
         type: Date,
@@ -83,6 +82,12 @@ const UserSchema = new Schema({
         getters: true
     }
 });
+UserSchema.pre('save', function (next) {
+    this.salt = crypto.randomBytes(32).toString('base64');
+    this.password = this.encryptPassword(this.password);
+    next();
+});
+
 UserSchema.methods.encryptPassword = function (password) {
     return crypto.createHmac('sha1', this.salt).update(password).digest('hex');
 };
@@ -96,5 +101,6 @@ UserSchema.options.toJSON.transform = function (doc, ret) {
     ret.userId = ret._id.toString();
     delete ret.__v;
     delete ret._id;
+    delete ret.password;
 };
 module.exports = UserSchema;
