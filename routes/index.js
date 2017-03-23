@@ -19,7 +19,7 @@ router.post('/login',  passport.authenticate('local', { failureRedirect: '/login
     if(!reqBody.username || !reqBody.password)
         res.status(400).json({ message: '参数错误' });
     else
-        res.status(201).json({ nickname: 'tom', phone: '15811020373', userId: '55406c39b067bf29621bb48b' });
+        res.status(201).json({ nickname: 'tom', username: '15811020373', userId: '55406c39b067bf29621bb48b' });
 
 });
 

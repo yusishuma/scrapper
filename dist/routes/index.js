@@ -16,7 +16,7 @@ router.get('/', function (req, res, next) {
  */
 router.post('/login', passport.authenticate('local', { failureRedirect: '/login' }), function (req, res, next) {
   var reqBody = req.body;
-  if (!reqBody.username || !reqBody.password) res.status(400).json({ message: '参数错误' });else res.status(201).json({ nickname: 'tom', phone: '15811020373', userId: '55406c39b067bf29621bb48b' });
+  if (!reqBody.username || !reqBody.password) res.status(400).json({ message: '参数错误' });else res.status(201).json({ nickname: 'tom', username: '15811020373', userId: '55406c39b067bf29621bb48b' });
 });
 
 /**

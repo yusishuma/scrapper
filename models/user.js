@@ -41,17 +41,17 @@ const UserSchema = new Schema({
     },
 
     /**
-     * 用户账号信息
+     * 用户名 即 用户手机号
      */
     username: {
         type: String,
         trim: true
     },
-    phone: {
-        type: String,
-        trim: true,
-        index: true
-    },
+    // phone: {
+    //     type: String,
+    //     trim: true,
+    //     index: true
+    // },
     password: {
         type: String,
         trim: true
