@@ -4,6 +4,7 @@
 var passport = require("passport");
 var User = require("../../models/index");
 var BasicStrategy = require("passport-http");
+var local
 passport.use(new BasicStrategy(
     function(username, password, done) {
         User.findOne({ "phone": username }, function (err, user) {
