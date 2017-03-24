@@ -3,7 +3,7 @@
 var express = require("express");
 var router = express.Router();
 var user_router = require('./user_router');
-var user_controller = require('../controllers/user');
+var user_controller = require('../controllers/user_controller');
 var passport = require('passport');
 var  ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn();
 

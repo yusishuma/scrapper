@@ -2,7 +2,7 @@
  * Created by matonghe on 15/03/2017.
  */
 var passport = require("passport");
-var User = require("../../models/index");
+var User = require("../../models/index").UserModel;
 
 var LocalStrategy = require('passport-local').Strategy;
 passport.use(new LocalStrategy(

@@ -10,4 +10,4 @@ exports.login = function (req, res) {
         return res.json(user);
     });
 };
-//# sourceMappingURL=user.js.map
+//# sourceMappingURL=user_controller.js.map

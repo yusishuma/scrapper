@@ -101,4 +101,4 @@ UserSchema.options.toJSON.transform = function (doc, ret) {
     delete ret.password;
 };
 module.exports = UserSchema;
-//# sourceMappingURL=user.js.map
+//# sourceMappingURL=user_controller.js.map

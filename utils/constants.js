@@ -20,6 +20,14 @@ exports.MONGODB_ENV = {
     DB_URI: 'mongodb://localhost:27017/fluorescence',
     RECONNECT_TIME: 300
 };
+exports.STATUS = {
+        UNPUBLISHED: 0, //未发布
+        PUBLISHED: 1,// 已发布
+        PREPARING: 2,//准备中
+        STARTED: 3,//已开始
+        ENDED:4,//已结束
+        DELETED: 5//被删除
+    };
 exports.SESSION = {
     SECRET: 'fluorescence',
     MAX_AGE: 24 * 60 * 60 * 1000 * 30

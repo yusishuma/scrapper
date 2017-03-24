@@ -47,16 +47,17 @@ const UserSchema = new Schema({
         type: String,
         trim: true
     },
-    // phone: {
-    //     type: String,
-    //     trim: true,
-    //     index: true
-    // },
     password: {
         type: String,
         trim: true
     },
     salt: {//密码加盐
+        type: String
+    },
+    /**
+     * 收货地址
+     */
+    shippingAddress: {
         type: String
     },
     createdAt: {

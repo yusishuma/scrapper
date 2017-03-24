@@ -1,10 +1,10 @@
 /**
  * Created by matonghe on 15/03/2017.
  */
-var User = require("../models").User;
+var User = require("../models").UserModel;
 //登陆
 exports.login = function(req, res){
-    let reqBody = req.body;
+    var reqBody = req.body;
     //TODO
     // User.find().then(function (user) {
     //     return res.json(user);
@@ -14,7 +14,7 @@ exports.login = function(req, res){
 
 //验证用户手机号
 exports.validatePhone = function (req, res) {
-    let username = req.body.username;
+    var username = req.body.username;
     if(!username)
         res.status(400).json({ message: '参数错误' });
     else
@@ -25,7 +25,11 @@ exports.validatePhone = function (req, res) {
                res.status(201).json({ message: '用户不存在' });
         });
 };
-
+/**
+ * 用户注册
+ * @param req
+ * @param res
+ */
 exports.registerUser = function (req, res) {
    var reqBody = req.body;
     console.log('registerUser', reqBody);
