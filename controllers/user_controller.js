@@ -2,14 +2,16 @@
  * Created by matonghe on 15/03/2017.
  */
 var User = require("../models").UserModel;
+var respondSuccess = require('../utils/respond_fileter').respondSuccess;
+var respondFailure = require('../utils/respond_fileter').respondFailure;
+var Q = require('q');
 //登陆
 exports.login = function(req, res){
     var reqBody = req.body;
     //TODO
-    // User.find().then(function (user) {
-    //     return res.json(user);
+    // User.findOne().then(function (user) {
+    //     return  respondSuccess(res, 201, );
     // });
-    res.status(201).json({ nickname: 'tom', username: '15811020373' });
 };
 
 //验证用户手机号
@@ -20,9 +22,9 @@ exports.validatePhone = function (req, res) {
     else
         User.findOne({ username: username }).then(function (user) {
            if(!user)
-               res.status(403).json({ message: '用户已存在' });
+               respondFailure(res, 400, '用户已存在');
            else
-               res.status(201).json({ message: '用户不存在' });
+               respondSuccess(res, {}, 201, '用户不存在');
         });
 };
 /**
@@ -46,8 +48,22 @@ exports.registerUser = function (req, res) {
                    return res.json({ message: err });
                });
            }else{
-               return res.json({ message: '用户已存在' });
+               return respondFailure(res, 400, '用户已存在');
            }
        })
+
+};
+
+/**
+ * 获取用户信息
+ * @param req
+ * @param res
+ */
+exports.getUser = function (req, res) {
+
+  var params = req.params;
+  if(!params.userId){
+
+  }
 
 };
