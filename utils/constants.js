@@ -3,7 +3,10 @@
  *
  *  常量
  */
-
+var dotenv = require('dotenv');
+var variableExpansion = require('dotenv-expand');
+const myEnv = dotenv.config();
+variableExpansion(myEnv);
 /**
  *  性别
  * @type {{UNKNOWN: number, MALE: number, FEMALE: number}}

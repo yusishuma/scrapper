@@ -4,7 +4,8 @@
 var mongoose = require("mongoose");
 var moment = require("moment");
 var CONSTANTS = require("../utils/constants");
-const Schema = mongoose.Schema;
+const Schema = mongoose.Schema,
+    ObjectId = Schema.Types.ObjectId;
 var crypto = require('crypto');
 
 const ProductionSchema = new Schema({

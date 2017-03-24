@@ -5,9 +5,9 @@
 var mongoose = require("mongoose");
 var moment = require("moment");
 var CONSTANTS = require("../utils/constants");
-const Schema = mongoose.Schema;
-var crypto = require('crypto');
-var _ = require('lodash');
+const Schema = mongoose.Schema,
+    ObjectId = Schema.Types.ObjectId;
+
 const OrderSchema = new Schema({
 
         /**

@@ -3,17 +3,17 @@
  */
 var mongoose = require("mongoose");
 var logger = require("../middlewares/log4j/logger").logger;
-require('dotenv').config();
+var CONSTANTS = require('../utils/constants');
 // 自动重练mongodb
 var connectMongo = function () {
     "use strict";
-    return mongoose.connect("mongodb://localhost:27017/test", {
+    return mongoose.connect(CONSTANTS.MONGODB_ENV.DB_URI, {
         mongos: false
 
     }, function (err) {
         if (err) {
-            logger.warn('与mongodb断开连接 %ssec 后重试', process.env.RECONNECT_TIME / 1000);
-            setTimeout(connectMongo, process.env.RECONNECT_TIME);
+            logger.warn('与mongodb断开连接 %ssec 后重试', CONSTANTS.MONGODB_ENV.RECONNECT_TIME / 1000);
+            setTimeout(connectMongo, CONSTANTS.MONGODB_ENV.RECONNECT_TIME);
 
         }
         else {
@@ -21,6 +21,6 @@ var connectMongo = function () {
         }
     });
 };
-exports.mongoConnection = mongoose.createConnection(process.env.DB_URI);
+exports.mongoConnection = mongoose.createConnection(CONSTANTS.MONGODB_ENV.DB_URI);
 mongoose.Promise = require('q').Promise;
 exports.connectMongo = connectMongo;
