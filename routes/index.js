@@ -4,6 +4,8 @@ var express = require("express");
 var router = express.Router();
 var user_router = require('./user_router');
 var user_controller = require('../controllers/user_controller');
+var production_router = require('./production_router');
+var strategy_router = require('./strategy_router');
 var passport = require('passport');
 var  ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn();
 
@@ -14,12 +16,13 @@ router.get('/', function(req, res, next) {
 /**
  * 登录
  */
-router.post('/login',  passport.authenticate('local', { failureRedirect: '/login' }),function(req, res, next) {
-    var reqBody = req.body;
-    if(!reqBody.username || !reqBody.password)
-        res.status(400).json({ message: '参数错误' });
-    else
-        res.status(201).json({ nickname: 'tom', username: '15811020373', userId: '55406c39b067bf29621bb48b' });
+router.post('/login',  passport.authenticate('local', {
+    session: false
+}), function(req, res, next) {
+    console.log('login', req.session);
+    var user = req.session.passport.user;
+    return res.status(201).json(user);
+
 
 });
 
@@ -32,5 +35,7 @@ router.post('/register', user_controller.registerUser);
  *  user routers
  */
 router.use('/users', ensureLoggedIn, user_router);
+router.use('/strategies', ensureLoggedIn, strategy_router);
+router.use('/productions', ensureLoggedIn, production_router);
 
 module.exports = router;

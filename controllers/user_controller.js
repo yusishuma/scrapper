@@ -5,16 +5,10 @@ var User = require("../models").UserModel;
 var respondSuccess = require('../utils/respond_fileter').respondSuccess;
 var respondFailure = require('../utils/respond_fileter').respondFailure;
 var Q = require('q');
-//登陆
-exports.login = function(req, res){
-    var reqBody = req.body;
-    //TODO
-    // User.findOne().then(function (user) {
-    //     return  respondSuccess(res, 201, );
-    // });
-};
 
-//验证用户手机号
+/**
+ * 验证用户手机号
+ */
 exports.validatePhone = function (req, res) {
     var username = req.body.username;
     if(!username)
@@ -27,6 +21,7 @@ exports.validatePhone = function (req, res) {
                respondSuccess(res, {}, 201, '用户不存在');
         });
 };
+
 /**
  * 用户注册
  * @param req
@@ -61,9 +56,16 @@ exports.registerUser = function (req, res) {
  */
 exports.getUser = function (req, res) {
 
-  var params = req.params;
-  if(!params.userId){
-
+  var userId = req.params.userId;
+  if(!userId){
+      return respondFailure(res, 400, '参数错误');
   }
-
+  if(userId === 'me')
+      userId = req.session.passport.user._id;
+  User.findById(userId).then(function (user) {
+      if(!!user)
+          respondSuccess(res, user, 200);
+      else
+          respondFailure(res, 404, '用户不存在');
+  })
 };

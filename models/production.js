@@ -4,9 +4,9 @@
 var mongoose = require("mongoose");
 var moment = require("moment");
 var CONSTANTS = require("../utils/constants");
+var deepPopulate = require('mongoose-deep-populate')(mongoose);
 const Schema = mongoose.Schema,
     ObjectId = Schema.Types.ObjectId;
-var crypto = require('crypto');
 
 const ProductionSchema = new Schema({
 
@@ -17,14 +17,18 @@ const ProductionSchema = new Schema({
             type: String,
             trim: true
         },
-
+        /**
+         * 商品标题
+         */
+        title: {
+            type: String
+        },
         /**
          * 商品描述
          */
         description: {
             type: String
         },
-
         /**
          * 商品状态
          */
@@ -32,7 +36,6 @@ const ProductionSchema = new Schema({
             type: Number,
             default: CONSTANTS.STATUS.UNPUBLISHED
         },
-
         /**
          * 商品价格
          */
@@ -45,9 +48,29 @@ const ProductionSchema = new Schema({
 
         /**
          * 商品总量
+         *
          */
         amount: {
             type: Number
+        },
+        /**
+         * 首页封面头图
+         */
+        cover: {
+            type: String
+        },
+        /**
+         * 展示页
+         */
+        showImages: {
+            type: []
+        },
+        /**
+         * 投稿人
+         */
+        designer: {
+            type: ObjectId,
+            ref: 'user'
         },
         createdAt: {
             type: Date,
@@ -76,6 +99,13 @@ ProductionSchema.pre('save', function (next) {
     this.priceDec = this.price;
     this.price = this.price * 100;
     next();
+});
+ProductionSchema.plugin(deepPopulate, {
+    populate: {
+        'designer': {
+            select: 'nickname gender avatar username'
+        }
+    }
 });
 ProductionSchema.options.toJSON.transform = function (doc, ret) {
     ret.userId = ret._id.toString();

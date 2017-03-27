@@ -60,6 +60,27 @@ const UserSchema = new Schema({
     shippingAddress: {
         type: String
     },
+    /**
+     * 角色
+     */
+    role: {
+        type: String,
+        default: CONSTANTS.ROLE.CUSTOMER
+    },
+    /**
+     * 设计构思
+     */
+    design: {
+        title: {
+            type: String
+        },
+        content: {
+            type: String
+        },
+        img: {
+            type: String
+        }
+    },
     createdAt: {
         type: Date,
         required: true,
@@ -89,11 +110,18 @@ UserSchema.pre('save', function (next) {
     next();
 });
 
+/**
+ * 密码加密
+ * @param password
+ * @returns {*}
+ */
 UserSchema.methods.encryptPassword = function (password) {
     return crypto.createHmac('sha1', this.salt).update(password).digest('hex');
 };
 
-//验证密码
+/**
+ * 验证密码
+ */
 UserSchema.methods.validPassword = function (password) {
     return this.encryptPassword(password) === this.password;
 };

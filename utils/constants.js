@@ -23,6 +23,11 @@ exports.MONGODB_ENV = {
     DB_URI: 'mongodb://localhost:27017/fluorescence',
     RECONNECT_TIME: 300
 };
+exports.ROLE = {
+    CUSTOMER: 0,
+    ADMIN: 1,
+    DESIGNER: 2
+};
 exports.STATUS = {
         UNPUBLISHED: 0, //未发布
         PUBLISHED: 1,// 已发布

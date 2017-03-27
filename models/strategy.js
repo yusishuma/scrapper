@@ -7,8 +7,9 @@ var moment = require("moment");
 var CONSTANTS = require("../utils/constants");
 const Schema = mongoose.Schema,
     ObjectId = Schema.Types.ObjectId;
+var deepPopulate = require('mongoose-deep-populate')(mongoose);
 
-const StrategySchema = new Schema({
+var StrategySchema = new Schema({
 
         /**
          * 活动描述
@@ -41,6 +42,7 @@ const StrategySchema = new Schema({
                 ref: 'production'
             }]
         },
+
         startDate: {//开始时间
             type: Date,
             required: true,
@@ -80,9 +82,20 @@ const StrategySchema = new Schema({
             getters: true
         }
     });
+StrategySchema.plugin(deepPopulate, {
+    populate: {
+        'productions': {
+            select: 'production_code description status price amount showImages cover designer'
+        },
+        'productions.designer': {
+            select: 'nickname gender avatar username'
+        }
+    }
+});
 StrategySchema.pre('save', function (next) {
     next();
 });
+
 StrategySchema.options.toJSON.transform = function (doc, ret) {
     ret.userId = ret._id.toString();
     delete ret.__v;
