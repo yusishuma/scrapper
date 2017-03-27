@@ -39,4 +39,4 @@ exports.registerUser = function (req, res) {
         }
     });
 };
-//# sourceMappingURL=user.js.map
+//# sourceMappingURL=user_controller.js.map

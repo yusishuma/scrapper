@@ -47,17 +47,39 @@ const UserSchema = new Schema({
         type: String,
         trim: true
     },
-    // phone: {
-    //     type: String,
-    //     trim: true,
-    //     index: true
-    // },
     password: {
         type: String,
         trim: true
     },
     salt: {//密码加盐
         type: String
+    },
+    /**
+     * 收货地址
+     */
+    shippingAddress: {
+        type: String
+    },
+    /**
+     * 角色
+     */
+    role: {
+        type: String,
+        default: CONSTANTS.ROLE.CUSTOMER
+    },
+    /**
+     * 设计构思
+     */
+    design: {
+        title: {
+            type: String
+        },
+        content: {
+            type: String
+        },
+        img: {
+            type: String
+        }
     },
     createdAt: {
         type: Date,
@@ -88,17 +110,26 @@ UserSchema.pre('save', function (next) {
     next();
 });
 
+/**
+ * 密码加密
+ * @param password
+ * @returns {*}
+ */
 UserSchema.methods.encryptPassword = function (password) {
     return crypto.createHmac('sha1', this.salt).update(password).digest('hex');
 };
 
-//验证密码
+/**
+ * 验证密码
+ */
 UserSchema.methods.validPassword = function (password) {
     return this.encryptPassword(password) === this.password;
 };
 
 UserSchema.options.toJSON.transform = function (doc, ret) {
     ret.userId = ret._id.toString();
+    ret.avatar = CONSTANTS.SERVER_URL + ret.avatar;
+
     delete ret.__v;
     delete ret._id;
     delete ret.password;

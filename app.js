@@ -16,14 +16,12 @@ var CONSTANTS = require('./utils/constants');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'upload')));
 app.use(session({
     secret: CONSTANTS.SESSION.SECRET,
     store: new MongoStore({
@@ -40,23 +38,12 @@ app.use(session({
 
 
 }));
-/**
- * passport 配置及应用
- */
-passport.serializeUser(function (user, done) {
-    "use strict";
 
-    done(null, user);
-});
-passport.deserializeUser(function (user, done) {
-    "use strict";
-    done(null, user);
-});
+require('./middlewares/passport/auth');
 
 // 注册passport中间件
 app.use(passport.initialize()); // 初始化passport
 app.use(passport.session());
-
 // 注册日志中间件
 app.use(log4js.connectLogger(loggerHandler, {
     level: log4js.levels.INFO
@@ -70,7 +57,7 @@ mongodb.connectMongo();
 /**
  * Routes
  */
-app.use('/v1', router);
+app.use('/api', router);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
