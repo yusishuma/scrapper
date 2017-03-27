@@ -16,7 +16,7 @@ if(!fs.existsSync(baseLogPath)){
     logger.info('createPath: ' + baseLogPath);
 }
 log4js.addAppender(mongoAppender.appender({
-    connectionString: 'localhost:27017/test'
+    connectionString: 'localhost:27017/fluorescence'
 
 }), 'fluorescence');
 

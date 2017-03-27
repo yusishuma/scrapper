@@ -61,7 +61,7 @@ exports.getUser = function (req, res) {
       return respondFailure(res, 400, '参数错误');
   }
   if(userId === 'me')
-      userId = req.session.passport.user._id;
+      userId = req.session.passport.user.userId;
   User.findById(userId).then(function (user) {
       if(!!user)
           respondSuccess(res, user, 200);
