@@ -110,6 +110,10 @@ ProductionSchema.plugin(deepPopulate, {
 ProductionSchema.options.toJSON.transform = function (doc, ret) {
     ret.productionId = ret._id.toString();
     ret.price = ret.priceDec;
+    ret.cover = CONSTANTS.SERVER_URL + ret.cover;
+    ret.showImages = ret.showImages.map(function (image) {
+        return CONSTANTS.SERVER_URL + image;
+    });
     delete ret.priceDec;
     delete ret.__v;
     delete ret._id;

@@ -24,7 +24,12 @@ var StrategySchema = new Schema({
         description: {
             type: String
         },
-
+        /**
+         * 活动封面
+         */
+        cover: {
+            type: String
+        },
         /**
          * 活动状态
          */
@@ -98,6 +103,8 @@ StrategySchema.pre('save', function (next) {
 
 StrategySchema.options.toJSON.transform = function (doc, ret) {
     ret.strategyId = ret._id.toString();
+    ret.cover = CONSTANTS.SERVER_URL + ret.cover;
+
     delete ret.__v;
     delete ret._id;
 };

@@ -23,6 +23,9 @@ exports.MONGODB_ENV = {
     DB_URI: 'mongodb://localhost:27017/fluorescence',
     RECONNECT_TIME: 300
 };
+
+exports.SERVER_URL = "http:// 192.168.2.29:3060/";
+
 exports.ROLE = {
     CUSTOMER: 0,
     ADMIN: 1,
