@@ -7,6 +7,7 @@
     "test": "mocha"
   },
   "dependencies": {
+    "apidoc": "^0.17.5",
     "body-parser": "~1.16.0",
     "bunyan": "^1.8.8",
     "connect-ensure-login": "^0.1.1",
@@ -35,7 +36,13 @@
     "serve-favicon": "~2.3.2"
   },
   "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-load-plugins": "^1.5.0",
     "mocha": "^3.2.0",
     "supertest": "^3.0.0"
+  },
+  "apidoc": {
+    "title": "fluorescence apiDoc",
+    "url": "https://api.github.com/v1"
   }
 }

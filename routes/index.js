@@ -4,6 +4,7 @@ var express = require("express");
 var router = express.Router();
 var user_router = require('./user_router');
 var user_controller = require('../controllers/user_controller');
+var strategy_controller = require('../controllers/strategy_controller');
 var production_router = require('./production_router');
 var strategy_router = require('./strategy_router');
 var passport = require('passport');
@@ -31,6 +32,7 @@ router.post('/login',  passport.authenticate('local', {
  */
 router.post('/register', user_controller.registerUser);
 
+router.get('/index', strategy_controller.getIndexInfo);
 /**
  *  user routers
  */

@@ -85,10 +85,10 @@ var StrategySchema = new Schema({
 StrategySchema.plugin(deepPopulate, {
     populate: {
         'productions': {
-            select: 'production_code description status price amount showImages cover designer'
+            select: 'production_code title description status priceDec price amount showImages cover designer', match: { status: CONSTANTS.STATUS.PUBLISHED }
         },
         'productions.designer': {
-            select: 'nickname gender avatar username'
+            select: 'nickname gender avatar username design'
         }
     }
 });
@@ -97,7 +97,7 @@ StrategySchema.pre('save', function (next) {
 });
 
 StrategySchema.options.toJSON.transform = function (doc, ret) {
-    ret.userId = ret._id.toString();
+    ret.strategyId = ret._id.toString();
     delete ret.__v;
     delete ret._id;
 };

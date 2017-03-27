@@ -103,12 +103,14 @@ ProductionSchema.pre('save', function (next) {
 ProductionSchema.plugin(deepPopulate, {
     populate: {
         'designer': {
-            select: 'nickname gender avatar username'
+            select: 'nickname gender avatar username design'
         }
     }
 });
 ProductionSchema.options.toJSON.transform = function (doc, ret) {
-    ret.userId = ret._id.toString();
+    ret.productionId = ret._id.toString();
+    ret.price = ret.priceDec;
+    delete ret.priceDec;
     delete ret.__v;
     delete ret._id;
 };
