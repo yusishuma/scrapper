@@ -37,7 +37,7 @@ router.get('/index', strategy_controller.getIndexInfo);
  *  user routers
  */
 router.use('/users', ensureLoggedIn, user_router);
-router.use('/strategies', ensureLoggedIn, strategy_router);
-router.use('/productions', ensureLoggedIn, production_router);
+router.use('/strategies', strategy_router);
+router.use('/productions', production_router);
 
 module.exports = router;

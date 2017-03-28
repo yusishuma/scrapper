@@ -24,7 +24,7 @@ exports.MONGODB_ENV = {
     RECONNECT_TIME: 300
 };
 
-exports.SERVER_URL = "http:// 192.168.2.29:3060/";
+exports.SERVER_URL = "http://192.168.2.29:3000/";
 
 exports.ROLE = {
     CUSTOMER: 0,

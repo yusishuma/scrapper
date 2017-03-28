@@ -33,11 +33,11 @@
              {
                  "price": 100,
                  "amount": 50,
-                 "cover": "http:// 192.168.2.29:3060/test1_cover.png",
+                 "cover": "http://192.168.2.29:3000/test1_cover.png",
                  "title": "精品卫衣",
                  "designer": {
                      "username": "15911020373",
-                     "avatar": "http:// 192.168.2.29:3060/test1_avatar.jpg",
+                     "avatar": "http://192.168.2.29:3000/test1_avatar.jpg",
                      "design": {
                          "title": "一个好的创意",
                          "img": "",
@@ -51,9 +51,9 @@
                  },
                  "description": "test production description",
                  "showImages": [
-                     "http:// 192.168.2.29:3060/test1_show1.png",
-                     "http:// 192.168.2.29:3060/test1_show2.png",
-                     "http:// 192.168.2.29:3060/test1_show3.png"
+                     "http://192.168.2.29:3000/test1_show1.png",
+                     "http://192.168.2.29:3000/test1_show2.png",
+                     "http://192.168.2.29:3000/test1_show3.png"
                  ],
                  "status": 1,
                  "updatedAt": "2017-03-28 10:43:30",
@@ -63,8 +63,107 @@
          ],
          "status": 1,
          "strategyId": "58d8cfa18c9c200ebaae2239",
-         "cover": "http:// 192.168.2.29:3060/undefined"
+         "cover": "http://192.168.2.29:3000/undefined"
      }
+ }
+ * @apiError NotFound .
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 404 Not Found
+ *     {
+ *       "error": "NotFound"
+ *     }
+ */
+
+/**
+ * @apiVersion 1.0.0
+ * @api {post} /login 登陆
+ * @apiName login
+ * @apiGroup Index
+ *
+ *
+ * @apiParam {String} username   用户名
+ * @apiParam {String} password   用户密码
+ * @apiSuccess {Object} data   请求结果
+ * @apiSuccess {String} data.username   用户名
+ * @apiSuccess {String} data.nickname   昵称
+ * @apiSuccess {String} data.avatar   用户头像
+ * @apiSuccess {Object} data.design   用户设计思路文稿
+ * @apiSuccess {String} data.design.title   用户设计标题
+ * @apiSuccess {String} data.design.content   用户设计内容
+ * @apiSuccess {String} data.design.img   用户设计图
+ * @apiSuccess {String} data.role   用户角色
+ * @apiSuccess {Number} data.gender { 0 未知，1 男 2 女 } 用户性别.
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 201 OK
+ {
+    "msg": "success",
+      "status": 1,
+      "data": {
+        "salt": "J14RTuneqmJMBD8/d/Jm3gTA6sjbaXNyI1HJIfiEuyo=",
+        "username": "15911020373",
+        "avatar": "http://192.168.2.29:3000/test1_avatar.jpg",
+        "updatedAt": "2017-03-27 10:27:15",
+        "createdAt": "2017-03-27 10:27:15",
+        "design": {
+          "title": "一个好的创意",
+          "img": "http://192.168.2.29:3000/test1_img.png",
+          "content": "我总是发誓平安夜不睡觉，我想听屋顶上驯鹿奔跑的舞步，想在烟囱那儿与圣诞老人握手。 而这个圣诞节在我看来，似乎没有比什么比保持清醒更容易做到的事情了。"
+        },
+        "role": "0",
+        "gender": 1,
+        "nickname": "yusi",
+        "userId": "58d878838b81190732fdd202"
+      }
+ }
+ * @apiError NotFound .
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 404 Not Found
+ *     {
+ *       "error": "NotFound"
+ *     }
+ */
+
+
+/**
+ * @apiVersion 1.0.0
+ * @api {post} /register 用户注册
+ * @apiName register
+ * @apiGroup Index
+ *
+ *
+ * @apiParam {String} username   用户名
+ * @apiParam {String} password   用户密码
+ * @apiParam {String} nickname   用户密码
+ * @apiSuccess {Object} data   请求结果
+ * @apiSuccess {String} data.username   用户名
+ * @apiSuccess {String} data.nickname   昵称
+ * @apiSuccess {String} data.avatar   用户头像
+ * @apiSuccess {Object} data.design   用户设计思路文稿
+ * @apiSuccess {String} data.design.title   用户设计标题
+ * @apiSuccess {String} data.design.content   用户设计内容
+ * @apiSuccess {String} data.design.img   用户设计图
+ * @apiSuccess {String} data.role   用户角色
+ * @apiSuccess {Number} data.gender { 0 未知，1 男 2 女 } 用户性别.
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 201 OK
+ {
+    "msg": "success",
+      "status": 1,
+      "data": {
+        "salt": "J14RTuneqmJMBD8/d/Jm3gTA6sjbaXNyI1HJIfiEuyo=",
+        "username": "15911020373",
+        "avatar": "http://192.168.2.29:3000/test1_avatar.jpg",
+        "updatedAt": "2017-03-27 10:27:15",
+        "createdAt": "2017-03-27 10:27:15",
+        "role": "0",
+        "gender": 1,
+        "nickname": "yusi",
+        "userId": "58d878838b81190732fdd202"
+      }
  }
  * @apiError NotFound .
  *

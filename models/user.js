@@ -129,6 +129,7 @@ UserSchema.methods.validPassword = function (password) {
 UserSchema.options.toJSON.transform = function (doc, ret) {
     ret.userId = ret._id.toString();
     ret.avatar = CONSTANTS.SERVER_URL + ret.avatar;
+    ret.design.img = CONSTANTS.SERVER_URL + ret.design.img;
 
     delete ret.__v;
     delete ret._id;
