@@ -18,7 +18,7 @@ router.get('/', function(req, res, next) {
  * 登录
  */
 router.post('/login',  passport.authenticate('local', {
-    session: false
+    session: true
 }), function(req, res, next) {
     console.log('login', req.session);
     var user = req.session.passport.user;

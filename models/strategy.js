@@ -5,7 +5,7 @@
 var mongoose = require("mongoose");
 var moment = require("moment");
 var CONSTANTS = require("../utils/constants");
-const Schema = mongoose.Schema,
+var Schema = mongoose.Schema,
     ObjectId = Schema.Types.ObjectId;
 var deepPopulate = require('mongoose-deep-populate')(mongoose);
 

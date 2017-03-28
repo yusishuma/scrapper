@@ -5,10 +5,10 @@ var mongoose = require("mongoose");
 var moment = require("moment");
 var CONSTANTS = require("../utils/constants");
 var deepPopulate = require('mongoose-deep-populate')(mongoose);
-const Schema = mongoose.Schema,
+var Schema = mongoose.Schema,
     ObjectId = Schema.Types.ObjectId;
 
-const ProductionSchema = new Schema({
+var ProductionSchema = new Schema({
 
         /**
          * 商品编号

@@ -4,10 +4,10 @@
 var mongoose = require("mongoose");
 var moment = require("moment");
 var CONSTANTS = require("../utils/constants");
-const Schema = mongoose.Schema;
+var Schema = mongoose.Schema;
 var crypto = require('crypto');
 
-const UserSchema = new Schema({
+var UserSchema = new Schema({
 
     /**
      * 昵称

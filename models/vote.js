@@ -5,10 +5,10 @@
 var mongoose = require("mongoose");
 var moment = require("moment");
 var CONSTANTS = require("../utils/constants");
-const Schema = mongoose.Schema,
+var Schema = mongoose.Schema,
     ObjectId = Schema.Types.ObjectId;
 
-const VoteSchema = new Schema({
+var VoteSchema = new Schema({
         /**
          * 投票用户
          */

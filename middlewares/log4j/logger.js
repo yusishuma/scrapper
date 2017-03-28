@@ -7,7 +7,7 @@ var path = require('path');
 var fs = require('fs');
 //日志根目录
 var baseLogPath = path.resolve(__dirname, './logs');
-const logger = log4js.getLogger('http');
+var logger = log4js.getLogger('http');
 /**
  * 初始化日志目录
  */
