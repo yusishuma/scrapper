@@ -27,6 +27,7 @@
     "mongoose": "^4.9.0",
     "mongoose-deep-populate": "^3.0.0",
     "morgan": "~1.7.0",
+    "nodemon": "^1.11.0",
     "npm": "^4.4.1",
     "passport": "^0.3.2",
     "passport-http": "^0.3.0",
@@ -36,6 +37,7 @@
     "serve-favicon": "~2.3.2"
   },
   "devDependencies": {
+    "gapidoc": "^0.1.1",
     "gulp": "^3.9.1",
     "gulp-load-plugins": "^1.5.0",
     "mocha": "^3.2.0",
@@ -43,6 +45,6 @@
   },
   "apidoc": {
     "title": "fluorescence apiDoc",
-    "url": "https://api.github.com/v1"
+    "url": "http://192.168.2.29:3000/api"
   }
 }
