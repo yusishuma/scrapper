@@ -173,3 +173,58 @@
  *       "error": "NotFound"
  *     }
  */
+
+/**
+ * @apiVersion 1.0.0
+ * @api {post} /requestSmsCode 获取短信验证码
+ * @apiName requestSmsCode
+ * @apiGroup Index
+ *
+ *
+ * @apiParam {String} username   用户名
+ * @apiSuccess {Object} data   请求结果
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 201 OK
+ {
+    "msg": "获取短信验证码成功",
+      "status": 1,
+      "data": {
+      }
+ }
+ * @apiError NotFound .
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 404 Not Found
+ *     {
+ *       "error": "NotFound"
+ *     }
+ */
+
+/**
+ * @apiVersion 1.0.0
+ * @api {post} /verifySmsCode 验证短信验证码
+ * @apiName verifySmsCode
+ * @apiGroup Index
+ *
+ *
+ * @apiParam {String} username   用户名
+ * @apiParam {String} smsCode   短信验证码
+ * @apiSuccess {Object} data   请求结果
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 201 OK
+ {
+    "msg": "验证成功",
+      "status": 1,
+      "data": {
+      }
+ }
+ * @apiError NotFound .
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 404 Not Found
+ *     {
+ *       "error": "NotFound"
+ *     }
+ */

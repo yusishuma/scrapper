@@ -14,30 +14,39 @@ var  ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn();
 router.get('/', function(req, res, next) {
     res.render('index', { title: 'Express' });
 });
-/**
- * 登录
- */
+
+/* 用户登录 */
 router.post('/login',  passport.authenticate('local', {
     session: true
 }), function(req, res, next) {
     console.log('login', req.session);
     var user = req.session.passport.user;
     return res.status(201).json(user);
-
-
 });
 
-/**
- * 用户注册
- */
+/* 用户注册 */
 router.post('/register', user_controller.registerUser);
 
+/* 获取首页数据 */
 router.get('/index', strategy_controller.getIndexInfo);
+
+/* 获取短信验证码 */
+router.post('/requestSmsCode', user_controller.getSmsCode);
+
+/* 验证短信验证码 */
+router.post('/verifySmsCode', user_controller.verifySmsCode);
+
 /**
- *  user routers
+ *  用户 routers
  */
 router.use('/users', ensureLoggedIn, user_router);
+/**
+ *  活动 routers
+ */
 router.use('/strategies', strategy_router);
+/**
+ *  商品 routers
+ */
 router.use('/productions', production_router);
 
 module.exports = router;

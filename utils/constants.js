@@ -19,18 +19,44 @@ exports.GENDER = {
 exports.PAGE = {
     NUM: 1
 };
+/**
+ * 数据库 配置
+ * @type {{DB_URI: string, RECONNECT_TIME: number}}
+ */
 exports.MONGODB_ENV = {
     DB_URI: 'mongodb://localhost:27017/fluorescence',
     RECONNECT_TIME: 300
 };
 
+/**
+ * 文件服务器路径
+ * @type {string}
+ */
 exports.SERVER_URL = "http://192.168.2.29:3000/";
 
+/**
+ * avos 配置 - dev
+ * @type {{}}
+ */
+exports.AVOS = {
+    APP_ID: "odvAKLksl71NqBhYhRarjkWs-gzGzoHsz",
+    APP_KEY: "Bt9HQ5dSsO1V8kvnT5oitEdF"
+};
+
+/**
+ * 用户角色
+ * @type {{CUSTOMER: number, ADMIN: number, DESIGNER: number}}
+ */
 exports.ROLE = {
     CUSTOMER: 0,
     ADMIN: 1,
     DESIGNER: 2
 };
+
+/**
+ * 状态码说明
+ * @type {{UNPUBLISHED: number, PUBLISHED: number, PREPARING: number, STARTED: number, ENDED: number, DELETED: number}}
+ */
 exports.STATUS = {
         UNPUBLISHED: 0, //未发布
         PUBLISHED: 1,// 已发布
@@ -39,6 +65,11 @@ exports.STATUS = {
         ENDED:4,//已结束
         DELETED: 5//被删除
     };
+
+/**
+ * session 配置
+ * @type {{SECRET: string, MAX_AGE: number}}
+ */
 exports.SESSION = {
     SECRET: 'fluorescence',
     MAX_AGE: 24 * 60 * 60 * 1000 * 30

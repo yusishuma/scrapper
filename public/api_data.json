@@ -367,6 +367,135 @@
   },
   {
     "version": "1.0.0",
+    "type": "post",
+    "url": "/requestSmsCode",
+    "title": "获取短信验证码",
+    "name": "requestSmsCode",
+    "group": "Index",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "username",
+            "optional": false,
+            "description": "<p>用户名</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "field": "data",
+            "optional": false,
+            "description": "<p>请求结果</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "Success-Response:\n   HTTP/1.1 201 OK\n{\n   \"msg\": \"获取短信验证码成功\",\n     \"status\": 1,\n     \"data\": {\n     }\n}\n",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "field": "NotFound",
+            "optional": false,
+            "description": "<p>.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "Error-Response:\n   HTTP/1.1 404 Not Found\n   {\n     \"error\": \"NotFound\"\n   }\n",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/apidoc/index.js"
+  },
+  {
+    "version": "1.0.0",
+    "type": "post",
+    "url": "/verifySmsCode",
+    "title": "验证短信验证码",
+    "name": "verifySmsCode",
+    "group": "Index",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "username",
+            "optional": false,
+            "description": "<p>用户名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "smsCode",
+            "optional": false,
+            "description": "<p>短信验证码</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "field": "data",
+            "optional": false,
+            "description": "<p>请求结果</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "Success-Response:\n   HTTP/1.1 201 OK\n{\n   \"msg\": \"验证成功\",\n     \"status\": 1,\n     \"data\": {\n     }\n}\n",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "field": "NotFound",
+            "optional": false,
+            "description": "<p>.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "Error-Response:\n   HTTP/1.1 404 Not Found\n   {\n     \"error\": \"NotFound\"\n   }\n",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/apidoc/index.js"
+  },
+  {
+    "version": "1.0.0",
     "type": "get",
     "url": "/productions/:productionId",
     "title": "获取商品信息",

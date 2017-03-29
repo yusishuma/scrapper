@@ -5,17 +5,17 @@ var User = require("../models").UserModel;
 var respondSuccess = require('../utils/respond_fileter').respondSuccess;
 var respondFailure = require('../utils/respond_fileter').respondFailure;
 var Q = require('q');
-
+var avosClient = require('../config/avos').client;
 /**
  * 验证用户手机号
  */
 exports.validatePhone = function (req, res) {
     var username = req.body.username;
     if(!username)
-        res.status(400).json({ message: '参数错误' });
+        respondFailure(res, 400, '参数错误');
     else
         User.findOne({ username: username }).then(function (user) {
-           if(!user)
+           if(!!user)
                respondFailure(res, 400, '用户已存在');
            else
                respondSuccess(res, {}, 201, '用户不存在');
@@ -31,16 +31,16 @@ exports.registerUser = function (req, res) {
    var reqBody = req.body;
     console.log('registerUser', reqBody);
     if (!reqBody.username || !reqBody.password)
-       res.status(400).json({ message: '用户名或密码不存在' });
-   else
+        respondFailure(res, 400, '用户名或密码不存在');
+
+    else
        User.findOne({ username: reqBody.username }).then(function (user) {
            if(!user){
                var newUser = new User(reqBody);
-               console.log(newUser);
                return newUser.save().then(function (user) {
-                    return res.status(201).json(user);
+                    return respondSuccess(res, user, 201, '用户不存在');
                }).fail(function (err) {
-                   return res.json({ message: err });
+                   return respondFailure(res, 500);
                });
            }else{
                return respondFailure(res, 400, '用户已存在');
@@ -68,4 +68,45 @@ exports.getUser = function (req, res) {
       else
           respondFailure(res, 404, '用户不存在');
   })
+};
+
+/**
+ * 获取短信验证码
+ * @param req
+ * @param res
+ */
+exports.getSmsCode = function (req, res) {
+    var username = req.body.username;
+    if(!username) {
+        respondFailure(res, 400, '参数错误');
+    }
+    var data = {
+        mobilePhoneNumber: username,
+        ttl: 15,
+        name:'荧光棒'
+    };
+    avosClient.post('1.1/requestSmsCode', data, function (err, result) {
+        respondSuccess(res, {}, 201, '获取短信验证码成功!');
+    });
+
+};
+
+/**
+ * 验证短信验证码是否正确
+ * @param req
+ * @param res
+ */
+exports.verifySmsCode = function (req, res) {
+    var smsCode = req.body.smsCode;
+    var username = req.body.username;
+    if(!username || !smsCode) {
+        respondFailure(res, 400, '参数错误');
+    }
+    avosClient.post('1.1/verifySmsCode/' + smsCode + '?mobilePhoneNumber=' + username, {}, function (err, results, body) {
+        if(err || body.error) {
+            return respondFailure(res, body.code, { message: body.error });
+        }else{
+            respondSuccess(res, {}, 201, '验证成功!');
+        }
+    });
 };
