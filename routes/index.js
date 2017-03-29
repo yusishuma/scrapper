@@ -9,7 +9,8 @@ var production_router = require('./production_router');
 var strategy_router = require('./strategy_router');
 var passport = require('passport');
 var  ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn();
-
+var respondSuccess = require('../utils/respond_fileter').respondSuccess;
+var respondFailure = require('../utils/respond_fileter').respondFailure;
 /* GET home page. */
 router.get('/', function(req, res, next) {
     res.render('index', { title: 'Express' });
@@ -21,7 +22,7 @@ router.post('/login',  passport.authenticate('local', {
 }), function(req, res, next) {
     console.log('login', req.session);
     var user = req.session.passport.user;
-    return res.status(201).json(user);
+    respondSuccess(res, user, 201);
 });
 
 /* 用户注册 */

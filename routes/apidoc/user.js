@@ -8,7 +8,7 @@
  * @apiGroup User
  *
  *
- * @apiParam {String} [userId, me]   参数为me时，获取登陆用户自己的信息
+ * @apiParam {String} userId [userId, me]参数为me时，获取登陆用户自己的信息
  * @apiSuccess {Object} data   请求结果
  * @apiSuccess {String} data.username   用户名
  * @apiSuccess {String} data.nickname   昵称

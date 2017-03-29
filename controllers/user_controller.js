@@ -29,19 +29,15 @@ exports.validatePhone = function (req, res) {
  */
 exports.registerUser = function (req, res) {
    var reqBody = req.body;
-    console.log('registerUser', reqBody);
     if (!reqBody.username || !reqBody.password)
         respondFailure(res, 400, '用户名或密码不存在');
-
     else
        User.findOne({ username: reqBody.username }).then(function (user) {
            if(!user){
                var newUser = new User(reqBody);
                return newUser.save().then(function (user) {
-                    return respondSuccess(res, user, 201, '用户不存在');
-               }).fail(function (err) {
-                   return respondFailure(res, 500);
-               });
+                    return respondSuccess(res, user, 201);
+               })
            }else{
                return respondFailure(res, 400, '用户已存在');
            }
