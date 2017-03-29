@@ -38,7 +38,7 @@ mongoose.Model.paginateForPro = function (id, property, options, callback) {
     var totalCount = options.totalCount;
     var page = options.page || 1;
     var populateOpt = [];
-    const field = options.field || {};
+    var field = options.field || {};
     if (totalCount - page * limit < 0) {
         field[property] = {
             '$slice': totalCount - (page - 1) * limit

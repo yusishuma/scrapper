@@ -4,19 +4,14 @@
 var gulp = require('gulp');
 var plugins = require('gulp-load-plugins')({
     lazy: true
-});
-var apidoc = plugins.apidoc;
-var ghPages = plugins.ghPages;
+}),
+    apidoc = require('gapidoc');
 
-gulp.task('doc:build', function(done){
-    apidoc({
-        src: 'routes/',
-        dest: 'publish/',
-        debug: true
-    }, done);
+gulp.task('apidoc',function(){
+    apidoc.exec({
+        src: "routes/apidoc/",
+        dest: "public/",
+        debug: true,
+        includeFilters: [ ".*\\.js$" ]
+    });
 });
-gulp.task('doc:push', function(){
-    return gulp.src('./publish/**/*').pipe(ghPages({ remoteUrl: 'git@github.com:yusishuma/fluorescence.git' }));
-});
-
-gulp.task('apidoc', [ 'doc:build', 'doc:push']);
