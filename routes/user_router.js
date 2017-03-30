@@ -11,4 +11,5 @@ router.get('/:userId', user.getUser);
 /* 验证手机号是否存在 */
 router.post('/validatePhone', user.validatePhone);
 
+
 module.exports = router;

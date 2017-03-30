@@ -9,6 +9,7 @@ var OrderSchema = require("./order");
 var ProductionSchema = require("./production");
 var VoteSchema = require("./vote");
 var StrategySchema = require("./strategy");
+var ContactSchema = require("./contact");
 mongoose.Promise = require('q').Promise;
 
 /**
@@ -63,3 +64,4 @@ exports.OrderModel = mongoose.model("order", OrderSchema);
 exports.StrategyModel = mongoose.model("strategy", StrategySchema);
 exports.ProductionModel = mongoose.model("production", ProductionSchema);
 exports.VoteModel = mongoose.model("vote", VoteSchema);
+exports.ContactModel = mongoose.model("contact", ContactSchema);

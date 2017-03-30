@@ -6,7 +6,7 @@ var respondSuccess = require('../utils/respond_fileter').respondSuccess;
 var respondFailure = require('../utils/respond_fileter').respondFailure;
 var Q = require('q');
 /**
- * 获取 活动信息
+ * 获取 商品信息
  * @param req
  * @param res
  */

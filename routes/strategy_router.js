@@ -9,7 +9,8 @@ var strategy = require('../controllers/strategy_controller');
 router.get('/', function(req, res, next) {
     res.send('respond with a resource');
 });
-/* GET strategy by strategyId */
+
+/* 获取活动详情 */
 router.get('/:strategyId', strategy.getStrategy);
 
 

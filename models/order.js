@@ -8,6 +8,8 @@ var CONSTANTS = require("../utils/constants");
 var Schema = mongoose.Schema,
     ObjectId = Schema.Types.ObjectId;
 
+var deepPopulate = require('mongoose-deep-populate')(mongoose);
+
 var OrderSchema = new Schema({
 
         /**
@@ -84,7 +86,18 @@ var OrderSchema = new Schema({
 OrderSchema.pre('save', function (next) {
     this.paymentDec = this.payment;
     this.payment = this.payment * 100;
+    this.order_code = moment().format('x') + '' + Math.floor(Math.random() * 9999 + 1000);
     next();
+});
+OrderSchema.plugin(deepPopulate, {
+    populate: {
+        'productions': {
+            select: 'production_code title description status priceDec price amount showImages cover designers', match: { status: CONSTANTS.STATUS.PUBLISHED }
+        },
+        'productions.designers': {
+            select: 'nickname gender avatar username design'
+        }
+    }
 });
 OrderSchema.options.toJSON.transform = function (doc, ret) {
     ret.userId = ret._id.toString();

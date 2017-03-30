@@ -4,7 +4,8 @@
 var mongoose = require("mongoose");
 var moment = require("moment");
 var CONSTANTS = require("../utils/constants");
-var Schema = mongoose.Schema;
+var Schema = mongoose.Schema,
+    ObjectId = Schema.Types.ObjectId;
 var crypto = require('crypto');
 
 var UserSchema = new Schema({
@@ -54,12 +55,7 @@ var UserSchema = new Schema({
     salt: {//密码加盐
         type: String
     },
-    /**
-     * 收货地址
-     */
-    shippingAddress: {
-        type: String
-    },
+
     /**
      * 角色
      */
