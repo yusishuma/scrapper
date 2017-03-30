@@ -12,7 +12,7 @@ router.get('/', contact_controller.getContactsList);
 router.post('/', contact_controller.createContact);
 
 /* 更新收货信息 */
-// router.put('/:contactId', contact_controller.updateContact);
+router.put('/:contactId', contact_controller.updateContact);
 
 /* 获取收货信息详情 */
 router.get('/:contactId', contact_controller.getContact);

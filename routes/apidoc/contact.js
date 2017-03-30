@@ -3,8 +3,8 @@
  */
 /**
  * @apiVersion 1.0.0
- * @api {get} /contacts 获取收货信息详情
- * @apiName GetContact
+ * @api {get} /contacts 获取收货信息列表
+ * @apiName GetContactList
  * @apiGroup Contact
  *
  *
@@ -54,23 +54,22 @@
 
 /**
  * @apiVersion 1.0.0
- * @api {post} /contacts/:contactId 创建收货信息
+ * @api {post} /contacts 创建收货信息
  * @apiName createContact
  * @apiGroup Contact
- *
- *@apiParam {String} owner 用户Id
- * @apiParamExample {json} Request-Example:
- *{
-	"owner":"58d878838b81190732fdd202",
-	"phone": "15911020373",
-	"name": "首单人",
-	"shippingAddress":{
-		"province":"北京",
-		"city":"北京市",
-		"area":"朝阳区",
-		"details":"东方科技园"
-	}
-}
+ * @apiParam {String} owner 用户Id
+ * @apiExample {json} Request-Example:
+ * {
+ *	"owner":"58d878838b81190732fdd202",
+ *	"phone": "15911020373",
+ *	"name": "首单人",
+ *	"shippingAddress":{
+ *		"province":"北京",
+ *		"city":"北京市",
+ *		"area":"朝阳区",
+ *		"details":"东方科技园"
+ *	}
+ *}
  *
  * @apiSuccess {Object} data   请求结果
  * @apiSuccess {String} data.name   收货人
@@ -113,6 +112,44 @@
  *     }
  */
 
+
+/**
+ * @apiVersion 1.0.0
+ * @api {put} /contacts/:contactId 更新收货信息
+ * @apiName updateContact
+ * @apiGroup Contact
+ * @apiParam {String} contactId 收货信息Id
+ *
+ * @apiExample {json} Request-Example:
+ * {
+ *	"owner":"58d878838b81190732fdd202",
+ *	"phone": "15911020373",
+ *	"name": "首单人",
+ *	"shippingAddress":{
+ *		"province":"北京",
+ *		"city":"北京市",
+ *		"area":"朝阳区",
+ *		"details":"东方科技园"
+ *	}
+ *}
+ *
+ * @apiSuccess {Object} data   请求结果
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ {
+     "msg": "更新成功！",
+     "status": 1,
+     "data": {}
+ }
+ * @apiError NotFound .
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 404 Not Found
+ *     {
+ *       "error": "NotFound"
+ *     }
+ */
 /**
  * @apiVersion 1.0.0
  * @api {get} /contacts/:contactId 获取收货信息详情

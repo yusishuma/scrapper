@@ -63,3 +63,23 @@ exports.createContact = function (req, res) {
         respondSuccess(res, contact, 201);
     })
 };
+
+/**
+ * 更新收货地址
+ * @param req
+ * @param res
+ */
+exports.updateContact = function (req, res) {
+    var data = req.body;
+    var contactId = req.params.contactId;
+    if(!data.owner || !data.phone){
+        respondFailure(res, 400, '参数错误');
+    }
+    Contact.findById(contactId).then(function (contact) {
+        if(!contact)
+            respondFailure(res, 404, '收获信息不存在');
+        return Contact.update({ _id: contactId }, data);
+    }).then(function () {
+        respondSuccess(res, {}, 201, '更新成功！');
+    })
+};
