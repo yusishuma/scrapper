@@ -2,6 +2,378 @@
   {
     "version": "1.0.0",
     "type": "get",
+    "url": "/contacts",
+    "title": "获取收货信息详情",
+    "name": "GetContact",
+    "group": "Contact",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "userId",
+            "optional": false,
+            "description": ""
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "field": "data",
+            "optional": false,
+            "description": "<p>请求结果</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "data.name",
+            "optional": false,
+            "description": "<p>收货人</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "data.phone",
+            "optional": false,
+            "description": "<p>联系电话</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "data.owner",
+            "optional": false,
+            "description": "<p>用户Id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "field": "data.shippingAddress",
+            "optional": false,
+            "description": "<p>用户设计思路文稿</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "data.shippingAddress.province",
+            "optional": false,
+            "description": "<p>省</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "data.shippingAddress.city",
+            "optional": false,
+            "description": "<p>市</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "data.shippingAddress.area",
+            "optional": false,
+            "description": "<p>区</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "data.shippingAddress.details",
+            "optional": false,
+            "description": "<p>详细地址</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "data.isDefault",
+            "optional": false,
+            "description": "<p>是否为默认地址</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "Success-Response:\n   HTTP/1.1 200 OK\n{\n   \"msg\": \"success\",\n   \"status\": 1,\n   \"data\": [\n       {\n           \"owner\": \"58d878838b81190732fdd202\",\n           \"phone\": \"15911020373\",\n           \"updatedAt\": \"2017-03-30 17:13:10\",\n           \"createdAt\": \"2017-03-30 17:13:10\",\n           \"isDefault\": true,\n           \"shippingAddress\": {\n               \"province\": \"北京\",\n               \"city\": \"北京市\",\n               \"area\": \"朝阳区\",\n               \"details\": \"东方科技园\"\n           },\n           \"name\": \"首单人\",\n           \"contactId\": \"58dccc26541a09a0a5b61b73\"\n       }\n   ]\n}\n",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "field": "NotFound",
+            "optional": false,
+            "description": "<p>.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "Error-Response:\n   HTTP/1.1 404 Not Found\n   {\n     \"error\": \"NotFound\"\n   }\n",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/apidoc/contact.js"
+  },
+  {
+    "version": "1.0.0",
+    "type": "get",
+    "url": "/contacts/:contactId",
+    "title": "获取收货信息详情",
+    "name": "GetContact",
+    "group": "Contact",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "contactId",
+            "optional": false,
+            "description": ""
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "field": "data",
+            "optional": false,
+            "description": "<p>请求结果</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "data.name",
+            "optional": false,
+            "description": "<p>收货人</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "data.phone",
+            "optional": false,
+            "description": "<p>联系电话</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "data.owner",
+            "optional": false,
+            "description": "<p>用户Id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "field": "data.shippingAddress",
+            "optional": false,
+            "description": "<p>用户设计思路文稿</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "data.shippingAddress.province",
+            "optional": false,
+            "description": "<p>省</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "data.shippingAddress.city",
+            "optional": false,
+            "description": "<p>市</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "data.shippingAddress.area",
+            "optional": false,
+            "description": "<p>区</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "data.shippingAddress.details",
+            "optional": false,
+            "description": "<p>详细地址</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "data.isDefault",
+            "optional": false,
+            "description": "<p>是否为默认地址</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "Success-Response:\n   HTTP/1.1 200 OK\n{\n   \"msg\": \"success\",\n   \"status\": 1,\n   \"data\": {\n       \"owner\": \"58d878838b81190732fdd202\",\n       \"phone\": \"15911020373\",\n       \"updatedAt\": \"2017-03-30 17:13:10\",\n       \"createdAt\": \"2017-03-30 17:13:10\",\n       \"isDefault\": true,\n       \"shippingAddress\": {\n           \"province\": \"北京\",\n           \"city\": \"北京市\",\n           \"area\": \"朝阳区\",\n           \"details\": \"东方科技园\"\n       },\n       \"name\": \"首单人\",\n       \"contactId\": \"58dccc26541a09a0a5b61b73\"\n   }\n}\n",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "field": "NotFound",
+            "optional": false,
+            "description": "<p>.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "Error-Response:\n   HTTP/1.1 404 Not Found\n   {\n     \"error\": \"NotFound\"\n   }\n",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/apidoc/contact.js"
+  },
+  {
+    "version": "1.0.0",
+    "type": "post",
+    "url": "/contacts/:contactId",
+    "title": "创建收货信息",
+    "name": "createContact",
+    "group": "Contact",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "owner",
+            "optional": false,
+            "description": "<p>用户Id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "field": "data",
+            "optional": false,
+            "description": "<p>请求结果</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "data.name",
+            "optional": false,
+            "description": "<p>收货人</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "data.phone",
+            "optional": false,
+            "description": "<p>联系电话</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "data.owner",
+            "optional": false,
+            "description": "<p>用户Id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "field": "data.shippingAddress",
+            "optional": false,
+            "description": "<p>用户设计思路文稿</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "data.shippingAddress.province",
+            "optional": false,
+            "description": "<p>省</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "data.shippingAddress.city",
+            "optional": false,
+            "description": "<p>市</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "data.shippingAddress.area",
+            "optional": false,
+            "description": "<p>区</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "data.shippingAddress.details",
+            "optional": false,
+            "description": "<p>详细地址</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "data.isDefault",
+            "optional": false,
+            "description": "<p>是否为默认地址</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "Success-Response:\n   HTTP/1.1 200 OK\n{\n   \"msg\": \"success\",\n   \"status\": 1,\n   \"data\": {\n       \"owner\": \"58d878838b81190732fdd202\",\n       \"phone\": \"15911020373\",\n       \"updatedAt\": \"2017-03-30 17:13:10\",\n       \"createdAt\": \"2017-03-30 17:13:10\",\n       \"isDefault\": true,\n       \"shippingAddress\": {\n           \"province\": \"北京\",\n           \"city\": \"北京市\",\n           \"area\": \"朝阳区\",\n           \"details\": \"东方科技园\"\n       },\n       \"name\": \"首单人\",\n       \"contactId\": \"58dccc26541a09a0a5b61b73\"\n   }\n}\n",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "field": "NotFound",
+            "optional": false,
+            "description": "<p>.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "Error-Response:\n   HTTP/1.1 404 Not Found\n   {\n     \"error\": \"NotFound\"\n   }\n",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/apidoc/contact.js"
+  },
+  {
+    "version": "1.0.0",
+    "type": "get",
     "url": "/index",
     "title": "获取首页信息",
     "name": "GetIndexInfo",
