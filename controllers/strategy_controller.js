@@ -16,7 +16,7 @@ exports.getStrategy = function (req, res) {
     if(!strategyId){
         respondFailure(res, 400, '参数错误');
     }
-    Strategy.findById(strategyId).deepPopulate('productions, productions.designer').then(function (strategy) {
+    Strategy.findById(strategyId).deepPopulate('productions, productions.designers').then(function (strategy) {
         if(!strategy)
             respondFailure(res, 404, '活动不存在');
         else
@@ -31,7 +31,7 @@ exports.getStrategy = function (req, res) {
  */
 exports.getIndexInfo = function (req, res) {
 
-    Strategy.findOne({ status: CONSTANTS.STATUS.PUBLISHED }).deepPopulate('productions, productions.designer').then(function (strategy) {
+    Strategy.findOne({ status: CONSTANTS.STATUS.PUBLISHED }).deepPopulate('productions, productions.designers').then(function (strategy) {
         if(!strategy)
             respondFailure(res, 404, '活动不存在');
         else

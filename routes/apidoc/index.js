@@ -15,6 +15,7 @@
  * @apiSuccess {Date} data.startDate   活动 开始时间
  * @apiSuccess {Date} data.endDate   活动 结束时间
  * @apiSuccess {Objects} data.productions   活动 商品列表
+ * @apiSuccess {Objects} data.productions.designers   活动 商品设计师列表
  * @apiSuccess {Number} data.status {0 未发布，1 已发布} 活动状态 接口得到的数据都是已发布的.
  *
  * @apiSuccessExample Success-Response:
@@ -35,7 +36,7 @@
                  "amount": 50,
                  "cover": "http://192.168.2.29:3000/test1_cover.png",
                  "title": "精品卫衣",
-                 "designer": {
+                 "designers": [{
                      "username": "15911020373",
                      "avatar": "http://192.168.2.29:3000/test1_avatar.jpg",
                      "design": {
@@ -48,7 +49,7 @@
                      "updatedAt": "2017-03-28 10:43:30",
                      "createdAt": "2017-03-28 10:43:30",
                      "userId": "58d878838b81190732fdd202"
-                 },
+                 }],
                  "description": "test production description",
                  "showImages": [
                      "http://192.168.2.29:3000/test1_show1.png",

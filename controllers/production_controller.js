@@ -15,7 +15,7 @@ exports.getProduction = function (req, res) {
     if(!productionId){
         respondFailure(res, 400, '参数错误');
     }
-    Production.findById(productionId).deepPopulate('designer').then(function (production) {
+    Production.findById(productionId).deepPopulate('designers').then(function (production) {
         if(!production)
             respondFailure(res, 404, '活动不存在');
         else

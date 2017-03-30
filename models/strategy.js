@@ -90,9 +90,9 @@ var StrategySchema = new Schema({
 StrategySchema.plugin(deepPopulate, {
     populate: {
         'productions': {
-            select: 'production_code title description status priceDec price amount showImages cover designer', match: { status: CONSTANTS.STATUS.PUBLISHED }
+            select: 'production_code title description status priceDec price amount showImages cover designers', match: { status: CONSTANTS.STATUS.PUBLISHED }
         },
-        'productions.designer': {
+        'productions.designers': {
             select: 'nickname gender avatar username design'
         }
     }

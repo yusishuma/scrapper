@@ -68,9 +68,13 @@ var ProductionSchema = new Schema({
         /**
          * 投稿人
          */
-        designer: {
-            type: ObjectId,
-            ref: 'user'
+        designers: {
+           type: [
+               {
+                   type: ObjectId,
+                   ref: 'user'
+               }
+           ]
         },
         createdAt: {
             type: Date,
@@ -102,7 +106,7 @@ ProductionSchema.pre('save', function (next) {
 });
 ProductionSchema.plugin(deepPopulate, {
     populate: {
-        'designer': {
+        'designers': {
             select: 'nickname gender avatar username design'
         }
     }

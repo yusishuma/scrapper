@@ -60,6 +60,13 @@ define({ api: [
           },
           {
             "group": "Success 200",
+            "type": "Objects",
+            "field": "data.productions.designers",
+            "optional": false,
+            "description": "<p>活动 商品设计师列表</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "Number",
             "field": "data.status",
             "optional": false,
@@ -70,7 +77,7 @@ define({ api: [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "Success-Response:\n   HTTP/1.1 200 OK\n{\n    \"msg\": \"success\",\n    \"status\": 1,\n    \"data\": {\n        \"title\": \"test strategy\",\n        \"description\": \"test strategy description\",\n        \"updatedAt\": \"2017-03-27 16:38:57\",\n        \"createdAt\": \"2017-03-27 16:38:57\",\n        \"endDate\": \"2017-03-27 16:38:57\",\n        \"startDate\": \"2017-03-27 16:38:57\",\n        \"productions\": [\n            {\n                \"price\": 100,\n                \"amount\": 50,\n                \"cover\": \"http://192.168.2.29:3000/test1_cover.png\",\n                \"title\": \"精品卫衣\",\n                \"designer\": {\n                    \"username\": \"15911020373\",\n                    \"avatar\": \"http://192.168.2.29:3000/test1_avatar.jpg\",\n                    \"design\": {\n                        \"title\": \"一个好的创意\",\n                        \"img\": \"\",\n                        \"content\": \"就是个好的创意，就这么不讲理\"\n                    },\n                    \"gender\": 1,\n                    \"nickname\": \"yusi\",\n                    \"updatedAt\": \"2017-03-28 10:43:30\",\n                    \"createdAt\": \"2017-03-28 10:43:30\",\n                    \"userId\": \"58d878838b81190732fdd202\"\n                },\n                \"description\": \"test production description\",\n                \"showImages\": [\n                    \"http://192.168.2.29:3000/test1_show1.png\",\n                    \"http://192.168.2.29:3000/test1_show2.png\",\n                    \"http://192.168.2.29:3000/test1_show3.png\"\n                ],\n                \"status\": 1,\n                \"updatedAt\": \"2017-03-28 10:43:30\",\n                \"createdAt\": \"2017-03-28 10:43:30\",\n                \"productionId\": \"58d8d1ae56e9cb0ee6235303\"\n            }\n        ],\n        \"status\": 1,\n        \"strategyId\": \"58d8cfa18c9c200ebaae2239\",\n        \"cover\": \"http://192.168.2.29:3000/undefined\"\n    }\n}\n",
+          "content": "Success-Response:\n   HTTP/1.1 200 OK\n{\n    \"msg\": \"success\",\n    \"status\": 1,\n    \"data\": {\n        \"title\": \"test strategy\",\n        \"description\": \"test strategy description\",\n        \"updatedAt\": \"2017-03-27 16:38:57\",\n        \"createdAt\": \"2017-03-27 16:38:57\",\n        \"endDate\": \"2017-03-27 16:38:57\",\n        \"startDate\": \"2017-03-27 16:38:57\",\n        \"productions\": [\n            {\n                \"price\": 100,\n                \"amount\": 50,\n                \"cover\": \"http://192.168.2.29:3000/test1_cover.png\",\n                \"title\": \"精品卫衣\",\n                \"designers\": [{\n                    \"username\": \"15911020373\",\n                    \"avatar\": \"http://192.168.2.29:3000/test1_avatar.jpg\",\n                    \"design\": {\n                        \"title\": \"一个好的创意\",\n                        \"img\": \"\",\n                        \"content\": \"就是个好的创意，就这么不讲理\"\n                    },\n                    \"gender\": 1,\n                    \"nickname\": \"yusi\",\n                    \"updatedAt\": \"2017-03-28 10:43:30\",\n                    \"createdAt\": \"2017-03-28 10:43:30\",\n                    \"userId\": \"58d878838b81190732fdd202\"\n                }],\n                \"description\": \"test production description\",\n                \"showImages\": [\n                    \"http://192.168.2.29:3000/test1_show1.png\",\n                    \"http://192.168.2.29:3000/test1_show2.png\",\n                    \"http://192.168.2.29:3000/test1_show3.png\"\n                ],\n                \"status\": 1,\n                \"updatedAt\": \"2017-03-28 10:43:30\",\n                \"createdAt\": \"2017-03-28 10:43:30\",\n                \"productionId\": \"58d8d1ae56e9cb0ee6235303\"\n            }\n        ],\n        \"status\": 1,\n        \"strategyId\": \"58d8cfa18c9c200ebaae2239\",\n        \"cover\": \"http://192.168.2.29:3000/undefined\"\n    }\n}\n",
           "type": "json"
         }
       ]
@@ -547,29 +554,29 @@ define({ api: [
           },
           {
             "group": "Success 200",
-            "type": "Object",
-            "field": "data.designer",
+            "type": "Object[]",
+            "field": "data.designers",
             "optional": false,
             "description": "<p>商品投稿人</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
-            "field": "data.designer.nickname",
+            "field": "data.designers.nickname",
             "optional": false,
             "description": "<p>投稿人昵称</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
-            "field": "data.designer.avatar",
+            "field": "data.designers.avatar",
             "optional": false,
             "description": "<p>投稿人头像</p>"
           },
           {
             "group": "Success 200",
             "type": "Object",
-            "field": "data.designer.design",
+            "field": "data.designers.design",
             "optional": false,
             "description": "<p>投稿人设计文稿</p>"
           },
@@ -592,7 +599,7 @@ define({ api: [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "Success-Response:\n   HTTP/1.1 200 OK\n{\n   \"msg\": \"success\",\n   \"status\": 1,\n   \"data\": {\n       \"price\": 100,\n       \"amount\": 50,\n       \"cover\": \"http://192.168.2.29:3000/test1_cover.png\",\n       \"title\": \"签名限量版卫衣超级限量版天霸动霸\",\n       \"designer\": {\n           \"username\": \"15911020373\",\n           \"avatar\": \"http://192.168.2.29:3000/test1_avatar.jpg\",\n           \"design\": {\n               \"title\": \"一个好的创意\",\n               \"img\": \"http://192.168.2.29:3000/test1_img.png\",\n               \"content\": \"我总是发誓平安夜不睡觉，我想听屋顶上驯鹿奔跑的舞步，想在烟囱那儿与圣诞老人握手。 而这个圣诞节在我看来，似乎没有比什么比保持清醒更容易做到的事情了。\"\n           },\n           \"gender\": 1,\n           \"nickname\": \"yusi\",\n           \"updatedAt\": \"2017-03-28 15:08:18\",\n           \"createdAt\": \"2017-03-28 15:08:18\",\n           \"userId\": \"58d878838b81190732fdd202\"\n       },\n       \"description\": \"test production description\",\n       \"updatedAt\": \"2017-03-27 16:47:42\",\n       \"createdAt\": \"2017-03-27 16:47:42\",\n       \"showImages\": [\n           \"http://192.168.2.29:3000/test1_show1.png\",\n           \"http://192.168.2.29:3000/test1_show2.png\",\n           \"http://192.168.2.29:3000/test1_show3.png\"\n       ],\n       \"status\": 1,\n       \"productionId\": \"58d8d1ae56e9cb0ee6235303\"\n   }\n}\n",
+          "content": "Success-Response:\n   HTTP/1.1 200 OK\n{\n   \"msg\": \"success\",\n   \"status\": 1,\n   \"data\": {\n       \"price\": 100,\n       \"amount\": 50,\n       \"cover\": \"http://192.168.2.29:3000/test1_cover.png\",\n       \"title\": \"签名限量版卫衣超级限量版天霸动霸\",\n       \"designers\": [{\n           \"username\": \"15911020373\",\n           \"avatar\": \"http://192.168.2.29:3000/test1_avatar.jpg\",\n           \"design\": {\n               \"title\": \"一个好的创意\",\n               \"img\": \"http://192.168.2.29:3000/test1_img.png\",\n               \"content\": \"我总是发誓平安夜不睡觉，我想听屋顶上驯鹿奔跑的舞步，想在烟囱那儿与圣诞老人握手。 而这个圣诞节在我看来，似乎没有比什么比保持清醒更容易做到的事情了。\"\n           },\n           \"gender\": 1,\n           \"nickname\": \"yusi\",\n           \"updatedAt\": \"2017-03-28 15:08:18\",\n           \"createdAt\": \"2017-03-28 15:08:18\",\n           \"userId\": \"58d878838b81190732fdd202\"\n       }],\n       \"description\": \"test production description\",\n       \"updatedAt\": \"2017-03-27 16:47:42\",\n       \"createdAt\": \"2017-03-27 16:47:42\",\n       \"showImages\": [\n           \"http://192.168.2.29:3000/test1_show1.png\",\n           \"http://192.168.2.29:3000/test1_show2.png\",\n           \"http://192.168.2.29:3000/test1_show3.png\"\n       ],\n       \"status\": 1,\n       \"productionId\": \"58d8d1ae56e9cb0ee6235303\"\n   }\n}\n",
           "type": "json"
         }
       ]
@@ -632,8 +639,8 @@ define({ api: [
             "group": "Parameter",
             "type": "String",
             "field": "userId",
-            "optional": true,
-            "description": "<p>, me]   参数为me时，获取登陆用户自己的信息</p>"
+            "optional": false,
+            "description": "<p>[userId, me]参数为me时，获取登陆用户自己的信息</p>"
           }
         ]
       }
