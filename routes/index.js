@@ -10,7 +10,6 @@ var strategy_router = require('./strategy_router');
 var contact_router = require('./contact_router');
 var order_router = require('./order_router');
 var passport = require('passport');
-var  ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn();
 var respondSuccess = require('../utils/respond_fileter').respondSuccess;
 var respondFailure = require('../utils/respond_fileter').respondFailure;
 /* GET home page. */
@@ -26,9 +25,13 @@ router.post('/login',  passport.authenticate('local', {
     var user = req.session.passport.user;
     respondSuccess(res, user, 201);
 });
-router.get('/login', function (req, res) {
-    respondFailure(res, 401, '未登录');
-});
+var ensureLoggedIn = function (req, res, next) {
+    if (req.isAuthenticated()){
+        return next()
+    }
+    res.redirect('/login');
+};
+
 /* 用户注册 */
 router.post('/register', user_controller.registerUser);
 
@@ -61,5 +64,6 @@ router.use('/orders', ensureLoggedIn, order_router);
  *  收获信息 routers
  */
 router.use('/contacts', ensureLoggedIn, contact_router);
+
 
 module.exports = router;

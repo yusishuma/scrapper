@@ -63,8 +63,15 @@ exports.STATUS = {
         PREPARING: 2,//准备中
         STARTED: 3,//已开始
         ENDED:4,//已结束
-        DELETED: 5//被删除
+        DELETED: 5,//被删除
+        PAID: 6,// 已支付
+        UNPAID:7, //未支付
+
     };
+exports.PAGINATE = {
+    PAGE: 1,
+    LIMIT: 20
+};
 
 /**
  * session 配置

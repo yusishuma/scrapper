@@ -37,6 +37,13 @@ var ProductionSchema = new Schema({
             default: CONSTANTS.STATUS.UNPUBLISHED
         },
         /**
+         * 规格样式
+         */
+        //TODO:商品样式规格
+        // specifications: {
+
+        // },
+        /**
          * 商品价格
          */
         price:{

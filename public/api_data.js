@@ -420,7 +420,7 @@ define({ api: [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "Success-Response:\n   HTTP/1.1 200 OK\n{\n    \"msg\": \"保存成功！\",\n    \"status\": 1,\n    \"data\": {}\n}\n",
+          "content": "Success-Response:\n   HTTP/1.1 200 OK\n{\n    \"msg\": \"更新成功！\",\n    \"status\": 1,\n    \"data\": {}\n}\n",
           "type": "json"
         }
       ]
@@ -947,6 +947,322 @@ define({ api: [
       ]
     },
     "filename": "routes/apidoc/index.js"
+  },
+  {
+    "version": "1.0.0",
+    "type": "post",
+    "url": "/orders",
+    "title": "创建订单信息",
+    "name": "createOrder",
+    "group": "Order",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "owner",
+            "optional": false,
+            "description": "<p>用户Id</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Request-Example:",
+        "content": "{\n\"owner\":\"58d878838b81190732fdd202\",\n\"productions\": [{\n\t\"production\":\"58d8d1ae56e9cb0ee6235303\",\n\t\"count\":1\n}],\n\"name\": \"首单人\"\n}\n",
+        "type": "json"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "field": "data",
+            "optional": false,
+            "description": "<p>请求结果</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "data.order_code",
+            "optional": false,
+            "description": "<p>订单编号</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "data.paymentDec",
+            "optional": false,
+            "description": "<p>订单价格</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "data.payment",
+            "optional": false,
+            "description": "<p>订单价格 * 100</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "field": "data.owner",
+            "optional": false,
+            "description": "<p>用户Id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "field": "data.productions",
+            "optional": false,
+            "description": "<p>订单中的商品</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "field": "data.productions.production",
+            "optional": false,
+            "description": "<p>商品ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "data.productions.count",
+            "optional": false,
+            "description": "<p>商品数量</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "Success-Response:\n   HTTP/1.1 201 OK\n{\n   \"msg\": \"success\",\n   \"status\": 1,\n   \"data\": {\n       \"order_code\": \"149102235610110860\",\n       \"paymentDec\": 1020.11,\n       \"payment\": 102011,\n       \"owner\": {\n           \"username\": \"15811020373\",\n           \"avatar\": \"http://192.168.2.29:3000/test1_avatar.jpg\",\n           \"design\": {\n               \"title\": \"一个好的创意\",\n               \"img\": \"\",\n               \"content\": \"就是个好的创意，就这么不讲理\"\n           },\n           \"gender\": 1,\n           \"nickname\": \"yusi\",\n           \"updatedAt\": \"2017-04-01 12:52:36\",\n           \"createdAt\": \"2017-04-01 12:52:36\",\n           \"userId\": \"58d878838b81190732fdd202\"\n       },\n       \"updatedAt\": \"2017-04-01 12:52:36\",\n       \"createdAt\": \"2017-04-01 12:52:36\",\n       \"productions\": [\n           {\n               \"production\": {\n                   \"price\": 1020.11,\n                   \"amount\": 50,\n                   \"cover\": \"http://192.168.2.29:3000/test1_cover.png\",\n                   \"title\": \"精品卫衣\",\n                   \"description\": \"test production description\",\n                   \"designers\": [\n                       {\n                           \"username\": \"15811020373\",\n                           \"avatar\": \"http://192.168.2.29:3000/test1_avatar.jpg\",\n                           \"design\": {\n                               \"title\": \"一个好的创意\",\n                               \"img\": \"\",\n                               \"content\": \"就是个好的创意，就这么不讲理\"\n                           },\n                           \"gender\": 1,\n                           \"nickname\": \"yusi\",\n                           \"updatedAt\": \"2017-04-01 12:52:36\",\n                           \"createdAt\": \"2017-04-01 12:52:36\",\n                           \"userId\": \"58d878838b81190732fdd202\"\n                       }\n                   ],\n                   \"showImages\": [\n                       \"http://192.168.2.29:3000/test1_show1.png\",\n                       \"http://192.168.2.29:3000/test1_show2.png\",\n                       \"http://192.168.2.29:3000/test1_show3.png\"\n                   ],\n                   \"status\": 1,\n                   \"updatedAt\": \"2017-04-01 12:52:36\",\n                   \"createdAt\": \"2017-04-01 12:52:36\",\n                   \"productionId\": \"58d8d1ae56e9cb0ee6235303\"\n               },\n               \"count\": 1,\n               \"_id\": \"58df321411b1b510f5132eae\"\n           }\n       ],\n       \"status\": 0,\n       \"orderId\": \"58df321411b1b510f5132ead\"\n   }\n}\n",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "field": "NotFound",
+            "optional": false,
+            "description": "<p>.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "Error-Response:\n   HTTP/1.1 404 Not Found\n   {\n     \"error\": \"NotFound\"\n   }\n",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/apidoc/order.js"
+  },
+  {
+    "version": "1.0.0",
+    "type": "get",
+    "url": "/orders",
+    "title": "获取订单详情",
+    "name": "getOrder",
+    "group": "Order",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "orderId",
+            "optional": false,
+            "description": "<p>订单Id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "field": "data",
+            "optional": false,
+            "description": "<p>请求结果</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "data.order_code",
+            "optional": false,
+            "description": "<p>订单编号</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "data.paymentDec",
+            "optional": false,
+            "description": "<p>订单价格</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "data.payment",
+            "optional": false,
+            "description": "<p>订单价格 * 100</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "field": "data.owner",
+            "optional": false,
+            "description": "<p>用户Id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "field": "data.productions",
+            "optional": false,
+            "description": "<p>订单中的商品</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "field": "data.productions.production",
+            "optional": false,
+            "description": "<p>商品ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "data.productions.count",
+            "optional": false,
+            "description": "<p>商品数量</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "Success-Response:\n   HTTP/1.1 201 OK\n{\n   \"msg\": \"success\",\n   \"status\": 1,\n   \"data\": {\n       \"order_code\": \"14910219386387376\",\n       \"paymentDec\": 1020.11,\n       \"payment\": 102011,\n       \"owner\": {\n           \"username\": \"15811020373\",\n           \"avatar\": \"http://192.168.2.29:3000/test1_avatar.jpg\",\n           \"design\": {\n               \"title\": \"一个好的创意\",\n               \"img\": \"\",\n               \"content\": \"就是个好的创意，就这么不讲理\"\n           },\n           \"gender\": 1,\n           \"nickname\": \"yusi\",\n           \"updatedAt\": \"2017-04-01 13:08:04\",\n           \"createdAt\": \"2017-04-01 13:08:04\",\n           \"userId\": \"58d878838b81190732fdd202\"\n       },\n       \"updatedAt\": \"2017-04-01 12:45:38\",\n       \"createdAt\": \"2017-04-01 12:45:38\",\n       \"productions\": [\n           {\n               \"production\": {\n                   \"price\": 1020.11,\n                   \"amount\": 50,\n                   \"cover\": \"http://192.168.2.29:3000/test1_cover.png\",\n                   \"title\": \"精品卫衣\",\n                   \"description\": \"test production description\",\n                   \"designers\": [\n                       {\n                           \"username\": \"15811020373\",\n                           \"avatar\": \"http://192.168.2.29:3000/test1_avatar.jpg\",\n                           \"design\": {\n                               \"title\": \"一个好的创意\",\n                               \"img\": \"\",\n                               \"content\": \"就是个好的创意，就这么不讲理\"\n                           },\n                           \"gender\": 1,\n                           \"nickname\": \"yusi\",\n                           \"updatedAt\": \"2017-04-01 13:08:04\",\n                           \"createdAt\": \"2017-04-01 13:08:04\",\n                           \"userId\": \"58d878838b81190732fdd202\"\n                       }\n                   ],\n                   \"showImages\": [\n                       \"http://192.168.2.29:3000/test1_show1.png\",\n                       \"http://192.168.2.29:3000/test1_show2.png\",\n                       \"http://192.168.2.29:3000/test1_show3.png\"\n                   ],\n                   \"status\": 1,\n                   \"updatedAt\": \"2017-04-01 13:08:04\",\n                   \"createdAt\": \"2017-04-01 13:08:04\",\n                   \"productionId\": \"58d8d1ae56e9cb0ee6235303\"\n               },\n               \"count\": 1,\n               \"_id\": \"58df3072e910851057162399\"\n           }\n       ],\n       \"status\": 6,\n       \"orderId\": \"58df3072e910851057162398\"\n   }\n}\n",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "field": "NotFound",
+            "optional": false,
+            "description": "<p>.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "Error-Response:\n   HTTP/1.1 404 Not Found\n   {\n     \"error\": \"NotFound\"\n   }\n",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/apidoc/order.js"
+  },
+  {
+    "version": "1.0.0",
+    "type": "get",
+    "url": "/orders",
+    "title": "获取订单列表",
+    "name": "getOrderList",
+    "group": "Order",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "userId",
+            "optional": false,
+            "description": "<p>用户Id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "page",
+            "optional": false,
+            "description": "<p>页码 默认为 1</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "limit",
+            "optional": false,
+            "description": "<p>步长 默认为 20</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "field": "data",
+            "optional": false,
+            "description": "<p>请求结果</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "field": "data.orders",
+            "optional": false,
+            "description": "<p>订单列表</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "data.count",
+            "optional": false,
+            "description": "<p>订单数量</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "Success-Response:\n   HTTP/1.1 201 OK\n{\n   \"msg\": \"success\",\n   \"status\": 1,\n   \"data\": {\n       \"orders\": [\n           {\n               \"order_code\": \"14910219386387376\",\n               \"paymentDec\": 1020.11,\n               \"payment\": 102011,\n               \"owner\": \"58d878838b81190732fdd202\",\n               \"updatedAt\": \"2017-04-01 12:45:38\",\n               \"createdAt\": \"2017-04-01 12:45:38\",\n               \"productions\": [\n                   {\n                       \"production\": \"58d8d1ae56e9cb0ee6235303\",\n                       \"count\": 1,\n                       \"_id\": \"58df3072e910851057162399\"\n                   }\n               ],\n               \"status\": 6,\n               \"orderId\": \"58df3072e910851057162398\"\n           }\n       ],\n       \"count\": 1\n   }\n}\n",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "field": "NotFound",
+            "optional": false,
+            "description": "<p>.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "Error-Response:\n   HTTP/1.1 404 Not Found\n   {\n     \"error\": \"NotFound\"\n   }\n",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/apidoc/order.js"
   },
   {
     "version": "1.0.0",

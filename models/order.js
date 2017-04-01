@@ -19,7 +19,20 @@ var OrderSchema = new Schema({
             type: String,
             trim: true
         },
-
+        /**
+         * 快递公司
+         */
+        express_company: {
+            type: String,
+            trim: true
+        },
+        /**
+         * 快递号
+         */
+        tracking_number: {
+            type: String,
+            trim: true
+        },
         /**
          * 订单描述
          */
@@ -91,16 +104,19 @@ OrderSchema.pre('save', function (next) {
 });
 OrderSchema.plugin(deepPopulate, {
     populate: {
-        'productions': {
+        'owner': {
+            select: 'nickname gender avatar username design'
+        },
+        'productions.production': {
             select: 'production_code title description status priceDec price amount showImages cover designers', match: { status: CONSTANTS.STATUS.PUBLISHED }
         },
-        'productions.designers': {
+        'productions.production.designers': {
             select: 'nickname gender avatar username design'
         }
     }
 });
 OrderSchema.options.toJSON.transform = function (doc, ret) {
-    ret.userId = ret._id.toString();
+    ret.orderId = ret._id.toString();
     delete ret.__v;
     delete ret._id;
 };

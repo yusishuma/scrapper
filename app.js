@@ -65,6 +65,11 @@ app.use('/*', function (req, res, next) {
     next();
 });
 app.use('/api', router);
+var respondFailure = require('./utils/respond_fileter').respondFailure;
+
+app.use('/login', function (req, res) {
+    respondFailure(res, 401, '未登录');
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

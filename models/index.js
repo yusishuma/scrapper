@@ -25,6 +25,14 @@ mongoose.Model.findAllAndCount = function(options) {
     var page = options.page || 1;
     var skipNum = (page * limit) - limit;
     var populateOpt = [];
+    switch (this.modelName) {
+        case 'order':
+            populateOpt = ['productions', 'productions.designers'];
+            break;
+        default:
+            populateOpt = '';
+            break;
+    }
     return Q.all([
         this.find(searchOption, field).deepPopulate(populateOpt).skip(skipNum).limit(limit).sort(sortOption),
         this.count(searchOption)
