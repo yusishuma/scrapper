@@ -53,10 +53,10 @@
 
 /**
  * @apiVersion 1.0.0
- * @api {put} /users/:userId 更新收货信息
+ * @api {put} /users/:userId 更新用户信息
  * @apiName updateUser
  * @apiGroup User
- * @apiParam {String} userId 收货信息Id
+ * @apiParam {String} userId 用户信息Id∑
  *
  * @apiExample {json} Request-Example:
  * {

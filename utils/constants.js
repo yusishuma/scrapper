@@ -86,3 +86,8 @@ exports.SESSION = {
     SECRET: 'fluorescence',
     MAX_AGE: 24 * 60 * 60 * 1000 * 30
 };
+
+exports.PINGPP = {
+  TEST_KEY: "sk_test_GSybHK8SO4KGSqHGW14O8av1",
+    APP_ID: "app_0ifjj9i9SuXLOa9K"
+};

@@ -1516,7 +1516,7 @@ define({ api: [
     "version": "1.0.0",
     "type": "put",
     "url": "/users/:userId",
-    "title": "更新收货信息",
+    "title": "更新用户信息",
     "name": "updateUser",
     "group": "User",
     "parameter": {
@@ -1527,7 +1527,7 @@ define({ api: [
             "type": "String",
             "field": "userId",
             "optional": false,
-            "description": "<p>收货信息Id</p>"
+            "description": "<p>用户信息Id∑</p>"
           }
         ]
       }
