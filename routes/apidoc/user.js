@@ -17,6 +17,10 @@
  * @apiSuccess {String} data.design.title   用户设计标题
  * @apiSuccess {String} data.design.content   用户设计内容
  * @apiSuccess {String} data.design.img   用户设计图
+ * @apiSuccess {String} data.design.weibo   微博
+ * @apiSuccess {String} data.design.description   自我评价
+ * @apiSuccess {String} data.design.qq   qq号
+ * @apiSuccess {String} data.design.work   作品链接
  * @apiSuccess {String} data.role   用户角色
  * @apiSuccess {Number} data.gender { 0 未知，1 男 2 女 } 用户性别.
  *

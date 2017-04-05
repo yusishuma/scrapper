@@ -1470,6 +1470,34 @@
           {
             "group": "Success 200",
             "type": "String",
+            "field": "data.design.weibo",
+            "optional": false,
+            "description": "<p>微博</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "data.design.description",
+            "optional": false,
+            "description": "<p>自我评价</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "data.design.qq",
+            "optional": false,
+            "description": "<p>qq号</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "data.design.work",
+            "optional": false,
+            "description": "<p>作品链接</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
             "field": "data.role",
             "optional": false,
             "description": "<p>用户角色</p>"

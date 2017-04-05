@@ -76,6 +76,21 @@ var UserSchema = new Schema({
         img: {
             type: String
         },
+        phone: {
+            type: String
+        },
+        weibo: {
+            type: String
+        },
+        qq: {
+            type: String
+        },
+        work: {// 作品链接
+            type: String
+        },
+        description: {//自我评价
+            type: String
+        },
         status: {// 是否申请为设计者
             type: Number,
             default: CONSTANTS.STATUS.NOT_APPLY
