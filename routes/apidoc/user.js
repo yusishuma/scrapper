@@ -50,3 +50,40 @@
  *       "error": "NotFound"
  *     }
  */
+
+/**
+ * @apiVersion 1.0.0
+ * @api {put} /users/:userId 更新收货信息
+ * @apiName updateUser
+ * @apiGroup User
+ * @apiParam {String} userId 收货信息Id
+ *
+ * @apiExample {json} Request-Example:
+ * {
+ *	"userId":"58d878838b81190732fdd202",
+ *	"nickname": "昵称",
+ *	"avatar": "avatar.jpg",
+ *	"design":{
+ *		"title":"北京",
+ *		"content":"北京市",
+ *		"img":""
+ *	}
+ *}
+ *
+ * @apiSuccess {Object} data   请求结果
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ {
+     "msg": "更新成功！",
+     "status": 1,
+     "data": {}
+ }
+ * @apiError NotFound .
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 404 Not Found
+ *     {
+ *       "error": "NotFound"
+ *     }
+ */

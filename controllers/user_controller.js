@@ -106,3 +106,23 @@ exports.verifySmsCode = function (req, res) {
         }
     });
 };
+
+/**
+ * 更新用户信息
+ * @param req
+ * @param res
+ */
+exports.updateUser = function (req, res) {
+    var data = req.body;
+    if(!data.userId){
+        respondFailure(res, 400, '参数错误');
+    }
+    User.findById(data.userId).then(function (user) {
+        if(!user)
+            respondFailure(res, 404, '用户不存在');
+        return User.update({ _id: data.userId }, data);
+    }).then(function (result) {
+        console.log(result);
+        respondSuccess(res, {}, 201, '更新成功！');
+    })
+};

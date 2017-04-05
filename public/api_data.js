@@ -1511,5 +1511,73 @@ define({ api: [
       ]
     },
     "filename": "routes/apidoc/user.js"
+  },
+  {
+    "version": "1.0.0",
+    "type": "put",
+    "url": "/users/:userId",
+    "title": "更新收货信息",
+    "name": "updateUser",
+    "group": "User",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "userId",
+            "optional": false,
+            "description": "<p>收货信息Id</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Request-Example:",
+        "content": "{\n\"userId\":\"58d878838b81190732fdd202\",\n\"nickname\": \"昵称\",\n\"avatar\": \"avatar.jpg\",\n\"design\":{\n\t\"title\":\"北京\",\n\t\"content\":\"北京市\",\n\t\"img\":\"\"\n}\n}\n",
+        "type": "json"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "field": "data",
+            "optional": false,
+            "description": "<p>请求结果</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "Success-Response:\n   HTTP/1.1 200 OK\n{\n    \"msg\": \"更新成功！\",\n    \"status\": 1,\n    \"data\": {}\n}\n",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "field": "NotFound",
+            "optional": false,
+            "description": "<p>.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "Error-Response:\n   HTTP/1.1 404 Not Found\n   {\n     \"error\": \"NotFound\"\n   }\n",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/apidoc/user.js"
   }
 ] });
