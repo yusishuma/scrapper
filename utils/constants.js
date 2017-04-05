@@ -61,12 +61,17 @@ exports.STATUS = {
         UNPUBLISHED: 0, //未发布
         PUBLISHED: 1,// 已发布
         PREPARING: 2,//准备中
+
         STARTED: 3,//已开始
         ENDED:4,//已结束
+
         DELETED: 5,//被删除
+
         PAID: 6,// 已支付
         UNPAID:7, //未支付
 
+        APPLY: 8,// 申请为设计人
+        NOT_APPLY: 9 //未申请
     };
 exports.PAGINATE = {
     PAGE: 1,

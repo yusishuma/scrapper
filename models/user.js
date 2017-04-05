@@ -75,6 +75,10 @@ var UserSchema = new Schema({
         },
         img: {
             type: String
+        },
+        status: {// 是否申请为设计者
+            type: Number,
+            default: CONSTANTS.STATUS.NOT_APPLY
         }
     },
     createdAt: {
