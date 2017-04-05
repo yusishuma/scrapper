@@ -52,12 +52,17 @@ var ProductionSchema = new Schema({
         priceDec: {
             type: Number
         },
-
         /**
          * 商品总量
          *
          */
         amount: {
+            type: Number
+        },
+        /**
+         * 剩余量
+         */
+        remainder: {
             type: Number
         },
         /**
@@ -109,6 +114,7 @@ var ProductionSchema = new Schema({
 ProductionSchema.pre('save', function (next) {
     this.priceDec = this.price;
     this.price = this.price * 100;
+    this.remainder = this.amount;
     next();
 });
 ProductionSchema.plugin(deepPopulate, {
@@ -121,6 +127,7 @@ ProductionSchema.plugin(deepPopulate, {
 ProductionSchema.options.toJSON.transform = function (doc, ret) {
     ret.productionId = ret._id.toString();
     ret.price = ret.priceDec;
+    ret.production_code = ret.amount - ret.remainder + 1;
     ret.cover = CONSTANTS.SERVER_URL + ret.cover;
     ret.showImages = ret.showImages.map(function (image) {
         return CONSTANTS.SERVER_URL + image;

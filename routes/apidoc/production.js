@@ -53,6 +53,7 @@
             "http://192.168.2.29:3000/test1_show2.png",
             "http://192.168.2.29:3000/test1_show3.png"
         ],
+        "production_code": 1,
         "status": 1,
         "productionId": "58d8d1ae56e9cb0ee6235303"
     }
