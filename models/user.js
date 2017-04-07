@@ -60,7 +60,7 @@ var UserSchema = new Schema({
      * 角色
      */
     role: {
-        type: String,
+        type: Number,
         default: CONSTANTS.ROLE.CUSTOMER
     },
     /**

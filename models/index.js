@@ -5,6 +5,9 @@ var Q = require("q");
 var mongoose = require("mongoose");
 var CONSTANTS = require("../utils/constants");
 var UserSchema = require("./user");
+var ClientSchema = require("./client");
+var AccessTokenSchema = require("./accesstoken");
+var RefreshTokenSchema = require("./refreshtoken");
 var OrderSchema = require("./order");
 var ProductionSchema = require("./production");
 var VoteSchema = require("./vote");
@@ -68,6 +71,9 @@ mongoose.Model.paginateForPro = function (id, property, options, callback) {
 };
 
 exports.UserModel = mongoose.model("user", UserSchema);
+exports.AccessTokenModel = mongoose.model("accesstoken", AccessTokenSchema);
+exports.ClientModel = mongoose.model("client", ClientSchema);
+exports.RefreshTokenModel = mongoose.model("refreshtoken", RefreshTokenSchema);
 exports.OrderModel = mongoose.model("order", OrderSchema);
 exports.StrategyModel = mongoose.model("strategy", StrategySchema);
 exports.ProductionModel = mongoose.model("production", ProductionSchema);

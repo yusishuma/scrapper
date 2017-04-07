@@ -84,7 +84,8 @@ exports.PAGINATE = {
  */
 exports.SESSION = {
     SECRET: 'fluorescence',
-    MAX_AGE: 24 * 60 * 60 * 1000 * 30
+    MAX_AGE: 24 * 60 * 60 * 1000 * 30,
+    TOKEN_LIFE: 24 * 60 * 60 * 1000 * 30
 };
 
 exports.PINGPP = {

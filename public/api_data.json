@@ -1514,7 +1514,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "Success-Response:\n   HTTP/1.1 200 OK\n{\n   \"msg\": \"success\",\n     \"status\": 1,\n     \"data\": {\n       \"salt\": \"J14RTuneqmJMBD8/d/Jm3gTA6sjbaXNyI1HJIfiEuyo=\",\n       \"username\": \"15911020373\",\n       \"avatar\": \"http://192.168.2.29:3000/test1_avatar.jpg\",\n       \"updatedAt\": \"2017-03-27 10:27:15\",\n       \"createdAt\": \"2017-03-27 10:27:15\",\n       \"design\": {\n         \"title\": \"一个好的创意\",\n         \"img\": \"http://192.168.2.29:3000/test1_img.png\",\n         \"content\": \"我总是发誓平安夜不睡觉，我想听屋顶上驯鹿奔跑的舞步，想在烟囱那儿与圣诞老人握手。 而这个圣诞节在我看来，似乎没有比什么比保持清醒更容易做到的事情了。\"\n       },\n       \"role\": \"0\",\n       \"gender\": 1,\n       \"nickname\": \"yusi\",\n       \"userId\": \"58d878838b81190732fdd202\"\n     }\n}\n",
+          "content": "Success-Response:\n   HTTP/1.1 200 OK\n{\n   \"msg\": \"success\",\n     \"status\": 1,\n     \"data\": {\n       \"salt\": \"J14RTuneqmJMBD8/d/Jm3gTA6sjbaXNyI1HJIfiEuyo=\",\n       \"username\": \"15911020373\",\n       \"avatar\": \"http://192.168.2.29:3000/test1_avatar.jpg\",\n       \"updatedAt\": \"2017-03-27 10:27:15\",\n       \"createdAt\": \"2017-03-27 10:27:15\",\n       \"design\": {\n         \"title\": \"一个好的创意\",\n         \"img\": \"http://192.168.2.29:3000/test1_img.png\",\n         \"content\": \"我总是发誓平安夜不睡觉，我想听屋顶上驯鹿奔跑的舞步，想在烟囱那儿与圣诞老人握手。 而这个圣诞节在我看来，似乎没有比什么比保持清醒更容易做到的事情了。\"\n       },\n       \"role\": 0,\n       \"gender\": 1,\n       \"nickname\": \"yusi\",\n       \"userId\": \"58d878838b81190732fdd202\"\n     }\n}\n",
           "type": "json"
         }
       ]

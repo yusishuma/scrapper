@@ -12,6 +12,20 @@ var order_router = require('./order_router');
 var passport = require('passport');
 var respondSuccess = require('../utils/respond_fileter').respondSuccess;
 var respondFailure = require('../utils/respond_fileter').respondFailure;
+/**
+ * 验证是否登陆
+ * @param req
+ * @param res
+ * @param next
+ * @returns {*}
+ */
+var ensureLoggedIn = function (req, res, next) {
+    if (req.isAuthenticated()){
+        return next()
+    }
+    res.redirect('/login');
+};
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
     res.render('index', { title: 'Express' });
@@ -25,12 +39,6 @@ router.post('/login',  passport.authenticate('local', {
     var user = req.session.passport.user;
     respondSuccess(res, user, 201);
 });
-var ensureLoggedIn = function (req, res, next) {
-    if (req.isAuthenticated()){
-        return next()
-    }
-    res.redirect('/login');
-};
 
 /* 用户注册 */
 router.post('/register', user_controller.registerUser);
@@ -64,6 +72,5 @@ router.use('/orders', ensureLoggedIn, order_router);
  *  收获信息 routers
  */
 router.use('/contacts', ensureLoggedIn, contact_router);
-
 
 module.exports = router;

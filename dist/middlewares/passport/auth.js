@@ -21,4 +21,4 @@ passport.use(new LocalStrategy(function (username, password, done) {
         return done(null, user);
     });
 }));
-//# sourceMappingURL=auth.js.map
+//# sourceMappingURL=strategy.js.map

@@ -20,4 +20,4 @@ passport.use(new BasicStrategy(function (phone, password, done) {
         return done(null, user);
     });
 }));
-//# sourceMappingURL=auth.js.map
+//# sourceMappingURL=strategy.js.map

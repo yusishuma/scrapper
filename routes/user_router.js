@@ -13,6 +13,6 @@ router.get('/:userId', user.getUser);
 /* 验证手机号是否存在 */
 router.post('/validatePhone', user.validatePhone);
 
-/* 验证手机号是否存在 */
+/* 更新用户信息 */
 router.put('/:userId', user.updateUser);
 module.exports = router;

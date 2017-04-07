@@ -18,7 +18,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'upload')));
@@ -29,17 +29,17 @@ app.use(session({
         autoReconnect: true
 
     }),
-    resave: false,
-    saveUninitialized: true,
+    resave: true,
+    saveUninitialized: false,
     cookie: {
-        maxAge: CONSTANTS.SESSION.MAX_AGE
-
+        maxAge: CONSTANTS.SESSION.MAX_AGE,
+        secure: false
     }
 
 
 }));
 
-require('./middlewares/passport/auth');
+require('./middlewares/passport/strategy');
 
 // 注册passport中间件
 app.use(passport.initialize()); // 初始化passport
