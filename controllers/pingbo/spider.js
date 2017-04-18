@@ -1,46 +1,16 @@
+/**
+ * Created by tonghema on 18/04/2017.
+ */
 'use strict';
 
 var request = require('request');
-var CONSTANTS = require('../utils/CONSTANTS');
+var CONSTANTS = require('../../utils/constants');
 var fetch = require('node-fetch');
 var Q = require('q');
 var moment = require('moment');
 var _ = require('lodash');
-var League = require('../models').LeagueModel;
-var Event = require('../models').EventModel;
-/**
- *  抓取https://egb.com/bets数据
- */
-exports.fetchBettingData = function () {
-    return new Promise(function (resolve, reject) {
-        request.get({url: CONSTANTS.EGB_URL + '?st=0&ut=0&fg=1&f=', headers: CONSTANTS.HEADER, json: true}, function (err, res, data) {
-            var bets = [],
-                nested_bets = [];
-            if (!err && res.statusCode === 200) {
-                console.log('step 1: first request success!');
-                data.nested_bets.forEach(function (nested_bet) {
-                    if (nested_bet.game === 'Dota2' || nested_bet.game === 'Counter-Strike' || nested_bet.game === 'LoL') {
-                        nested_bets.push(nested_bet);
-                    }
-                });
-                data.bets.forEach(function (bet) {
-                    if (bet.game === 'Dota2' || bet.game === 'Counter-Strike' || bet.game === 'LoL') {
-                        bets.push(bet);
-                    }
-                });
-                resolve({
-                    bets: bets,
-                    nested_bets: nested_bets
-                });
-            } else {
-                resolve({
-                    bets: [],
-                    nested_bets: []
-                });
-            }
-        });
-    });
-};
+var League = require('../../models/index').LeagueModel;
+var Event = require('../../models/index').EventModel;
 
 /**
  * 获取 联赛列表 保存到备份库
@@ -87,12 +57,12 @@ exports.fetchSettledEventData = function () {
             return Q.all(league.events.map(function (event) {
                 event.leagueId = league.id;
                 return Event.update({ id: event.id }, { '$set': { settled: true,  periods: event.periods }}).then(function (result) {
-                        if(result && result.n === 0 && result.ok === 1){
-                            return new Event(event).save()
-                        }else {
-                            return result;
-                        }
-                    })
+                    if(result && result.n === 0 && result.ok === 1){
+                        return new Event(event).save()
+                    }else {
+                        return result;
+                    }
+                })
             })).then(function () {
                 return '已完成获取已结算的场次';
             })
@@ -172,38 +142,38 @@ exports.fetchOddsdEventData = function () {
  *  抓取https://www.pinbet88.com数据
  */
 exports.fetchPingbetData = function () {
-        var results = {bets: [], nested_bets: []};
-        Event.find({ exist_production: CONSTANTS.EXIST_PRODUCTION.NO_EXIST }).then(function (events) {
-            return Q.all(events.map(function (item) { //遍历场次
-                var game_tourn = item.leagueName.split(' - ');
-                    var bet = {
-                        id: event.id,
-                        tourn: game_tourn[1],
-                        game: game_tourn[0],
-                        game_id: 0,
-                        data: moment(event.starts).valueOf(),
-                        gamer_1: {
-                            nick: event.home
-                        },
-                        gamer_2: {
-                            nick: event.away
-                        }
-                    };
-                    results.bets.push(bet);
-            }));
-        }).then(function () {
+    var results = {bets: [], nested_bets: []};
+    Event.find({ exist_production: CONSTANTS.EXIST_PRODUCTION.NO_EXIST }).then(function (events) {
+        return Q.all(events.map(function (item) { //遍历场次
+            var game_tourn = item.leagueName.split(' - ');
+            var bet = {
+                id: event.id,
+                tourn: game_tourn[1],
+                game: game_tourn[0],
+                game_id: 0,
+                data: moment(event.starts).valueOf(),
+                gamer_1: {
+                    nick: event.home
+                },
+                gamer_2: {
+                    nick: event.away
+                }
+            };
+            results.bets.push(bet);
+        }));
+    }).then(function () {
 
-        }).then(function (data) {
-            console.log(data);
+    }).then(function (data) {
+        console.log(data);
 
-            return data;
-        })
+        return data;
+    })
 };
 
 (function () {
     exports.fetchLeagueData();
-     exports.fetchSettledEventData();
-     exports.fetchUnSettledEventData();
+    exports.fetchSettledEventData();
+    exports.fetchUnSettledEventData();
     exports.fetchOddsdEventData();
     // exports.fetchBettingData();
 })();

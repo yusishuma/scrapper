@@ -27,17 +27,13 @@ var teamSchema = new Schema({
         unique: true,
         index: true
     },
-    alias: { // 别名
-        type: [{
-            id: String,
-            source: Number,
-            name: String
-        }]
-    },
-    exist_production: {
-        type: Number,
-        default: CONSTANTS.EXIST_PRODUCTION.NO_EXIST
-    }
+    // alias: { // 别名
+    //     type: [{
+    //         id: String,
+    //         source: Number,
+    //         name: String
+    //     }]
+    // }
 });
 
 module.exports = teamSchema;

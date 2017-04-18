@@ -1,7 +1,7 @@
 'use strict';
 var request = require('request');
-var CONSTANTS = require('../utils/CONSTANTS');
-var models = require('../models');
+var CONSTANTS = require('../../utils/constants');
+var models = require('../../models/index');
 var BetModel = models.BetModel;
 var NestedBetModel = models.NestedBetModel;
 var spider = require('./spider');
@@ -23,9 +23,6 @@ var parseTeamName = function (teamName) {
 var saveBet = function (bet, defer) {
     console.log("bet.id", bet.id);
     var newBet = new BetModel(bet);
-    // newBet.gamer_1.nick = parseTeamName(newBet.gamer_1.nick);
-    // newBet.gamer_2.nick = parseTeamName(newBet.gamer_2.nick);
-
     BetModel.findOne({id: bet.id.toString()}, function (err, oldBet) {
 
         if (!oldBet) {
@@ -57,8 +54,6 @@ var saveBet = function (bet, defer) {
 var saveNestedBet = function (nestedBet, defer) {
     console.log("nestedBet.id", nestedBet.id);
     var newNestedBet = new NestedBetModel(nestedBet);
-    // newNestedBet.parent_gamer_1.nick = parseTeamName(newNestedBet.parent_gamer_1.nick);
-    // newNestedBet.parent_gamer_2.nick = parseTeamName(newNestedBet.parent_gamer_2.nick);
     NestedBetModel.findOne({id: nestedBet.id.toString()}, function (err, oldNestedBet) {
         if (!oldNestedBet) {
             newNestedBet.save(defer);
@@ -114,7 +109,7 @@ var refreshprodcutiondb = require('./toProdcutiondb');
 /**
  * 备份spider 数据 到 临时数据库
  */
-var backupsData = function () {
+exports.backupsData = function () {
 
     spider.fetchBettingData().then(function (data) {
         if(data.bets && data.nested_bets && data.nested_bets.length > 0 && data.nested_bets.length > 0){
@@ -124,9 +119,7 @@ var backupsData = function () {
             });
             fetchBetInfo(data.nested_bets, function (err, result) {
                 console.log(result.length, "==================================nested_bets======================================");
-
                 refreshprodcutiondb.refreshProdcutionData();
-
             });
         }else{
             return '未抓取到数据';
@@ -134,4 +127,3 @@ var backupsData = function () {
     })
 };
 
-exports.backupsData = backupsData;

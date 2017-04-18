@@ -5,13 +5,13 @@ var Q = require("q");
 var mongoose = require("mongoose");
 var CONSTANTS = require("../utils/constants");
 var UserSchema = require("./user");
-var betSchema = require("./betSchema");
+var betSchema = require("./egb/betSchema");
 var AccessTokenSchema = require("./accesstoken");
 var RefreshTokenSchema = require("./refreshtoken");
 var ClientSchema = require("./client");
-var nestedBetSchema = require("./nestedBetSchema");
-var leagueSchema = require("./ping_leagueSchema");
-var eventSchema = require("./ping_eventSchema");
+var nestedBetSchema = require("./egb/nestedBetSchema");
+var leagueSchema = require("./pingbo/ping_leagueSchema");
+var eventSchema = require("./pingbo/ping_eventSchema");
 mongoose.Promise = require('q').Promise;
 
 /**

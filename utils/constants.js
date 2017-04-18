@@ -88,7 +88,7 @@ module.exports = {
         APP_ID: "odvAKLksl71NqBhYhRarjkWs-gzGzoHsz",
         APP_KEY: "Bt9HQ5dSsO1V8kvnT5oitEdF"
     },
-/**
+    /**
      *session 配置
      *@type {{SECRET: string, MAX_AGE: number}}
      */
@@ -102,7 +102,47 @@ module.exports = {
      * @type {{DB_URI: string, RECONNECT_TIME: number}}
      */
     MONGODB_ENV: {
-        DB_URI: 'mongodb://localhost:27017/fluorescence',
+        DB_URI: 'mongodb://localhost:27017/bets',
         RECONNECT_TIME: 300
+    },
+    /**
+     *  赛事等级
+     */
+    LEAGUE_LEVEL: {
+        FIRST: 1,
+        SECOND: 2,
+        THREE: 3
+    },
+    /**
+     * 赛事等级转换风险金
+     */
+    translaterRiskFund: function (LEAGUE_LEVEL) {
+        switch (LEAGUE_LEVEL) {
+            case 1:
+                return 10000;
+            case 2:
+                return 20000;
+            case 3:
+                return 30000;
+            default:
+                return 10000;
+
+        }
+    },
+    /**
+     * 赛事等级转换单注赔付上限
+     */
+    translaterPayCeiling: function (LEAGUE_LEVEL) {
+        switch (LEAGUE_LEVEL) {
+            case 1:
+                return 1000;
+            case 2:
+                return 2000;
+            case 3:
+                return 3000;
+            default:
+                return 1000;
+
+        }
     }
 };

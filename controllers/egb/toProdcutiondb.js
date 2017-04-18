@@ -1,15 +1,15 @@
 'use strict';
 var async = require('async');
 var request = require('request');
-var CONSTANTS = require('../utils/CONSTANTS');
-var models = require('../models');
+var CONSTANTS = require('../../utils/constants');
+var models = require('../../models/index');
 var BetModel = models.BetModel;
 var NestedBetModel = models.NestedBetModel;
 var Q = require('q');
-var teamController = require('./team_controller');
-var gambleController = require('./gamble_controller');
-var leaguesController = require('./leagues_controller');
-var matchController = require('./match_controller');
+var teamController = require('./../team_controller');
+var gambleController = require('./../gamble_controller');
+var leaguesController = require('./../leagues_controller');
+var matchController = require('./../match_controller');
 /**
  * nestedBet创建gamble
  */

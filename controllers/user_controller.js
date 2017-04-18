@@ -5,7 +5,7 @@ var User = require("../models").UserModel;
 var respondSuccess = require('../utils/respond_fileter').respondSuccess;
 var respondFailure = require('../utils/respond_fileter').respondFailure;
 var Q = require('q');
-// var avosClient = require('../config/avos').client;
+var avosClient = require('../config/avos').client;
 /**
  * 验证用户手机号
  */

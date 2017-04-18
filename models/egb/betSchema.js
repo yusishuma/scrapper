@@ -1,7 +1,7 @@
 'use strict';
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var CONSTANTS = require('../utils/CONSTANTS');
+var CONSTANTS = require('../../utils/constants');
 var betSchema = new Schema({
 
     source: {
