@@ -1,94 +1,108 @@
+'use strict';
+
+module.exports = {
+    DB: {
+        URL: 'mongodb://localhost:27017/bets',
+        LIMIT: 15
+    },
+    SOURCE: {
+        // 后台添加
+        BACKSTAGE: 1,
+        // EGB网站
+        EGB: 2,
+        //平博网站
+        PING_BO: 3
+    },
+    PING_BO: {
+        HEADERS: {
+            'Authorization': 'Basic eXVzaXNodW1hOnl1c2lzaHVtYTEyMw==',
+            'Accept': 'application/json'
+        }
+    },
+    SERVER_URL: 'http://47.93.44.14:8050',
+    GAME_TYPE: {
+        CSGO: 1,
+        LOL: 2,
+        DOTA2: 3
+    },
+    EGB_URL: 'https://egb.com/bets',
+    HEADER: {
+        'content-type': 'application/json; charset=utf8',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'Accept-Language': 'zh-CN,zh;q=0.8,en;q=0.6',
+        'Connection': 'keep-alive',
+        'Host': 'egb.com',
+        'X-Requested-With': 'XMLHttpRequest',
+        'Referer': 'https://egb.com/tables',
+        'X-NewRelic-ID': 'XAYFUVVWGwIDUFhVBgIH',
+        'X-CSRF-Token': 'VE0XH+M84l41R0n/P18ZNDuncpvnjjtOECtvx3iZJx0=',
+        'If-None-Match': 'W/"19b462c07454d25fd54aa54fc6b6b037"',
+        'Upgrade-Insecure-Requests': 1,
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36',
+        'Cookie': '__cfduid=d9c28475dd2ccaa971d1b9f18f22c30911490583933; lang=en; is_first_time=1; referer=; _ym_uid=1490583959307825007; cf_clearance=01d5351de66cf34b24b975401c764a289857be94-1491556743-604800; __utmt=1; _ym_isad=1; __utma=173397943.771898417.1490583957.1490583957.1491556749.2; __utmb=173397943.3.10.1491556749; __utmc=173397943; __utmz=173397943.1490583957.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); _ym_visorc_33090373=w; f=%5B1%2C9%2C10%2C11%2C12%2C13%2C14%2C15%2C0%2C7%5D; cloudflare_uid=GsQxoveppsJy9Us2tpKkp6FhxmnmRnKY_za6VwRj; _egb_session=bFpQSHhPa2YrQkVsMDBCUkExVXIxbjhJbFAvZTZSUzRPcFNnSHBQeG90cVR1Mk5BbTJhRkNkMWpwalRCeDJUbVd1Y2lOTVh6RHpodkZaSDIyeDJtUDZQT0JnbG1DSDhpS0dwaGpQVUJrYUJXWWwzQlF0RG5uVTJiRDRNT09IR0NDQUx5dmNYeElnY095N0RNRExxU3VzYkpscTMvVHFiSDYrcXdSaGFJeDdwYS9lSjMxZmtZWTROQ3dXVjVROTNILS1kNy9NV3VwSHdaUDluV1FLYVJMV3N3PT0%3D--5bce666515978bf46545aeb80a835b0f4bd279fd'
+    },
+    BET_STATUS: {
+        END: 2,
+        BEGINNING: 1,
+        NOT_START: 0
+    },
+    EXIST_PRODUCTION: {
+        NO_EXIST: 2,
+        EXIST: 1,
+        REFRESH: 3
+    },
+    BET_TEAM:{
+        NO_TEAMS: 1,
+        HAVE_TEAMS: 2
+    },
+    /**
+     * 转换游戏类型
+     */
+    translateGameType: function (gameType) {
+        switch (gameType) {
+            case 'Counter-Strike':
+                return 1;
+            case 'CS:GO':
+                return 1;
+            case 'LoL':
+                return 2;
+            case 'League of Legends':
+                return 2;
+            case 'Dota2':
+                return 3;
+            case 'Dota 2':
+                return 3;
+
+        }
+    },
+    PAGINATE: {
+        PAGE: 1,
+        LIMIT: 20
+    },
+    ROLE: {
+        CUSTOMER: 0,
+        ADMIN: 1,
+        DESIGNER: 2
+    },
+    AVOS: {
+        APP_ID: "odvAKLksl71NqBhYhRarjkWs-gzGzoHsz",
+        APP_KEY: "Bt9HQ5dSsO1V8kvnT5oitEdF"
+    },
 /**
- * Created by matonghe on 15/03/2017.
- *
- *  常量
- */
-var dotenv = require('dotenv');
-// var variableExpansion = require('dotenv-expand');
-// const myEnv = dotenv.config();
-// variableExpansion(myEnv);
-/**
- *  性别
- * @type {{UNKNOWN: number, MALE: number, FEMALE: number}}
- */
-exports.GENDER = {
-    UNKNOWN: 0,
-    MALE: 1,
-    FEMALE: 2
-};
-exports.PAGE = {
-    NUM: 1
-};
-/**
- * 数据库 配置
- * @type {{DB_URI: string, RECONNECT_TIME: number}}
- */
-exports.MONGODB_ENV = {
-    DB_URI: 'mongodb://localhost:27017/fluorescence',
-    RECONNECT_TIME: 300
-};
-
-/**
- * 文件服务器路径
- * @type {string}
- */
-exports.SERVER_URL = "http://192.168.2.29:3000/";
-
-/**
- * avos 配置 - dev
- * @type {{}}
- */
-exports.AVOS = {
-    APP_ID: "odvAKLksl71NqBhYhRarjkWs-gzGzoHsz",
-    APP_KEY: "Bt9HQ5dSsO1V8kvnT5oitEdF"
-};
-
-/**
- * 用户角色
- * @type {{CUSTOMER: number, ADMIN: number, DESIGNER: number}}
- */
-exports.ROLE = {
-    CUSTOMER: 0,
-    ADMIN: 1,
-    DESIGNER: 2
-};
-
-/**
- * 状态码说明
- * @type {{UNPUBLISHED: number, PUBLISHED: number, PREPARING: number, STARTED: number, ENDED: number, DELETED: number}}
- */
-exports.STATUS = {
-        UNPUBLISHED: 0, //未发布
-        PUBLISHED: 1,// 已发布
-        PREPARING: 2,//准备中
-
-        STARTED: 3,//已开始
-        ENDED:4,//已结束
-
-        DELETED: 5,//被删除
-
-        PAID: 6,// 已支付
-        UNPAID:7, //未支付
-
-        APPLY: 8,// 申请为设计人
-        NOT_APPLY: 9 //未申请
-    };
-exports.PAGINATE = {
-    PAGE: 1,
-    LIMIT: 20
-};
-
-/**
- * session 配置
- * @type {{SECRET: string, MAX_AGE: number}}
- */
-exports.SESSION = {
-    SECRET: 'fluorescence',
-    MAX_AGE: 24 * 60 * 60 * 1000 * 30,
-    TOKEN_LIFE: 24 * 60 * 60 * 1000 * 30
-};
-
-exports.PINGPP = {
-  TEST_KEY: "sk_test_GSybHK8SO4KGSqHGW14O8av1",
-    APP_ID: "app_0ifjj9i9SuXLOa9K"
+     *session 配置
+     *@type {{SECRET: string, MAX_AGE: number}}
+     */
+    SESSION: {
+        SECRET: 'fluorescence',
+        MAX_AGE: 24 * 60 * 60 * 1000 * 30,
+        TOKEN_LIFE: 24 * 60 * 60 * 1000 * 30
+    },
+    /**
+     * 数据库 配置
+     * @type {{DB_URI: string, RECONNECT_TIME: number}}
+     */
+    MONGODB_ENV: {
+        DB_URI: 'mongodb://localhost:27017/fluorescence',
+        RECONNECT_TIME: 300
+    }
 };

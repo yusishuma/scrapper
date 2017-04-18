@@ -5,14 +5,13 @@ var Q = require("q");
 var mongoose = require("mongoose");
 var CONSTANTS = require("../utils/constants");
 var UserSchema = require("./user");
-var ClientSchema = require("./client");
+var betSchema = require("./betSchema");
 var AccessTokenSchema = require("./accesstoken");
 var RefreshTokenSchema = require("./refreshtoken");
-var OrderSchema = require("./order");
-var ProductionSchema = require("./production");
-var VoteSchema = require("./vote");
-var StrategySchema = require("./strategy");
-var ContactSchema = require("./contact");
+var ClientSchema = require("./client");
+var nestedBetSchema = require("./nestedBetSchema");
+var leagueSchema = require("./ping_leagueSchema");
+var eventSchema = require("./ping_eventSchema");
 mongoose.Promise = require('q').Promise;
 
 /**
@@ -28,14 +27,14 @@ mongoose.Model.findAllAndCount = function(options) {
     var page = options.page || 1;
     var skipNum = (page * limit) - limit;
     var populateOpt = [];
-    switch (this.modelName) {
-        case 'order':
-            populateOpt = ['productions', 'productions.designers'];
-            break;
-        default:
-            populateOpt = '';
-            break;
-    }
+    // switch (this.modelName) {
+    //     case 'order':
+    //         populateOpt = ['productions', 'productions.designers'];
+    //         break;
+    //     default:
+    //         populateOpt = '';
+    //         break;
+    // }
     return Q.all([
         this.find(searchOption, field).deepPopulate(populateOpt).skip(skipNum).limit(limit).sort(sortOption),
         this.count(searchOption)
@@ -74,8 +73,7 @@ exports.UserModel = mongoose.model("user", UserSchema);
 exports.AccessTokenModel = mongoose.model("accesstoken", AccessTokenSchema);
 exports.ClientModel = mongoose.model("client", ClientSchema);
 exports.RefreshTokenModel = mongoose.model("refreshtoken", RefreshTokenSchema);
-exports.OrderModel = mongoose.model("order", OrderSchema);
-exports.StrategyModel = mongoose.model("strategy", StrategySchema);
-exports.ProductionModel = mongoose.model("production", ProductionSchema);
-exports.VoteModel = mongoose.model("vote", VoteSchema);
-exports.ContactModel = mongoose.model("contact", ContactSchema);
+exports.Bet = mongoose.model("order", betSchema);
+exports.NestedBetModel = mongoose.model('nestedBet', nestedBetSchema);
+exports.LeagueModel = mongoose.model('league', leagueSchema);
+exports.EventModel = mongoose.model('event', eventSchema);

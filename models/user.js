@@ -20,21 +20,6 @@ var UserSchema = new Schema({
     },
 
     /**
-     * 性别
-     * {UNKNOWN: 0, MALE: 1, FEMALE: 2}
-     */
-    gender: {
-        type: Number,
-        default: CONSTANTS.GENDER.UNKNOWN,
-        enum: [
-            0,
-            1,
-            2
-        ]
-
-    },
-
-    /**
      * 头像
      */
     avatar: {
@@ -62,39 +47,6 @@ var UserSchema = new Schema({
     role: {
         type: Number,
         default: CONSTANTS.ROLE.CUSTOMER
-    },
-    /**
-     * 设计构思
-     */
-    design: {
-        title: {
-            type: String
-        },
-        content: {
-            type: String
-        },
-        img: {
-            type: String
-        },
-        phone: {
-            type: String
-        },
-        weibo: {
-            type: String
-        },
-        qq: {
-            type: String
-        },
-        work: {// 作品链接
-            type: String
-        },
-        description: {//自我评价
-            type: String
-        },
-        status: {// 是否申请为设计者
-            type: Number,
-            default: CONSTANTS.STATUS.NOT_APPLY
-        }
     },
     createdAt: {
         type: Date,
