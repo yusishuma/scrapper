@@ -3,6 +3,7 @@
  */
 var Q = require("q");
 var mongoose = require("mongoose");
+mongoose.Promise = require('q').Promise;
 var CONSTANTS = require("../utils/constants");
 var UserSchema = require("./user");
 var betSchema = require("./egb/betSchema");
@@ -13,7 +14,8 @@ var nestedBetSchema = require("./egb/nestedBetSchema");
 var ping_leagueSchema = require("./pingbo/ping_leagueSchema");
 var eventSchema = require("./pingbo/ping_eventSchema");
 var gambleSchema = require("./gambleSchema");
-mongoose.Promise = require('q').Promise;
+var leagueSchema = require("./leagueSchema");
+var teamSchema = require("./teamSchema");
 
 /**
  * 分页
@@ -23,21 +25,12 @@ mongoose.Promise = require('q').Promise;
 mongoose.Model.findAllAndCount = function(options) {
     var searchOption = options.searchOption || {};
     var sortOption = options.sortOption || {};
-    var limit = options.limit || CONSTANTS.PAGE.NUM;
+    var limit = options.limit || CONSTANTS.PAGINATE.LIMIT;
     var field = options.field || {};
     var page = options.page || 1;
     var skipNum = (page * limit) - limit;
-    var populateOpt = [];
-    // switch (this.modelName) {
-    //     case 'order':
-    //         populateOpt = ['productions', 'productions.designers'];
-    //         break;
-    //     default:
-    //         populateOpt = '';
-    //         break;
-    // }
     return Q.all([
-        this.find(searchOption, field).deepPopulate(populateOpt).skip(skipNum).limit(limit).sort(sortOption),
+        this.find(searchOption, field).skip(skipNum).limit(limit).sort(sortOption),
         this.count(searchOption)
     ]);
 };
@@ -49,12 +42,10 @@ mongoose.Model.paginateForPro = function (id, property, options, callback) {
     var limit = options.limit || CONSTANTS.PAGE.NUM;
     var totalCount = options.totalCount;
     var page = options.page || 1;
-    var populateOpt = [];
     var field = options.field || {};
     if (totalCount - page * limit < 0) {
         field[property] = {
             '$slice': totalCount - (page - 1) * limit
-
         };
     }
     else {
@@ -67,15 +58,21 @@ mongoose.Model.paginateForPro = function (id, property, options, callback) {
         };
     }
 
-    return this.findOne(searchOption, field).deepPopulate(populateOpt)
+    return this.findOne(searchOption, field)
 };
 
 exports.UserModel = mongoose.model("user", UserSchema);
 exports.AccessTokenModel = mongoose.model("accesstoken", AccessTokenSchema);
 exports.ClientModel = mongoose.model("client", ClientSchema);
 exports.RefreshTokenModel = mongoose.model("refreshtoken", RefreshTokenSchema);
-exports.BetModel = mongoose.model("bet", betSchema);
-exports.NestedBetModel = mongoose.model('nestedBet', nestedBetSchema);
-exports.ping_LeagueModel = mongoose.model('league', ping_leagueSchema);
-exports.EventModel = mongoose.model('event', eventSchema);
 exports.GambleModel = mongoose.model('gamble', gambleSchema);
+exports.LeagueModel = mongoose.model('league', leagueSchema);
+exports.TeamModel = mongoose.model('team', teamSchema);
+
+/**
+ * EGB models
+ */
+exports.BetModel = mongoose.model("egb_bet", betSchema);
+exports.NestedBetModel = mongoose.model('egb_nestedBet', nestedBetSchema);
+exports.ping_LeagueModel = mongoose.model('ping_league', ping_leagueSchema);
+exports.EventModel = mongoose.model('ping_event', eventSchema);

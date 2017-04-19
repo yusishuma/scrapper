@@ -66,11 +66,12 @@ var UserSchema = new Schema({
     }
     },
     {
-    id: false,
-    toJSON: {
-        getters: true
+        id: false,
+        toJSON: {
+            getters: true
+        }
     }
-});
+);
 UserSchema.pre('save', function (next) {
     this.salt = crypto.randomBytes(32).toString('base64');
     this.password = this.encryptPassword(this.password);

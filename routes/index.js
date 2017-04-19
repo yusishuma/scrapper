@@ -52,7 +52,7 @@ router.use('/users', ensureLoggedIn, user_router);
 /**
  *  赛事 routers
  */
-router.use('/league', ensureLoggedIn, league_router);
+router.use('/leagues', league_router);
 
 
 module.exports = router;

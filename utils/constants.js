@@ -19,7 +19,7 @@ module.exports = {
             'Accept': 'application/json'
         }
     },
-    SERVER_URL: 'http://47.93.44.14:8050',
+    SERVER_URL: 'http://47.93.44.14:8000',
     GAME_TYPE: {
         CSGO: 1,
         LOL: 2,

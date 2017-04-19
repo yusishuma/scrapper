@@ -2,9 +2,12 @@
  * Created by tonghema on 18/04/2017.
  */
 'use strict';
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-var CONSTANTS = require('../../utils/constants');
+var mongoose = require('mongoose'),
+    Schema = mongoose.Schema,
+    ObjectId = Schema.Types.ObjectId;
+var CONSTANTS = require('../utils/constants');
+var deepPopulate = require('mongoose-deep-populate');
+
 // 赛事schema
 var leagueSchema = new Schema({
     // 创建时间，默认生成
@@ -50,5 +53,30 @@ var leagueSchema = new Schema({
     leagueSource: {
         type: Number
     }
+},
+    {
+        id: false,
+        toObject: {
+            getters: true
+
+        },
+        toJSON: {
+            getters: true
+        }
+    }
+);
+leagueSchema.pre('save', function (next) {
+    this.riskFund = CONSTANTS.translaterRiskFund(this.level);
+    this.payCeiling = CONSTANTS.translaterPayCeiling(this.level);
+    this.gameType = CONSTANTS.translateGameType(this.gameType);
+    next();
 });
+leagueSchema.options.toJSON.transform = function (doc, ret) {
+    ret.leagueId = ret._id.toString();
+    var games = ['CSGO', 'LOL', 'DOTA'];
+    ret.gameType = games[ret.gameType - 1];
+    delete ret.__v;
+    delete ret._id;
+};
+
 module.exports = leagueSchema;

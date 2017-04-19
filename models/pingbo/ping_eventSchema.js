@@ -4,7 +4,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var CONSTANTS = require('../../utils/constants');
-var eventSchema = new Schema({
+var ping_eventSchema = new Schema({
     leagueId: String,
     leagueName: String,
     id:  {
@@ -38,4 +38,4 @@ var eventSchema = new Schema({
         default: CONSTANTS.EXIST_PRODUCTION.NO_EXIST
     }
 });
-module.exports = eventSchema;
+module.exports = ping_eventSchema;

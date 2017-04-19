@@ -4,7 +4,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var CONSTANTS = require('../../utils/constants');
-var leagueSchema = new Schema({
+var ping_leagueSchema = new Schema({
     "id":  {
         type: String,
         unique: true
@@ -14,4 +14,4 @@ var leagueSchema = new Schema({
     "hasOfferings": Boolean,
     "allowRoundRobins": Boolean
 });
-module.exports = leagueSchema;
+module.exports = ping_leagueSchema;
