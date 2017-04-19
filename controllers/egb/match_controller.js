@@ -86,7 +86,7 @@ exports.updateMatch = function (match, bet, defer) {
  * 检测比赛是否存在
  */
 exports.checkMatchExist = function () {
-    return BetModel.find({exist_production: { '$nin': CONSTANTS.EXIST_PRODUCTION.EXIST }, teamStatus: CONSTANTS.BET_TEAM.HAVE_TEAMS , 'leagueId': { '$exists': true }}).then(function (bets) {
+    return BetModel.find({exist_production: { '$nin': CONSTANTS.EXIST_PRODUCTION.EXIST }, teamStatus: CONSTANTS.EXIST_PRODUCTION.EXIST , 'leagueId': { '$exists': true }}).then(function (bets) {
 
         async.mapLimit(bets, 20, function (bet, defer) {
             var url = CONSTANTS.SERVER_URL + '/matchsource?matchSource=' + CONSTANTS.SOURCE + '&matchSourceId=' + bet.id;

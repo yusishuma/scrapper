@@ -8,9 +8,9 @@ var league = require('../controllers/league_controller');
 /* GET 赛事 listing. */
 router.get('/', league.getLeaguesByList);
 
-/* 获取用户信息 */
-// router.get('/:leagueId', league.getLeague);
+/* 获取赛事信息 */
+router.get('/:leagueId', league.getLeague);
 
-/* 更新用户信息 */
-// router.put('/:leagueId', league.updateUser);
+/* 更新赛事信息 */
+router.put('/:leagueId', league.updateLeague);
 module.exports = router;

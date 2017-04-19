@@ -14,10 +14,6 @@
  * @apiSuccess {String} data.username   用户名
  * @apiSuccess {String} data.nickname   昵称
  * @apiSuccess {String} data.avatar   用户头像
- * @apiSuccess {Object} data.design   用户设计思路文稿
- * @apiSuccess {String} data.design.title   用户设计标题
- * @apiSuccess {String} data.design.content   用户设计内容
- * @apiSuccess {String} data.design.img   用户设计图
  * @apiSuccess {String} data.role   用户角色
  * @apiSuccess {Number} data.gender { 0 未知，1 男 2 女 } 用户性别.
  *

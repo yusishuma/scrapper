@@ -2,6 +2,226 @@ define({ api: [
   {
     "version": "1.0.0",
     "type": "get",
+    "url": "/leagues/:leagueId",
+    "title": "获取赛事详情",
+    "name": "GetLeague",
+    "group": "Leagues",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "leagueId",
+            "optional": false,
+            "description": "<p>赛事ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "field": "data",
+            "optional": false,
+            "description": "<p>请求结果</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "data.gameType",
+            "optional": false,
+            "description": "<p>游戏类型</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "data.leagueName",
+            "optional": false,
+            "description": "<p>赛事名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "data.level",
+            "optional": false,
+            "description": "<p>赛事等级</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "data.riskFund",
+            "optional": false,
+            "description": "<p>赛事风险金</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "data.payCeiling",
+            "optional": false,
+            "description": "<p>赛事单注赔付上限</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "data.leagueStatus",
+            "optional": false,
+            "description": "<p>赛事正服是否存在【 0 不存在 1 存在 】</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "Success-Response:\n   HTTP/1.1 200 OK\n{\n  \"msg\": \"success\",\n  \"status\": 1,\n  \"data\": {\n    \"gameType\": \"CSGO\",\n    \"leagueName\": \"CS:GO - Assembly AMD Challenge\",\n    \"level\": 1,\n    \"leagueSource\": 2,\n    \"riskFund\": 10000,\n    \"payCeiling\": 1000,\n    \"leagueStatus\": 2,\n    \"createdAt\": \"2017-04-19T09:43:30.377Z\",\n    \"leagueId\": \"58f70f261b00bbf93204fea7\"\n  }\n}\n",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "field": "NotFound",
+            "optional": false,
+            "description": "<p>.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "Error-Response:\n   HTTP/1.1 404 Not Found\n   {\n     \"error\": \"NotFound\"\n   }\n",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/apidoc/league.js"
+  },
+  {
+    "version": "1.0.0",
+    "type": "PUT",
+    "url": "/leagues/:leagueId",
+    "title": "更新赛事",
+    "name": "GetLeague",
+    "group": "Leagues",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "leagueId",
+            "optional": false,
+            "description": "<p>赛事ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "level",
+            "optional": false,
+            "description": "<p>赛事等级</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Request-Example:",
+        "content": "{\n\"level\":\"2\"\n}\n",
+        "type": "json"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "field": "data",
+            "optional": false,
+            "description": "<p>请求结果</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "data.gameType",
+            "optional": false,
+            "description": "<p>游戏类型</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "data.leagueName",
+            "optional": false,
+            "description": "<p>赛事名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "data.level",
+            "optional": false,
+            "description": "<p>赛事等级</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "data.riskFund",
+            "optional": false,
+            "description": "<p>赛事风险金</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "data.payCeiling",
+            "optional": false,
+            "description": "<p>赛事单注赔付上限</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "data.leagueStatus",
+            "optional": false,
+            "description": "<p>赛事正服是否存在【 0 不存在 1 存在 】</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "Success-Response:\n   HTTP/1.1 201 OK\n{\n   \"msg\": \"更新赛事成功\",\n   \"status\": 1,\n   \"data\": {}\n}\n",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "field": "NotFound",
+            "optional": false,
+            "description": "<p>.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "Error-Response:\n   HTTP/1.1 404 Not Found\n   {\n     \"error\": \"NotFound\"\n   }\n",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/apidoc/league.js"
+  },
+  {
+    "version": "1.0.0",
+    "type": "get",
     "url": "/leagues?limit=12&gameType=1&page=1",
     "title": "获取赛事列表",
     "name": "GetLeagues",
@@ -262,34 +482,6 @@ define({ api: [
             "field": "data.avatar",
             "optional": false,
             "description": "<p>用户头像</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Object",
-            "field": "data.design",
-            "optional": false,
-            "description": "<p>用户设计思路文稿</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "field": "data.design.title",
-            "optional": false,
-            "description": "<p>用户设计标题</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "field": "data.design.content",
-            "optional": false,
-            "description": "<p>用户设计内容</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "field": "data.design.img",
-            "optional": false,
-            "description": "<p>用户设计图</p>"
           },
           {
             "group": "Success 200",

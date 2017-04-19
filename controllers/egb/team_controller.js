@@ -34,7 +34,7 @@ exports.checkTeamExist = function () {
                                  */
                                 console.log('队伍不存在 更新战队状态');
                                 // 队伍不存在 更新战队状态
-                                bet.teamStatus = CONSTANTS.BET_TEAM.NO_TEAMS;
+                                bet.teamStatus = CONSTANTS.EXIST_PRODUCTION.NO_EXIST;
                                 resolve(bet);
                             }
                         }
@@ -57,7 +57,7 @@ exports.checkTeamExist = function () {
                                      */
                                     console.log('队伍不存在 更新战队状态');
                                     // 队伍不存在 更新战队状态
-                                    bet.teamStatus = CONSTANTS.BET_TEAM.NO_TEAMS;
+                                    bet.teamStatus = CONSTANTS.EXIST_PRODUCTION.NO_EXIST;
                                     resolve(bet);
 
                                 }
@@ -65,7 +65,7 @@ exports.checkTeamExist = function () {
                         })
                 });
             }).then(function (bet) {
-                bet.teamStatus = bet.teamB && bet.teamA? CONSTANTS.BET_TEAM.HAVE_TEAMS: CONSTANTS.BET_TEAM.NO_TEAMS;
+                bet.teamStatus = bet.teamB && bet.teamA? CONSTANTS.EXIST_PRODUCTION.EXIST: CONSTANTS.EXIST_PRODUCTION.NO_EXIST;
                     /**
                      *  BetModel  更新战队
                      */

@@ -47,13 +47,8 @@ module.exports = {
         NOT_START: 0
     },
     EXIST_PRODUCTION: {
-        NO_EXIST: 2,
-        EXIST: 1,
-        REFRESH: 3
-    },
-    BET_TEAM:{
-        NO_TEAMS: 1,
-        HAVE_TEAMS: 2
+        NO_EXIST: 0,
+        EXIST: 1
     },
     /**
      * 转换游戏类型

@@ -30,7 +30,7 @@ var betSchema = new Schema({
      */
     teamStatus: {
         type: Number,
-        default: CONSTANTS.BET_TEAM.HAVE_TEAMS,
+        default: CONSTANTS.EXIST_PRODUCTION.EXIST,
         require: true
     },
     id:  {

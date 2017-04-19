@@ -10,12 +10,12 @@ var CONSTANTS = require('../utils/CONSTANTS');
  * @param res
  */
 exports.getBetsByStatus = function (req, res) {
-    BetModel.find({teamStatus: CONSTANTS.BET_TEAM.NO_TEAMS}, function (err, bets) {
+    BetModel.find({teamStatus: CONSTANTS.EXIST_PRODUCTION.NO_EXIST}, function (err, bets) {
         if (err) {
             console.log(err);
         }
         res.end(JSON.stringify({
-            status: CONSTANTS.BET_TEAM.NO_TEAMS,
+            status: CONSTANTS.EXIST_PRODUCTION.NO_EXIST,
             data: bets
         }));
     });
@@ -30,7 +30,7 @@ exports.getBetsByStatus = function (req, res) {
 exports.updateStatus = function (req, res) {
     var betId = req.url.substr(6),
         updateBetStatus = function (callback) {
-            BetModel.update({id: betId}, {$set: {teamStatus: CONSTANTS.BET_TEAM.HAVE_TEAMS}}, function (err) {
+            BetModel.update({id: betId}, {$set: {teamStatus: CONSTANTS.EXIST_PRODUCTION.EXIST}}, function (err) {
                 if (err) {
                     return callback(err);
                 }
@@ -38,7 +38,7 @@ exports.updateStatus = function (req, res) {
             });
         },
         updateNestedBetStatus = function (callback) {
-            NestedBetModel.update({game_id: betId}, {$set: {teamStatus: CONSTANTS.BET_TEAM.HAVE_TEAMS}}, function (err) {
+            NestedBetModel.update({game_id: betId}, {$set: {teamStatus: CONSTANTS.EXIST_PRODUCTION.EXIST}}, function (err) {
                 if (err) {
                     return callback(err);
                 }

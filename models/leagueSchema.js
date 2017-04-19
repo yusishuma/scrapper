@@ -46,7 +46,7 @@ var leagueSchema = new Schema({
      */
     leagueStatus: {
         type: Number,
-        default: CONSTANTS.BET_TEAM.HAVE_TEAMS,
+        default: CONSTANTS.EXIST_PRODUCTION.EXIST,
         require: true
     },
     // 赛事来源
