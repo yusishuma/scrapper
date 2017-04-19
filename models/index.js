@@ -10,8 +10,9 @@ var AccessTokenSchema = require("./accesstoken");
 var RefreshTokenSchema = require("./refreshtoken");
 var ClientSchema = require("./client");
 var nestedBetSchema = require("./egb/nestedBetSchema");
-var leagueSchema = require("./pingbo/ping_leagueSchema");
+var ping_leagueSchema = require("./pingbo/ping_leagueSchema");
 var eventSchema = require("./pingbo/ping_eventSchema");
+var gambleSchema = require("./gambleSchema");
 mongoose.Promise = require('q').Promise;
 
 /**
@@ -73,7 +74,8 @@ exports.UserModel = mongoose.model("user", UserSchema);
 exports.AccessTokenModel = mongoose.model("accesstoken", AccessTokenSchema);
 exports.ClientModel = mongoose.model("client", ClientSchema);
 exports.RefreshTokenModel = mongoose.model("refreshtoken", RefreshTokenSchema);
-exports.Bet = mongoose.model("order", betSchema);
+exports.BetModel = mongoose.model("bet", betSchema);
 exports.NestedBetModel = mongoose.model('nestedBet', nestedBetSchema);
-exports.LeagueModel = mongoose.model('league', leagueSchema);
+exports.ping_LeagueModel = mongoose.model('league', ping_leagueSchema);
 exports.EventModel = mongoose.model('event', eventSchema);
+exports.GambleModel = mongoose.model('gamble', gambleSchema);

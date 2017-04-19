@@ -4,6 +4,7 @@ var express = require("express");
 var router = express.Router();
 var user_router = require('./user_router');
 var user_controller = require('../controllers/user_controller');
+var league_router = require('./league_router');
 var passport = require('passport');
 var respondSuccess = require('../utils/respond_fileter').respondSuccess;
 var respondFailure = require('../utils/respond_fileter').respondFailure;
@@ -49,8 +50,9 @@ router.post('/verifySmsCode', user_controller.verifySmsCode);
  */
 router.use('/users', ensureLoggedIn, user_router);
 /**
- *  活动 routers
+ *  赛事 routers
  */
+router.use('/league', ensureLoggedIn, league_router);
 
 
 module.exports = router;

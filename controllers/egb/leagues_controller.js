@@ -2,10 +2,10 @@
  * Created by matonghe on 21/03/2017.
  */
 var request = require('request');
-var CONSTANTS = require('../utils/CONSTANTS');
+var CONSTANTS = require('../../utils/constants');
 var Q = require('q');
 var _ = require('lodash');
-var models = require('../models');
+var models = require('../../models/index');
 var BetModel = models.BetModel;
 var async = require('async');
 

@@ -3,11 +3,7 @@
 var request = require('request');
 var CONSTANTS = require('../../utils/constants');
 var fetch = require('node-fetch');
-var Q = require('q');
 var moment = require('moment');
-var _ = require('lodash');
-var League = require('../../models/index').LeagueModel;
-var Event = require('../../models/index').EventModel;
 /**
  *  抓取https://egb.com/bets数据
  */

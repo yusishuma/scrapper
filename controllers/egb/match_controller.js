@@ -2,8 +2,8 @@
  * Created by matonghe on 21/03/2017.
  */
 var request = require('request');
-var CONSTANTS = require('../utils/CONSTANTS');
-var models = require('../models');
+var CONSTANTS = require('../../utils/constants');
+var models = require('../../models/index');
 var BetModel = models.BetModel;
 var NestedBetModel = models.NestedBetModel;
 var async = require('async');

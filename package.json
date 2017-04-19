@@ -38,6 +38,7 @@
     "passport-oauth2-client-password": "^0.1.2",
     "pingpp": "^2.0.10",
     "q": "^1.4.1",
+    "qlimit": "^0.1.1",
     "request-json": "^0.6.1",
     "serve-favicon": "~2.3.2"
   },

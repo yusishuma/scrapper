@@ -5,13 +5,14 @@
 
 var request = require('request');
 var CONSTANTS = require('../../utils/constants');
-var fetch = require('node-fetch');
 var Q = require('q');
 var moment = require('moment');
 var _ = require('lodash');
 var League = require('../../models/index').LeagueModel;
 var Event = require('../../models/index').EventModel;
-
+var async = require('async');
+var qlimit = require('qlimit');
+var limit = qlimit(10);
 /**
  * 获取 联赛列表 保存到备份库
  */
@@ -26,11 +27,12 @@ exports.fetchLeagueData = function () {
             }
         });
     }).then(function (data) {
-        return Q.all(data.leagues.map(function (league) {
+        return Q.all(data.leagues.map(limit(function (league) {
             return Event.update({ leagueId: league.id }, { '$set': { 'leagueName': league.name } }, { 'multi': true }).then(function (result) {
                 return new League(league).save()
             })
-        })).then(function (results) {
+        }))).then(function (results) {
+            console.log(results);
             return results
         })
     })
@@ -171,9 +173,9 @@ exports.fetchPingbetData = function () {
 };
 
 (function () {
-    exports.fetchLeagueData();
-    exports.fetchSettledEventData();
-    exports.fetchUnSettledEventData();
-    exports.fetchOddsdEventData();
+    // exports.fetchLeagueData();
+    // exports.fetchSettledEventData();
+    // exports.fetchUnSettledEventData();
+    // exports.fetchOddsdEventData();
     // exports.fetchBettingData();
 })();

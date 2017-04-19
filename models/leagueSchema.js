@@ -29,11 +29,11 @@ var leagueSchema = new Schema({
     },
     // 风险金
     riskFund: {
-        type: String
+        type: Number
     },
     // 单注赔付上限
     payCeiling: {
-        type: String
+        type: Number
     },
     level: {
         type: Number
@@ -45,20 +45,6 @@ var leagueSchema = new Schema({
         type: Number,
         default: CONSTANTS.BET_TEAM.HAVE_TEAMS,
         require: true
-    },
-    // 赛事开始时间
-    // startTime: {
-    //     type: Number,
-    //     required: true
-    // },
-    // 结束时间
-    // endTime: {
-    //     type: Number,
-    //     required: true
-    // },
-    // 所属赛区
-    division: {
-        type: String
     },
     // 赛事来源
     leagueSource: {
