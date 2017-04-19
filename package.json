@@ -51,6 +51,6 @@
   },
   "apidoc": {
     "title": "fluorescence apiDoc",
-    "url": "http://192.168.2.29:3000/api"
+    "url": "http://192.168.2.29:3090/api"
   }
 }
