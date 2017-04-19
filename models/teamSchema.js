@@ -5,7 +5,7 @@
 'use strict';
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var CONSTANTS = require('../utils/CONSTANTS');
+var CONSTANTS = require('../utils/constants');
 var teamSchema = new Schema({
 
     // 创建时间，默认生成

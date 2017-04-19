@@ -96,7 +96,7 @@
 /**
  * @apiVersion 1.0.0
  * @api {PUT} /leagues/:leagueId 更新赛事
- * @apiName GetLeague
+ * @apiName updateLeague
  * @apiGroup Leagues
  *
  * @apiParam {String} leagueId 赛事ID
