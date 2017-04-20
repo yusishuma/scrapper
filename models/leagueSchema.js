@@ -3,10 +3,8 @@
  */
 'use strict';
 var mongoose = require('mongoose'),
-    Schema = mongoose.Schema,
-    ObjectId = Schema.Types.ObjectId;
+    Schema = mongoose.Schema;
 var CONSTANTS = require('../utils/constants');
-var deepPopulate = require('mongoose-deep-populate');
 
 // 赛事schema
 var leagueSchema = new Schema({
@@ -44,7 +42,7 @@ var leagueSchema = new Schema({
     /**
      * 赛事是否存在
      */
-    leagueStatus: {
+    isExist: {
         type: Number,
         default: CONSTANTS.EXIST_PRODUCTION.EXIST,
         require: true

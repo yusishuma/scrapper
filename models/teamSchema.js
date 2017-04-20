@@ -17,16 +17,27 @@ var teamSchema = new Schema({
     /**
      * 战队是否存在
      */
-    teamStatus: {
+    isExist: {
         type: Number,
         default: CONSTANTS.EXIST_PRODUCTION.EXIST,
         require: true
     },
     teamId: { // 正服 队伍ID
+        type: String
+    },
+    // 游戏的类型
+    gameType: {
+        type: Number,
+        required: true
+    },
+    // 战队名称
+    teamName: {
         type: String,
+        required: true,
         unique: true,
         index: true
     },
+    // ,
     // alias: { // 别名
     //     type: [{
     //         id: String,
@@ -35,5 +46,7 @@ var teamSchema = new Schema({
     //     }]
     // }
 });
-
+teamSchema.options.toJSON.transform = function (doc, ret) {
+    
+}
 module.exports = teamSchema;

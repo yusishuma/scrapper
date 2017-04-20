@@ -18,7 +18,8 @@ exports.getLeaguesByList = function (req, res) {
     var limit = parseInt(req.query.limit) || CONSTANTS.PAGINATE.LIMIT;
     var options = {
         searchOption: {
-            gameType: parseInt(req.query.gameType) || 1
+            gameType: parseInt(req.query.gameType) || 1,
+            isExist: CONSTANTS.EXIST_PRODUCTION.NO_EXIST
         },
         limit: limit,
         page: page,
@@ -29,7 +30,7 @@ exports.getLeaguesByList = function (req, res) {
     if(req.query.leagueName){
         options.searchOption.leagueName = req.query.leagueName;
     }
-        // if(!userId){//获取所有订单
+        // if(!userId){
         //     respondFailure(res, 401, '用户未登录');
         // }
     League.findAllAndCount(options).then(function (results) {
@@ -68,7 +69,6 @@ exports.updateLeague = function (req, res) {
     }else {
         var riskFund = CONSTANTS.translaterRiskFund(parseInt(level));
         var payCeiling = CONSTANTS.translaterPayCeiling(parseInt(level));
-        console.log({ 'level': parseInt(level), 'riskFund': riskFund, 'payCeiling': payCeiling });
         League.update({_id: leagueId}, {'$set': { 'level': parseInt(level), 'riskFund': riskFund, 'payCeiling': payCeiling }}).then(function (result) {
             if(result && result.n === 0 && result.ok === 1){
                 respondFailure(res, 404, '赛事不存在');

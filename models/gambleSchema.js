@@ -4,10 +4,10 @@
 'use strict';
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
+var CONSTANTS = require('../utils/constants');
 
 var gambleSchema = new Schema({
 
-    // 添加到数据库的时间
     createdAt: {
         type: Date,
         required: true,
@@ -29,14 +29,46 @@ var gambleSchema = new Schema({
         required: true
     },
     // 下注选项A
-    gambleOptionA: {
-        type: String,
-        required: true
+    optionA: {
+        // optionA的赔率
+        odds: {
+            type: Number,
+            required: true,
+            default: 0
+        },
+        win: {
+            type: Boolean,
+            required: true,
+            default: false
+        },// 风险金
+        riskFund: {
+            type: Number
+        },
+        // 单注赔付上限
+        payCeiling: {
+            type: Number
+        }
     },
     // 下注选项B
-    gambleOptionB: {
-        type: String,
-        required: true
+    optionB: {
+        // optionB的赔率
+        odds: {
+            type: Number,
+            required: true,
+            default: 0
+        },
+        win: {
+            type: Boolean,
+            required: true,
+            default: false
+        },// 风险金
+        riskFund: {
+            type: Number
+        },
+        // 单注赔付上限
+        payCeiling: {
+            type: Number
+        }
     },
     // 结束日期
     endTime: {
@@ -53,36 +85,19 @@ var gambleSchema = new Schema({
         type: Number,
         default: 0
     },
-    // optionA的赔率
-    optionAOdds: {
-        type: Number,
-        required: true,
-        default: 0
-    },
-    // optionB的赔率
-    optionBOdds: {
-        type: Number,
-        required: true,
-        default: 0
-    },
     // 赌局状态 3 代表已结束
     gambleStatus: Number,
-    optionAWin: {
-        type: Boolean,
-        required: true,
-        default: false
-    },
-    optionBWin: {
-        type: Boolean,
-        required: true,
-        default: false
+    /**
+     *  赌局添加到正服的状态
+     */
+    isExist: {
+        type: Number,
+        default: CONSTANTS.EXIST_PRODUCTION.EXIST,
+        require: true
     },
     /********赛事赌局独有信息********/
     // 归属赛程
-    match: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Match'
-    },//:TODO
+    match: String,
     // 赌局数据来源ID
     gambleSourceId: String,
     // 赌局来源
