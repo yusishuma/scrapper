@@ -105,15 +105,6 @@
  * {
  *	"level":"2"
  *}
- * @apiSuccess {Object} data   请求结果
- * @apiSuccess {String} data.gameType   游戏类型
- * @apiSuccess {String} data.leagueName   赛事名称
- * @apiSuccess {Number} data.level   赛事等级
- * @apiSuccess {Number} data.riskFund   赛事风险金
- * @apiSuccess {Number} data.payCeiling   赛事单注赔付上限
- * @apiSuccess {Number} data.leagueStatus   赛事正服是否存在【 0 不存在 1 存在 】
-
- *
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 201 OK
  {

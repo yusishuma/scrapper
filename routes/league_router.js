@@ -13,4 +13,8 @@ router.get('/:leagueId', league.getLeague);
 
 /* 更新赛事信息 */
 router.put('/:leagueId', league.updateLeague);
+
+/* 保存赛事信息到正服数据 */
+router.post('/', league.synchroLeagueToPro);
+
 module.exports = router;

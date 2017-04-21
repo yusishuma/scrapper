@@ -45,8 +45,20 @@ var teamSchema = new Schema({
     //         name: String
     //     }]
     // }
-});
+},
+    {
+        id: false,
+        toObject: {
+            getters: true
+
+        },
+        toJSON: {
+            getters: true
+        }
+    });
 teamSchema.options.toJSON.transform = function (doc, ret) {
-    
+    ret.leagueId = ret._id.toString();
+    delete ret.__v;
+    delete ret._id;
 }
 module.exports = teamSchema;

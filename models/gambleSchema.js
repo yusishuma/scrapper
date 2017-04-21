@@ -3,8 +3,10 @@
  */
 'use strict';
 var mongoose = require("mongoose");
-var Schema = mongoose.Schema;
+var Schema = mongoose.Schema,
+    ObjectId = Schema.Types.ObjectId;
 var CONSTANTS = require('../utils/constants');
+var deepPopulate = require('mongoose-deep-populate')(mongoose);
 
 var gambleSchema = new Schema({
 
@@ -18,7 +20,7 @@ var gambleSchema = new Schema({
         type: Number,
         required: true
     },
-    // 赌局类型 { 话题赌局 赛事赌局 }
+    // 赌局类型 { 话题赌局2 赛事赌局1 }
     gambleType: {
         type: Number,
         required: true
@@ -96,17 +98,17 @@ var gambleSchema = new Schema({
         require: true
     },
     /********赛事赌局独有信息********/
+    // 归属赛事
+    league: {
+        type: ObjectId,
+        ref: 'league'
+    },
     // 归属赛程
     match: String,
     // 赌局数据来源ID
     gambleSourceId: String,
     // 赌局来源
     gambleSource: Number,
-    gambleSourceAndSourceId: {//:todo 临时库不保存该字段
-        type: String,
-        index: true,
-        unique: true
-    },
     /***********************话题赌局特有字段***/
     // 话题赌局icon
     topicGambleIcon: String,
@@ -117,5 +119,28 @@ var gambleSchema = new Schema({
         type: Number,
         default: 0
     }
+},
+    {
+        id: false,
+        toObject: {
+            getters: true
+
+        },
+        toJSON: {
+            getters: true
+        }
+    });
+gambleSchema.plugin(deepPopulate, {
+    populate: {
+        'league': {
+            select: 'leagueId leagueName'
+        }
+    }
+
 });
+gambleSchema.options.toJSON.transform = function (doc, ret) {
+    ret.gambleId = ret._id.toString();
+    delete ret.__v;
+    delete ret._id;
+};
 module.exports = gambleSchema;

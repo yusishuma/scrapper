@@ -5,6 +5,7 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 var CONSTANTS = require('../utils/constants');
+var deepPopulate = require('mongoose-deep-populate')(mongoose);
 
 // 赛事schema
 var leagueSchema = new Schema({
@@ -63,6 +64,7 @@ var leagueSchema = new Schema({
         }
     }
 );
+leagueSchema.plugin(deepPopulate, {});
 leagueSchema.pre('save', function (next) {
     this.riskFund = CONSTANTS.translaterRiskFund(this.level);
     this.payCeiling = CONSTANTS.translaterPayCeiling(this.level);

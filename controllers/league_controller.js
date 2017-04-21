@@ -7,13 +7,13 @@ var respondFailure = require('../utils/respond_fileter').respondFailure;
 var Q = require('q');
 var CONSTANTS = require('../utils/constants');
 var _ = require('lodash');
+var request = require('request');
 /**
  * 获取赛事列表
  * @param req
  * @param res
  */
 exports.getLeaguesByList = function (req, res) {
-    // var userId = req.query.userId;
     var page =  parseInt(req.query.page) || CONSTANTS.PAGINATE.PAGE;
     var limit = parseInt(req.query.limit) || CONSTANTS.PAGINATE.LIMIT;
     var options = {
@@ -30,9 +30,6 @@ exports.getLeaguesByList = function (req, res) {
     if(req.query.leagueName){
         options.searchOption.leagueName = req.query.leagueName;
     }
-        // if(!userId){
-        //     respondFailure(res, 401, '用户未登录');
-        // }
     League.findAllAndCount(options).then(function (results) {
         if(!results)
             respondFailure(res, 404, '赛事不存在');
@@ -78,4 +75,44 @@ exports.updateLeague = function (req, res) {
         })
     }
 
+};
+/**
+ * 同步赛事数据到正服库
+ * @param req
+ * @param res
+ */
+exports.synchroLeagueToPro = function (req, res) {
+
+    var leagueId = req.body;
+    League.findById(leagueId).then(function (league) {
+        if(!league){
+            return respondFailure(res, 404, '赛事不存在');
+        }
+        return League.update({_id: leagueId}, {'$set': { 'level': parseInt(level), 'riskFund': riskFund, 'payCeiling': payCeiling }}).then(function () {
+            return league;
+        });
+    }).then(function (league) {
+        var createUrl = CONSTANTS.SERVER_URL + '/leagues';
+        delete league.leagueId;
+        /**
+         * 创建赛事
+         */
+        request.post({url: createUrl, form: data, json: true}, function (err, res, body) {
+            if (!err && res.statusCode === 200) {
+                if (body.status) {
+                    console.log('创建赛事 ' + league.leagueName + ' 成功！');
+                    respondSuccess(res, {}, 201, '创建赛事成功');
+
+                } else {
+                    console.log('创建赛事 ' + league.leagueName + ' 失败！');
+                    respondFailure(res, 500, '创建赛事失败');
+
+                }
+            } else {
+                console.log('创建赛事 ' + league.leagueName + ' 失败！');
+                respondFailure(res, 500, '创建赛事失败');
+
+            }
+        });
+    })
 };

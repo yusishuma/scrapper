@@ -2,6 +2,399 @@
   {
     "version": "1.0.0",
     "type": "get",
+    "url": "/gambles/:gambleId",
+    "title": "获取赌局详情",
+    "name": "GetGamble",
+    "group": "Gambles",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "gambleId",
+            "optional": false,
+            "description": "<p>赌局ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "field": "data",
+            "optional": false,
+            "description": "<p>请求结果</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "data.gameType",
+            "optional": false,
+            "description": "<p>游戏类型</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "data.gambleName",
+            "optional": false,
+            "description": "<p>赌局名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "data.level",
+            "optional": false,
+            "description": "<p>赌局等级</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "data.riskFund",
+            "optional": false,
+            "description": "<p>赌局风险金</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "data.payCeiling",
+            "optional": false,
+            "description": "<p>赌局单注赔付上限</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "data.gambleStatus",
+            "optional": false,
+            "description": "<p>赌局正服是否存在【 0 不存在 1 存在 】</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "Success-Response:\n   HTTP/1.1 200 OK\n{\n  \"msg\": \"success\",\n  \"status\": 1,\n  \"data\": {\n    \"gameType\": \"CSGO\",\n    \"gambleName\": \"CS:GO - Assembly AMD Challenge\",\n    \"level\": 1,\n    \"gambleSource\": 2,\n    \"riskFund\": 10000,\n    \"payCeiling\": 1000,\n    \"gambleStatus\": 2,\n    \"createdAt\": \"2017-04-19T09:43:30.377Z\",\n    \"gambleId\": \"58f70f261b00bbf93204fea7\"\n  }\n}\n",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "field": "NotFound",
+            "optional": false,
+            "description": "<p>.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "Error-Response:\n   HTTP/1.1 404 Not Found\n   {\n     \"error\": \"NotFound\"\n   }\n",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/apidoc/gamble.js"
+  },
+  {
+    "version": "1.0.0",
+    "type": "get",
+    "url": "/gambles?limit=12&gameType=1&page=1",
+    "title": "获取赌局列表",
+    "name": "GetGambles",
+    "group": "Gambles",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "gameType",
+            "optional": false,
+            "description": "<p>游戏类型【CSGO：1， LOL: 2, DOTA2: 3】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "limit",
+            "optional": false,
+            "description": "<p>每页显示条目数（步长）默认为 20</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "page",
+            "optional": false,
+            "description": "<p>当前页数 &gt; = 1</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "field": "data",
+            "optional": false,
+            "description": "<p>请求结果</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "field": "data.gambles",
+            "optional": false,
+            "description": "<p>用户名</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "field": "data.league",
+            "optional": false,
+            "description": "<p>所属赛事</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "data.league.leagueName",
+            "optional": false,
+            "description": "<p>所属赛事名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "data.league.leagueId",
+            "optional": false,
+            "description": "<p>所属赛事ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "data.gambles.gameType",
+            "optional": false,
+            "description": "<p>游戏类型</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "data.gambles.gambleName",
+            "optional": false,
+            "description": "<p>赌局名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "data.gambles.match",
+            "optional": false,
+            "description": "<p>赌局所属比赛</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "data.gambles.endTime",
+            "optional": false,
+            "description": "<p>赌局结束时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "data.gambles.gambleSource",
+            "optional": false,
+            "description": "<p>赌局来源</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "field": "data.gambles.optionA",
+            "optional": false,
+            "description": "<p>赌局下注项A</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "data.gambles.optionA.riskFund",
+            "optional": false,
+            "description": "<p>赌局风险金</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "data.gambles.optionA.payCeiling",
+            "optional": false,
+            "description": "<p>赌局单注赔付上限</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "field": "data.gambles.optionB",
+            "optional": false,
+            "description": "<p>赌局下注项A</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "data.gambles.optionB.riskFund",
+            "optional": false,
+            "description": "<p>赌局风险金</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "field": "data.gambles.optionB.payCeiling",
+            "optional": false,
+            "description": "<p>赌局单注赔付上限</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "Success-Response:\n   HTTP/1.1 200 OK\n{\n   \"msg\": \"success\",\n   \"status\": 1,\n   \"data\": {\n       \"gambles\": [\n           {\n               \"gameType\": 1,\n               \"gambleType\": 1,\n               \"gambleName\": \"胜负\",\n               \"endTime\": 1492768800,\n               \"gambleStatus\": 2,\n               \"league\": {\n                   \"leagueName\": \"CS:GO - Assembly AMD Challenge\",\n                   \"leagueId\": \"58f70f261b00bbf93204fea7\"\n               },\n               \"match\": \"Fnatic vs Misfits\",\n               \"gambleSourceId\": \"261799\",\n               \"gambleSource\": 2,\n               \"commentNum\": 0,\n               \"isExist\": 0,\n               \"allBetPeopleNum\": 0,\n               \"allBetAmount\": 0,\n               \"optionB\": {\n                   \"riskFund\": 20000,\n                   \"payCeiling\": 2000,\n                   \"win\": false,\n                   \"odds\": 1.45\n               },\n               \"optionA\": {\n                   \"riskFund\": 10000,\n                   \"payCeiling\": 1000,\n                   \"win\": false,\n                   \"odds\": 1.65\n               },\n               \"createdAt\": \"2017-04-21T10:59:11.301Z\",\n               \"gambleId\": \"58f9c2681b00bbf932055dfa\"\n           },\n           {\n               \"gameType\": 1,\n               \"gambleType\": 1,\n               \"gambleName\": \"胜负\",\n               \"endTime\": 1492764454,\n               \"gambleStatus\": 2,\n               \"league\": {\n                   \"leagueName\": \"CS:GO - Assembly AMD Challenge\",\n                   \"leagueId\": \"58f70f261b00bbf93204fea7\"\n               },\n               \"match\": \"Fnatic vs Misfits\",\n               \"gambleSourceId\": \"261799\",\n               \"gambleSource\": 2,\n               \"commentNum\": 0,\n               \"isExist\": 0,\n               \"allBetPeopleNum\": 0,\n               \"allBetAmount\": 0,\n               \"optionB\": {\n                   \"riskFund\": 20000,\n                   \"payCeiling\": 2000,\n                   \"win\": false,\n                   \"odds\": 1.67\n               },\n               \"optionA\": {\n                   \"riskFund\": 10000,\n                   \"payCeiling\": 1000,\n                   \"win\": true,\n                   \"odds\": 1.25\n               },\n               \"createdAt\": \"2017-04-21T10:59:11.304Z\",\n               \"gambleId\": \"58f9c7951b00bbf93205630a\"\n           }\n       ],\n       \"count\": 2\n   }\n}\n",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "field": "NotFound",
+            "optional": false,
+            "description": "<p>.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "Error-Response:\n   HTTP/1.1 404 Not Found\n   {\n     \"error\": \"NotFound\"\n   }\n",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/apidoc/gamble.js"
+  },
+  {
+    "version": "1.0.0",
+    "type": "PUT",
+    "url": "/gambles/:gambleId",
+    "title": "更新赌局",
+    "name": "updateGamble",
+    "group": "Gambles",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "gambleId",
+            "optional": false,
+            "description": "<p>赌局ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "field": "optionA",
+            "optional": false,
+            "description": "<p>赌局下注项A</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "optionA.riskFund",
+            "optional": false,
+            "description": "<p>赌局下注项A</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "optionA.payCeiling",
+            "optional": false,
+            "description": "<p>赌局下注项A</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "field": "optionB",
+            "optional": false,
+            "description": "<p>赌局下注项B</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "optionB.riskFund",
+            "optional": false,
+            "description": "<p>赌局下注项B</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "optionB.payCeiling",
+            "optional": false,
+            "description": "<p>赌局下注项B</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Request-Example:",
+        "content": "{\"optionB\": {\n         \"riskFund\": 20000,\n         \"payCeiling\": 2000\n       },\n       \"optionA\": {\n         \"riskFund\": 10000,\n         \"payCeiling\": 1000\n       }\n}\n",
+        "type": "json"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "field": "data",
+            "optional": false,
+            "description": "<p>请求结果</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "Success-Response:\n   HTTP/1.1 201 OK\n{\n   \"msg\": \"更新赌局成功\",\n   \"status\": 1,\n   \"data\": {}\n}\n",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "field": "NotFound",
+            "optional": false,
+            "description": "<p>.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "Error-Response:\n   HTTP/1.1 404 Not Found\n   {\n     \"error\": \"NotFound\"\n   }\n",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/apidoc/gamble.js"
+  },
+  {
+    "version": "1.0.0",
+    "type": "get",
     "url": "/leagues/:leagueId",
     "title": "获取赛事详情",
     "name": "GetLeague",
@@ -254,59 +647,6 @@
       }
     ],
     "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Object",
-            "field": "data",
-            "optional": false,
-            "description": "<p>请求结果</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "field": "data.gameType",
-            "optional": false,
-            "description": "<p>游戏类型</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "field": "data.leagueName",
-            "optional": false,
-            "description": "<p>赛事名称</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "field": "data.level",
-            "optional": false,
-            "description": "<p>赛事等级</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "field": "data.riskFund",
-            "optional": false,
-            "description": "<p>赛事风险金</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "field": "data.payCeiling",
-            "optional": false,
-            "description": "<p>赛事单注赔付上限</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "field": "data.leagueStatus",
-            "optional": false,
-            "description": "<p>赛事正服是否存在【 0 不存在 1 存在 】</p>"
-          }
-        ]
-      },
       "examples": [
         {
           "title": "Success-Response:",
