@@ -40,6 +40,20 @@ exports.getGamblesByList = function (req, res) {
     });
 };
 /**
+ * 获取赌局详情
+ * @param req
+ * @param res
+ */
+exports.getGamble = function (req, res) {
+    var gambleId = req.params.gambleId;
+    Gamble.findById(gambleId).then(function (gameble) {
+        if(!gameble)
+            respondFailure(res, 404, '赌局不存在');
+        else
+            respondSuccess(res, gameble, 200);
+    })
+};
+/**
  * 更新赌局信息
  * @param req
  * @param res

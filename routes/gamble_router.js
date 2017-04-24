@@ -9,7 +9,7 @@ var gamble = require('../controllers/gamble_controller');
 router.get('/', gamble.getGamblesByList);
 
 // /* 获取赌局信息 */
-// router.get('/:gambleId', gamble.getGamble);
+router.get('/:gambleId', gamble.getGamble);
 
 /* 更新赌局信息 */
 router.put('/:gambleId', gamble.updateGamble);
