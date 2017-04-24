@@ -4,9 +4,10 @@ var CONSTANTS = require('../../utils/constants');
 var models = require('../../models/index');
 var BetModel = models.BetModel;
 var NestedBetModel = models.NestedBetModel;
-var spider = require('./spider');
+var spider = require('./egb_spider');
 var Q = require('q');
-var async = require('async');
+var qlimit = require('qlimit');
+var limit = qlimit(10);
 /**
  * 转换战队名称
  */
@@ -20,16 +21,16 @@ var parseTeamName = function (teamName) {
 /**
  * 保存BET数据
  */
-var saveBet = function (bet, defer) {
+var saveBet = function (bet) {
     console.log("bet.id", bet.id);
     var newBet = new BetModel(bet);
-    BetModel.findOne({id: bet.id.toString()}, function (err, oldBet) {
+    return BetModel.findOne({id: bet.id.toString()}).then(function (oldBet) {
 
         if (!oldBet) {
-            return newBet.save(defer);
+            return newBet.save();
         }else{
             if (newBet.date !== oldBet.date || newBet.coef_1 !== oldBet.coef_1 || newBet.winner !== oldBet.winner || newBet.coef_2 !== oldBet.coef_2 || newBet.gamer_1.win !== oldBet.gamer_1.win || newBet.gamer_2.win !== oldBet.gamer_2.win) {
-                BetModel.update({ id: oldBet.id }, {'$set':
+                return BetModel.update({ id: oldBet.id }, {'$set':
                     {
                         date: newBet.date,
                         exist_production: CONSTANTS.EXIST_PRODUCTION.EXIST,
@@ -39,9 +40,9 @@ var saveBet = function (bet, defer) {
                         coef_1: newBet.coef_1,
                         coef_2: newBet.coef_2
                     }
-                }, defer)
+                })
             } else {
-                defer(null, oldBet);
+                return oldBet;
             }
         }
 
@@ -51,16 +52,16 @@ var saveBet = function (bet, defer) {
 /**
  * 保存NestedBet数据
  */
-var saveNestedBet = function (nestedBet, defer) {
+var saveNestedBet = function (nestedBet) {
     console.log("nestedBet.id", nestedBet.id);
     var newNestedBet = new NestedBetModel(nestedBet);
-    NestedBetModel.findOne({id: nestedBet.id.toString()}, function (err, oldNestedBet) {
+    return NestedBetModel.findOne({id: nestedBet.id.toString()}).then(function (oldNestedBet) {
         if (!oldNestedBet) {
-            newNestedBet.save(defer);
+            return newNestedBet.save();
         }else {
             if (oldNestedBet._id && newNestedBet.date !== oldNestedBet.date || nestedBet.winner !== oldNestedBet.winner || newNestedBet.coef_1 !== oldNestedBet.coef_1
                 || newNestedBet.gamer_1.win !== oldNestedBet.gamer_1.win || newNestedBet.gamer_2.win !== oldNestedBet.gamer_2.win) {
-                NestedBetModel.update({ id: oldNestedBet.id }, {'$set':
+               return  NestedBetModel.update({ id: oldNestedBet.id }, {'$set':
                     {
                         date: newNestedBet.date,
                         exist_production: CONSTANTS.EXIST_PRODUCTION.EXIST,
@@ -70,9 +71,9 @@ var saveNestedBet = function (nestedBet, defer) {
                         coef_1: newNestedBet.coef_1,
                         coef_2: newNestedBet.coef_2
                     }
-                }, defer)
+                })
             } else {
-                defer(null, oldNestedBet);
+                return oldNestedBet;
             }
         }
     })
@@ -81,28 +82,29 @@ var saveNestedBet = function (nestedBet, defer) {
 /**
  * 获取 bet 详细信息
  */
-var fetchBetInfo = function (bets, callback) {
+var fetchBetInfo = function (bets) {
     console.log(bets.length);
-    async.mapLimit(bets, 20, function (bet, defer) {
+    return  Q.all(bets.map(limit(function (bet) {
         var url = CONSTANTS.EGB_URL + '/' + bet.id;
-
-        request.get({url: url, headers: CONSTANTS.HEADER,  json: true}, function (err, res, body) {
-            if (!err && res.statusCode === 200) {
-                if (!body.success) {
-                    defer(null);
-                }
-                if(body && body.bet){
-                    if (body.bet.parent_gamer_1) {
-                        saveNestedBet(body.bet, defer);
-                    } else {
-                        saveBet(body.bet, defer);
+        return Q.Promise(function (resolve, reject) {
+            request.get({url: url, headers: CONSTANTS.HEADER,  json: true}, function (err, res, body) {
+                if (!err && res.statusCode === 200) {
+                    if (!body.success) {
+                        resolve(null);
                     }
+                    if(body && body.bet){
+                        if (body.bet.parent_gamer_1) {
+                            resolve(saveNestedBet(body.bet));
+                        } else {
+                            resolve(saveBet(body.bet));
+                        }
+                    }
+                }else{
+                    resolve(null);
                 }
-            }else{
-                defer(null);
-            }
-        });
-    }, callback);
+            });
+        })
+    })));
 };
 var refreshprodcutiondb = require('./toProdcutiondb');
 
@@ -114,13 +116,14 @@ exports.backupsData = function () {
     spider.fetchBettingData().then(function (data) {
         if(data.bets && data.nested_bets && data.nested_bets.length > 0 && data.nested_bets.length > 0){
             console.log(data.nested_bets.length);
-            fetchBetInfo(data.bets, function (err, result) {
+            return fetchBetInfo(data.bets).then(function (result) {
                 console.log(result.length, "==================================bets=============================================");
+                return fetchBetInfo(data.nested_bets).then(function (result) {
+                    console.log(result.length, "==================================nested_bets======================================");
+                    return refreshprodcutiondb.refreshProdcutionData();
+                });
             });
-            fetchBetInfo(data.nested_bets, function (err, result) {
-                console.log(result.length, "==================================nested_bets======================================");
-                refreshprodcutiondb.refreshProdcutionData();
-            });
+
         }else{
             return '未抓取到数据';
         }

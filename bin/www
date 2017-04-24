@@ -80,7 +80,7 @@ function onError(error) {
 /**
  * Event listener for HTTP controllers "listening" event.
  */
-var spider = require("../controllers/pingbo/spider");
+var spider = require("../controllers/pingbo/pingbo_spider");
 function onListening() {
   var addr = server.address();
   var bind = typeof addr === 'string'

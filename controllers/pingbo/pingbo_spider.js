@@ -10,7 +10,6 @@ var moment = require('moment');
 var _ = require('lodash');
 var League = require('../../models/index').LeagueModel;
 var Event = require('../../models/index').EventModel;
-var async = require('async');
 var qlimit = require('qlimit');
 var limit = qlimit(10);
 /**

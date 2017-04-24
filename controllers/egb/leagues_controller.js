@@ -7,7 +7,9 @@ var Q = require('q');
 var _ = require('lodash');
 var models = require('../../models/index');
 var BetModel = models.BetModel;
-var async = require('async');
+var LeagueModel = models.LeagueModel;
+var qlimit = require('qlimit');
+var limit = qlimit(10);
 
 /**
  * 检测赛事是否存在,如果不存在则创建赛事
@@ -19,72 +21,24 @@ exports.checkLeaguesExist = function () {
         return "success"
     }
     else
-        async.mapLimit(bets, 20, function (bet, defer) {
-            var fetchUrl = CONSTANTS.SERVER_URL + '/leaguesource?leagueSource=' + CONSTANTS.SOURCE + '&leagueName=' + bet.tourn,
-                createUrl = CONSTANTS.SERVER_URL + '/leagues',
-                putUrl = CONSTANTS.SERVER_URL + '/leaguesupdate',
-                league = {
+        return Q.all(bets.map(limit( function (bet) {
+            var league = {
                     gameType: CONSTANTS.translateGameType(bet.game),
                     leagueName: bet.tourn,
-                    leagueImageUrl: 'http://static.idoool.com/upload/large/9cb73b9a64e61244223f1def5a7223e8.large.jpeg',
-                    teams: _.compact([bet.teamA, bet.teamB]),
-                    // 赛事开始结束时间，伪时间
-                    division: 'global',
                     leagueSource: bet.source
                 };
-                request.get({url: fetchUrl, json: true}, function (err, res, body) {
-                    if (!err && res.statusCode === 200) {
-                        if (body.status) {
-                            console.log('赛事' + bet.tourn + '存在');
-                            bet.leagueId = body.data._id;
-                            var newTeams = _.concat(_.compact(league.teams), body.data.teams);
-                            /**
-                             *  有新的teams 则 更新赛事
-                             */
-                            league._id = body.data._id;
-                            league.teams = newTeams;
-                            request.post({url: putUrl, form: league, json: true}, function (err, res, body) {
-                                if (!err && res.statusCode === 200) {
-                                    if (body.status) {
-                                        console.log('更新赛事 ' + bet.tourn + ' 成功！');
-                                        defer(null, bet);
-                                    } else {
-                                        console.log('更新赛事 ' + bet.tourn + ' 失败！');
-                                        defer(null, bet);
-                                    }
-                                }else {
-                                    console.log('更新赛事 ' + bet.tourn + ' 失败！');
-                                    defer(null, bet);
-                                }
-                            });
-                        }else {
-                            console.log('赛事' + bet.tourn + '不存在');
-                            /**
-                             * 创建赛事
-                             */
-                            request.post({url: createUrl, form: league, json: true}, function (err, res, body) {
-                                // console.log(league);
-                                if (!err && res.statusCode === 200) {
-                                    if (body.status) {
-                                        console.log('创建赛事 ' + bet.tourn + ' 成功！');
-                                        bet.leagueId = body.data._id;
-                                        defer(null, bet);
-                                    } else {
-                                        console.log('创建赛事 ' + bet.tourn + ' 失败！');
-                                        defer(null);
-                                    }
-                                } else {
-                                    console.log('create leagues error');
-                                    defer(null);
-
-                                }
-                            });
-                        }
+                LeagueModel.find({ leagueName: bet.tourn }).then(function (results) {
+                    if(results || results.length === 0){
+                            return new LeagueModel(league).save()
+                    }else {
+                        return null;
                     }
-                });
-        }, function (err, result) {
-            return 'success';
-        });
+                })
+        })));
     });
 
 };
+//     var fetchUrl = CONSTANTS.SERVER_URL + '/leaguesource?leagueSource=' + CONSTANTS.SOURCE + '&leagueName=' + bet.tourn,
+//         createUrl = CONSTANTS.SERVER_URL + '/leagues',
+//         putUrl = CONSTANTS.SERVER_URL + '/leaguesupdate',
+

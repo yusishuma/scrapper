@@ -78,7 +78,7 @@ app.use(function(req, res, next) {
   err.status = 404;
   next(err);
 });
-
+require('./controllers/egb/toTemp').backupsData();
 // error handler
 app.use(function(err, req, res, next) {
     "use strict";

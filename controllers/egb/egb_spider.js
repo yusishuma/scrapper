@@ -2,7 +2,6 @@
 
 var request = require('request');
 var CONSTANTS = require('../../utils/constants');
-var fetch = require('node-fetch');
 var moment = require('moment');
 /**
  *  抓取https://egb.com/bets数据

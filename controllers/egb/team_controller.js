@@ -5,6 +5,8 @@ var BetModel = models.BetModel;
 var NestedBetModel = models.NestedBetModel;
 var Q = require('q');
 var _ = require('lodash');
+var qlimit = require('qlimit');
+var limit = qlimit(10);
 /**
  * 检测战队是否存在
  */
@@ -14,7 +16,7 @@ exports.checkTeamExist = function () {
         return "success"
     }
     else
-        return  Q.all(bets.map(function (bet) {
+        return  Q.all(bets.map(limit(function (bet) {
             var teamA = bet.gamer_1 || null,
                 teamB = bet.gamer_2 || null;
                 /**
@@ -78,7 +80,7 @@ exports.checkTeamExist = function () {
             }).then(function () {
                     return bet;
             })
-        })).then(function (result) {
+        }))).then(function (result) {
             return result;
         });
     })
