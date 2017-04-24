@@ -140,6 +140,8 @@ gambleSchema.plugin(deepPopulate, {
 });
 gambleSchema.options.toJSON.transform = function (doc, ret) {
     ret.gambleId = ret._id.toString();
+    var games = ['CSGO', 'LOL', 'DOTA'];
+    ret.gameType = games[ret.gameType - 1];
     delete ret.__v;
     delete ret._id;
 };

@@ -5,12 +5,15 @@ var express = require('express');
 var router = express.Router();
 var team = require('../controllers/team_controller');
 
-/* GET 队伍 listing. */
+/* GET 战队 listing. */
 router.get('/', team.getTeamsByList);
 
-/* 获取队伍信息 */
+/* 获取战队信息 */
 router.get('/:teamId', team.getTeam);
 
-/* 更新队伍信息 */
-router.put('/:teamId', team.updateTeam);
+/* 更新战队信息 */
+// router.put('/:teamId', team.updateTeam);
+
+/* 保存战队信息到正服数据 */
+router.post('/', team.synchroTeamToPro);
 module.exports = router;

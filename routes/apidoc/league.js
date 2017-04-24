@@ -33,7 +33,7 @@
         "leagueSource": 2,
         "riskFund": 10000,
         "payCeiling": 1000,
-        "leagueStatus": 2,
+        "isExist": 2,
         "createdAt": "2017-04-19T08:31:16.291Z",
         "leagueId": "58f70f261b00bbf93204fea7"
       }
@@ -64,7 +64,7 @@
  * @apiSuccess {Number} data.level   赛事等级
  * @apiSuccess {Number} data.riskFund   赛事风险金
  * @apiSuccess {Number} data.payCeiling   赛事单注赔付上限
- * @apiSuccess {Number} data.leagueStatus   赛事正服是否存在【 0 不存在 1 存在 】
+ * @apiSuccess {Number} data.isExist   赛事正服是否存在【 0 不存在 1 存在 】
 
  *
  * @apiSuccessExample Success-Response:
@@ -79,7 +79,7 @@
      "leagueSource": 2,
      "riskFund": 10000,
      "payCeiling": 1000,
-     "leagueStatus": 2,
+     "isExist": 2,
      "createdAt": "2017-04-19T09:43:30.377Z",
      "leagueId": "58f70f261b00bbf93204fea7"
    }

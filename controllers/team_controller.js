@@ -13,7 +13,6 @@ var _ = require('lodash');
  * @param res
  */
 exports.getTeamsByList = function (req, res) {
-// var userId = req.query.userId;
     var page =  parseInt(req.query.page) || CONSTANTS.PAGINATE.PAGE;
     var limit = parseInt(req.query.limit) || CONSTANTS.PAGINATE.LIMIT;
     var options = {
@@ -30,14 +29,11 @@ exports.getTeamsByList = function (req, res) {
     if(req.query.leagueName){
         options.searchOption.leagueName = req.query.leagueName;
     }
-    // if(!userId){
-    //     respondFailure(res, 401, '用户未登录');
-    // }
     Team.findAllAndCount(options).then(function (results) {
         if(!results)
             respondFailure(res, 404, '队伍不存在');
         else
-            respondSuccess(res, { leagues: results[0], count: results[1] }, 200);
+            respondSuccess(res, { teams: results[0], count: results[1] }, 200);
 
     });
 };
@@ -62,20 +58,28 @@ exports.getTeam = function (req, res) {
  * @param req
  * @param res
  */
-exports.updateTeam = function (req, res) {
-    var teamId = req.params.teamId;
-    var teamStatus = req.body.teamStatus;
-    if(!teamStatus || !teamId){
-        respondFailure(res, 400, '参数错误');
-    }else {
-        teamStatus = parseInt(teamStatus);
-        Team.update({_id: teamId}, {'$set': { teamStatus: teamStatus }}).then(function (result) {
-            if(result && result.n === 0 && result.ok === 1){
-                respondFailure(res, 404, '队伍不存在');
-            }else{
-                respondSuccess(res, {}, 201, '更新队伍成功');
-            }
-        })
-    }
+// exports.updateTeam = function (req, res) {
+//     var teamId = req.params.teamId;
+//     var isExist = req.body.isExist;
+//     if(!isExist || !teamId){
+//         respondFailure(res, 400, '参数错误');
+//     }else {
+//         isExist = parseInt(isExist);
+//         Team.update({_id: teamId}, {'$set': { isExist: isExist }}).then(function (result) {
+//             if(result && result.n === 0 && result.ok === 1){
+//                 respondFailure(res, 404, '队伍不存在');
+//             }else{
+//                 respondSuccess(res, {}, 201, '更新队伍成功');
+//             }
+//         })
+//     }
+//
+// };
+/**
+ * 保存战队信息到正服数据
+ * @param req
+ * @param res
+ */
+exports.synchroTeamToPro = function (req, res) {
 
 };
