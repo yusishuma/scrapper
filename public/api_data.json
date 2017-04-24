@@ -284,6 +284,67 @@
   },
   {
     "version": "1.0.0",
+    "type": "POST",
+    "url": "/gambles",
+    "title": "同步创建赌局",
+    "name": "synchroGambleToPro",
+    "group": "Gambles",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "gambleId",
+            "optional": false,
+            "description": "<p>赌局ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "field": "data",
+            "optional": false,
+            "description": "<p>请求结果</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "Success-Response:\n   HTTP/1.1 201 OK\n{\n   \"msg\": \"同步创建赌局成功\",\n   \"status\": 1,\n   \"data\": {}\n}\n",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "field": "NotFound",
+            "optional": false,
+            "description": "<p>.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "Error-Response:\n   HTTP/1.1 404 Not Found\n   {\n     \"error\": \"NotFound\"\n   }\n",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/apidoc/gamble.js"
+  },
+  {
+    "version": "1.0.0",
     "type": "PUT",
     "url": "/gambles/:gambleId",
     "title": "更新赌局",
@@ -614,6 +675,67 @@
   },
   {
     "version": "1.0.0",
+    "type": "POST",
+    "url": "/leagues",
+    "title": "同步创建赛事",
+    "name": "synchroLeagueToPro",
+    "group": "Leagues",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "leagueId",
+            "optional": false,
+            "description": "<p>赛事ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "field": "data",
+            "optional": false,
+            "description": "<p>请求结果</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "Success-Response:\n   HTTP/1.1 201 OK\n{\n   \"msg\": \"同步创建赛事成功\",\n   \"status\": 1,\n   \"data\": {}\n}\n",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "field": "NotFound",
+            "optional": false,
+            "description": "<p>.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "Error-Response:\n   HTTP/1.1 404 Not Found\n   {\n     \"error\": \"NotFound\"\n   }\n",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/apidoc/league.js"
+  },
+  {
+    "version": "1.0.0",
     "type": "PUT",
     "url": "/leagues/:leagueId",
     "title": "更新赛事",
@@ -829,6 +951,67 @@
         {
           "title": "Success-Response:",
           "content": "Success-Response:\n   HTTP/1.1 200 OK\n{\n    \"msg\": \"success\",\n    \"status\": 1,\n    \"data\": {\n        \"teams\": [\n            {\n                \"teamName\": \"Tricked\",\n                \"gameType\": \"CSGO\",\n                \"isExist\": 0,\n                \"createdAt\": \"2017-04-24T03:30:29.810Z\",\n                \"teamId\": \"58fd65801b00bbf932058b6e\"\n            },\n            {\n                \"teamName\": \"passions\",\n                \"gameType\": \"CSGO\",\n                \"isExist\": 0,\n                \"createdAt\": \"2017-04-24T03:30:29.812Z\",\n                \"teamId\": \"58fd71121b00bbf9320593ec\"\n            }\n        ],\n        \"count\": 2\n    }\n}\n",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "field": "NotFound",
+            "optional": false,
+            "description": "<p>.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "Error-Response:\n   HTTP/1.1 404 Not Found\n   {\n     \"error\": \"NotFound\"\n   }\n",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/apidoc/team.js"
+  },
+  {
+    "version": "1.0.0",
+    "type": "POST",
+    "url": "/teams",
+    "title": "同步创建战队",
+    "name": "synchroTeamToPro",
+    "group": "Teams",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "teamId",
+            "optional": false,
+            "description": "<p>赌局ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "field": "data",
+            "optional": false,
+            "description": "<p>请求结果</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "Success-Response:\n   HTTP/1.1 201 OK\n{\n   \"msg\": \"同步创建战队成功\",\n   \"status\": 1,\n   \"data\": {}\n}\n",
           "type": "json"
         }
       ]

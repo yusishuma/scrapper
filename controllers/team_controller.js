@@ -7,6 +7,8 @@ var respondFailure = require('../utils/respond_fileter').respondFailure;
 var Q = require('q');
 var CONSTANTS = require('../utils/constants');
 var _ = require('lodash');
+var request = require('request');
+
 /**
  * 获取团队列表
  * @param req
@@ -58,28 +60,60 @@ exports.getTeam = function (req, res) {
  * @param req
  * @param res
  */
-// exports.updateTeam = function (req, res) {
-//     var teamId = req.params.teamId;
-//     var isExist = req.body.isExist;
-//     if(!isExist || !teamId){
-//         respondFailure(res, 400, '参数错误');
-//     }else {
-//         isExist = parseInt(isExist);
-//         Team.update({_id: teamId}, {'$set': { isExist: isExist }}).then(function (result) {
-//             if(result && result.n === 0 && result.ok === 1){
-//                 respondFailure(res, 404, '队伍不存在');
-//             }else{
-//                 respondSuccess(res, {}, 201, '更新队伍成功');
-//             }
-//         })
-//     }
-//
-// };
+ exports.updateTeam = function (req, res) {
+     var teamId = req.params.teamId;
+     var isExist = req.body.isExist;
+     if(!isExist || !teamId){
+         respondFailure(res, 400, '参数错误');
+     }else {
+         isExist = parseInt(isExist);
+         Team.update({_id: teamId}, {'$set': { isExist: isExist }}).then(function (result) {
+             if(result && result.n === 0 && result.ok === 1){
+                 respondFailure(res, 404, '队伍不存在');
+             }else{
+                 respondSuccess(res, {}, 201, '更新队伍成功');
+             }
+         })
+     }
+ };
 /**
  * 保存战队信息到正服数据
  * @param req
  * @param res
  */
 exports.synchroTeamToPro = function (req, res) {
+    var teamId = req.body.teamId;
+    Team.findById(teamId).then(function (team) {
+        if(!team){
+            return respondFailure(res, 404, '战队不存在');
+        }
+        return Team.update({_id: teamId}, {'$set': { 'isExist': CONSTANTS.EXIST_PRODUCTION.EXIST}}).then(function () {
+            return team;
+        });
+    }).then(function (team) {
+        var createUrl = CONSTANTS.SERVER_URL + '/teams';
+        delete team.teamId;
+        /**
+         * 创建战队
+         */
+        // request.post({url: createUrl, form: team, json: true}, function (err, res, body) {
+        //     if (!err && res.statusCode === 200) {
+        //         if (body.status) {
+        //             console.log('同步创建战队 ' + team.leagueName + ' 成功！');
+                    respondSuccess(res, {}, 201, '同步创建战队成功');
 
+        //         } else {
+        //             console.log('同步创建战队 ' + team.leagueName + ' 失败！');
+        //             respondFailure(res, 500, '同步创建战队失败');
+        //
+        //         }
+        //     } else {
+        //         console.log('同步创建战队 ' + team.leagueName + ' 失败！');
+        //         respondFailure(res, 500, '同步创建战队失败');
+        //
+        //     }
+        // });
+    }).fail(function (err) {
+        return respondFailure(res, 404, '同步创建战队失败');
+    })
 };

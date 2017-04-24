@@ -12,7 +12,7 @@ router.get('/', team.getTeamsByList);
 router.get('/:teamId', team.getTeam);
 
 /* 更新战队信息 */
-// router.put('/:teamId', team.updateTeam);
+router.put('/:teamId', team.updateTeam);
 
 /* 保存战队信息到正服数据 */
 router.post('/', team.synchroTeamToPro);

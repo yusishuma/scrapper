@@ -48,7 +48,7 @@ var leagueSchema = new Schema({
         default: CONSTANTS.EXIST_PRODUCTION.EXIST,
         require: true
     },
-    // 赛事来源
+    // 赛事来源(1 后台 2 egb 3 pingbo)
     leagueSource: {
         type: Number
     }

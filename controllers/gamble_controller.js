@@ -67,10 +67,51 @@ exports.updateGamble = function (req, res) {
         'optionB.riskFund': parseInt(optionB.riskFund), 'optionB.payCeiling': parseInt(optionB.payCeiling)
         }}).then(function (result) {
             if(result && result.n === 0 && result.ok === 1){
-                respondFailure(res, 404, '赛事不存在');
+                respondFailure(res, 404, '赌局不存在');
             }else{
-                respondSuccess(res, {}, 201, '更新赛事成功');
+                respondSuccess(res, {}, 201, '更新赌局成功');
             }
     })
 
+};
+/**
+ * 保存赌局信息到正服数据
+ * @param req
+ * @param res
+ */
+exports.synchroGambleToPro = function (req, res) {
+    var gambleId = req.body.gambleId;
+    Gamble.findById(gambleId).then(function (gamble) {
+        if(!gamble){
+            return respondFailure(res, 404, '赌局不存在');
+        }
+        return Gamble.update({_id: gambleId}, {'$set': { 'isExist': CONSTANTS.EXIST_PRODUCTION.EXIST}}).then(function () {
+            return gamble;
+        });
+    }).then(function (gamble) {
+        var createUrl = CONSTANTS.SERVER_URL + '/addgamble';
+        delete gamble.gambleId;
+        /**
+         * 创建赌局
+         */
+        // request.post({url: createUrl, form: gamble, json: true}, function (err, res, body) {
+        //     if (!err && res.statusCode === 200) {
+        //         if (body.status) {
+                    console.log('同步创建赌局 ' + gamble.leagueName + ' 成功！');
+                    respondSuccess(res, {}, 201, '同步创建赌局成功');
+        //
+        //         } else {
+        //             console.log('同步创建赌局 ' + gamble.leagueName + ' 失败！');
+        //             respondFailure(res, 500, '同步创建赌局失败');
+        //
+        //         }
+        //     } else {
+        //         console.log('同步创建赌局 ' + gamble.leagueName + ' 失败！');
+        //         respondFailure(res, 500, '同步创建赌局失败');
+        //
+        //     }
+        // });
+    }).fail(function (err) {
+        return respondFailure(res, 404, '同步创建赌局失败');
+    })
 };

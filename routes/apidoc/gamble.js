@@ -194,3 +194,28 @@
  *       "error": "NotFound"
  *     }
  */
+
+/**
+ * @apiVersion 1.0.0
+ * @api {POST} /gambles 同步创建赌局
+ * @apiName synchroGambleToPro
+ * @apiGroup Gambles
+ *
+ * @apiParam {String} gambleId 赌局ID
+ * @apiSuccess {Object} data   请求结果
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 201 OK
+ {
+    "msg": "同步创建赌局成功",
+    "status": 1,
+    "data": {}
+}
+ * @apiError NotFound .
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 404 Not Found
+ *     {
+ *       "error": "NotFound"
+ *     }
+ */

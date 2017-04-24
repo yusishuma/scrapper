@@ -13,4 +13,7 @@ router.get('/:gambleId', gamble.getGamble);
 
 /* 更新赌局信息 */
 router.put('/:gambleId', gamble.updateGamble);
+
+/* 保存赌局信息到正服数据 */
+router.post('/', gamble.synchroGambleToPro);
 module.exports = router;

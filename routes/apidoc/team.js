@@ -85,3 +85,27 @@
  *       "error": "NotFound"
  *     }
  */
+/**
+ * @apiVersion 1.0.0
+ * @api {POST} /teams 同步创建战队
+ * @apiName synchroTeamToPro
+ * @apiGroup Teams
+ *
+ * @apiParam {String} teamId 赌局ID
+ * @apiSuccess {Object} data   请求结果
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 201 OK
+ {
+    "msg": "同步创建战队成功",
+    "status": 1,
+    "data": {}
+}
+ * @apiError NotFound .
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 404 Not Found
+ *     {
+ *       "error": "NotFound"
+ *     }
+ */

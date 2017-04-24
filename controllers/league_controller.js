@@ -83,7 +83,7 @@ exports.updateLeague = function (req, res) {
  */
 exports.synchroLeagueToPro = function (req, res) {
 
-    var leagueId = req.body;
+    var leagueId = req.body.leagueId;
     League.findById(leagueId).then(function (league) {
         if(!league){
             return respondFailure(res, 404, '赛事不存在');
@@ -97,23 +97,23 @@ exports.synchroLeagueToPro = function (req, res) {
         /**
          * 创建赛事
          */
-        request.post({url: createUrl, form: league, json: true}, function (err, res, body) {
-            if (!err && res.statusCode === 200) {
-                if (body.status) {
-                    console.log('同步创建赛事 ' + league.leagueName + ' 成功！');
+        // request.post({url: createUrl, form: league, json: true}, function (err, res, body) {
+        //     if (!err && res.statusCode === 200) {
+        //         if (body.status) {
+        //             console.log('同步创建赛事 ' + league.leagueName + ' 成功！');
                     respondSuccess(res, {}, 201, '同步创建赛事成功');
 
-                } else {
-                    console.log('同步创建赛事 ' + league.leagueName + ' 失败！');
-                    respondFailure(res, 500, '同步创建赛事失败');
-
-                }
-            } else {
-                console.log('同步创建赛事 ' + league.leagueName + ' 失败！');
-                respondFailure(res, 500, '同步创建赛事失败');
-
-            }
-        });
+        //         } else {
+        //             console.log('同步创建赛事 ' + league.leagueName + ' 失败！');
+        //             respondFailure(res, 500, '同步创建赛事失败');
+        //
+        //         }
+        //     } else {
+        //         console.log('同步创建赛事 ' + league.leagueName + ' 失败！');
+        //         respondFailure(res, 500, '同步创建赛事失败');
+        //
+        //     }
+        // });
     }).fail(function (err) {
         return respondFailure(res, 404, '同步创建赛事失败');
     })

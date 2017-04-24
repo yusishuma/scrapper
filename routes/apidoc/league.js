@@ -120,3 +120,28 @@
  *       "error": "NotFound"
  *     }
  */
+
+/**
+ * @apiVersion 1.0.0
+ * @api {POST} /leagues 同步创建赛事
+ * @apiName synchroLeagueToPro
+ * @apiGroup Leagues
+ *
+ * @apiParam {String} leagueId 赛事ID
+ * @apiSuccess {Object} data   请求结果
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 201 OK
+ {
+    "msg": "同步创建赛事成功",
+    "status": 1,
+    "data": {}
+}
+ * @apiError NotFound .
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 404 Not Found
+ *     {
+ *       "error": "NotFound"
+ *     }
+ */
