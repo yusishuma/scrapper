@@ -801,6 +801,102 @@ define({ api: [
   {
     "version": "1.0.0",
     "type": "get",
+    "url": "/matches?limit=12&gameType=1&page=1",
+    "title": "获取赛程列表",
+    "name": "GetMatches",
+    "group": "Matches",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "gameType",
+            "optional": false,
+            "description": "<p>游戏类型【CSGO：1， LOL: 2, DOTA2: 3】</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "limit",
+            "optional": false,
+            "description": "<p>每页显示条目数（步长）默认为 20</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "field": "page",
+            "optional": false,
+            "description": "<p>当前页数 &gt; = 1</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "field": "data",
+            "optional": false,
+            "description": "<p>请求结果</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "field": "data.matches",
+            "optional": false,
+            "description": "<p>赛程</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "data.matches.gameType",
+            "optional": false,
+            "description": "<p>游戏类型</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "field": "data.matches.matchName",
+            "optional": false,
+            "description": "<p>赛程名称</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "Success-Response:\n   HTTP/1.1 200 OK\n{\n    \"msg\": \"success\",\n    \"status\": 1,\n    \"data\": {\n        \"matches\": [\n            {\n                \"matchName\": \"Tricked\",\n                \"gameType\": \"CSGO\",\n                \"isExist\": 0,\n                \"createdAt\": \"2017-04-24T03:30:29.810Z\",\n                \"matchId\": \"58fd65801b00bbf932058b6e\"\n            },\n            {\n                \"matchName\": \"passions\",\n                \"gameType\": \"CSGO\",\n                \"isExist\": 0,\n                \"createdAt\": \"2017-04-24T03:30:29.812Z\",\n                \"matchId\": \"58fd71121b00bbf9320593ec\"\n            }\n        ],\n        \"count\": 2\n    }\n}\n",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "field": "NotFound",
+            "optional": false,
+            "description": "<p>.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "Error-Response:\n   HTTP/1.1 404 Not Found\n   {\n     \"error\": \"NotFound\"\n   }\n",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/apidoc/match.js"
+  },
+  {
+    "version": "1.0.0",
+    "type": "get",
     "url": "/teams/:teamId",
     "title": "获取战队详情",
     "name": "GetTeam",

@@ -16,6 +16,7 @@ var eventSchema = require("./pingbo/ping_eventSchema");
 var gambleSchema = require("./gambleSchema");
 var leagueSchema = require("./leagueSchema");
 var teamSchema = require("./teamSchema");
+var matchSchema = require("./matchSchema");
 
 /**
  * 分页
@@ -77,6 +78,7 @@ exports.RefreshTokenModel = mongoose.model("refreshtoken", RefreshTokenSchema);
 exports.GambleModel = mongoose.model('gamble', gambleSchema);
 exports.LeagueModel = mongoose.model('league', leagueSchema);
 exports.TeamModel = mongoose.model('team', teamSchema);
+exports.MatchModel = mongoose.model('match', matchSchema);
 
 /**
  * EGB models

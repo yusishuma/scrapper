@@ -10,7 +10,7 @@ var _ = require('lodash');
 var request = require('request');
 
 /**
- * 获取团队列表
+ * 获取战队列表
  * @param req
  * @param res
  */
@@ -28,12 +28,12 @@ exports.getTeamsByList = function (req, res) {
             createdAt: -1
         }
     };
-    if(req.query.leagueName){
-        options.searchOption.leagueName = req.query.leagueName;
+    if(req.query.teamName){
+        options.searchOption.teamName = req.query.teamName;
     }
     Team.findAllAndCount(options).then(function (results) {
         if(!results)
-            respondFailure(res, 404, '队伍不存在');
+            respondFailure(res, 404, '战队不存在');
         else
             respondSuccess(res, { teams: results[0], count: results[1] }, 200);
 
@@ -41,7 +41,7 @@ exports.getTeamsByList = function (req, res) {
 };
 
 /**
- * 获取队伍详情
+ * 获取战队详情
  * @param req
  * @param res
  */
@@ -49,14 +49,14 @@ exports.getTeam = function (req, res) {
     var teamId = req.params.teamId;
     Team.findById(teamId).then(function (result) {
         if(!result)
-            respondFailure(res, 404, '队伍不存在');
+            respondFailure(res, 404, '战队不存在');
         else
             respondSuccess(res, result, 200);
     })
 };
 
 /**
- * 更新队伍信息
+ * 更新战队信息
  * @param req
  * @param res
  */
@@ -69,9 +69,9 @@ exports.getTeam = function (req, res) {
          isExist = parseInt(isExist);
          Team.update({_id: teamId}, {'$set': { isExist: isExist }}).then(function (result) {
              if(result && result.n === 0 && result.ok === 1){
-                 respondFailure(res, 404, '队伍不存在');
+                 respondFailure(res, 404, '战队不存在');
              }else{
-                 respondSuccess(res, {}, 201, '更新队伍成功');
+                 respondSuccess(res, {}, 201, '更新战队成功');
              }
          })
      }

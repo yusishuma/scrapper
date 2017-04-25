@@ -33,6 +33,7 @@ var gambleSchema = new Schema({
     // 下注选项A
     optionA: {
         // optionA的赔率
+        name: String,
         odds: {
             type: Number,
             required: true,
@@ -54,6 +55,7 @@ var gambleSchema = new Schema({
     // 下注选项B
     optionB: {
         // optionB的赔率
+        name: String,
         odds: {
             type: Number,
             required: true,

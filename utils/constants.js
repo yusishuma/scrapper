@@ -50,6 +50,17 @@ module.exports = {
         NO_EXIST: 0,
         EXIST: 1
     },
+    // 赛事状态
+    MATCH_STATUS: {
+        //竞猜中
+        BETTING: 1,
+        //获取中
+        RESULTGETTING: 2,
+        //已结束
+        ISEND: 3,
+        //流盘
+        NORESULT: 4
+    },
     /**
      * 转换游戏类型
      */

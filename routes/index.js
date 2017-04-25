@@ -7,6 +7,7 @@ var user_controller = require('../controllers/user_controller');
 var league_router = require('./league_router');
 var gamble_router = require('./gamble_router');
 var team_router = require('./team_router');
+var match_router = require('./match_router');
 var passport = require('passport');
 var respondSuccess = require('../utils/respond_fileter').respondSuccess;
 var respondFailure = require('../utils/respond_fileter').respondFailure;
@@ -63,6 +64,10 @@ router.use('/gambles', gamble_router);
  *  战队 routers
  */
 router.use('/teams', team_router);
+/**
+ *  赛程 routers
+ */
+router.use('/matches', match_router);
 
 
 module.exports = router;

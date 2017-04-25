@@ -31,6 +31,9 @@ exports.getGamblesByList = function (req, res) {
     if(req.query.gambleName){
         options.searchOption.gambleName = req.query.gambleName;
     }
+    if(req.query.gambleName){
+        options.searchOption.gambleName = req.query.gambleName;
+    }
     Gamble.findAllAndCount(options).then(function (results) {
         if(!results)
             respondFailure(res, 404, '赌局不存在');
