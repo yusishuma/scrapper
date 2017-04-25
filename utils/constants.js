@@ -81,6 +81,13 @@ module.exports = {
 
         }
     },
+    /**
+     * 生成Match名称
+     */
+    generateMatchName: function (teamA, teamB) {
+
+        return teamA + ' VS ' + teamB;
+    },
     PAGINATE: {
         PAGE: 1,
         LIMIT: 20

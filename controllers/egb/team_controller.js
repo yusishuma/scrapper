@@ -2,86 +2,34 @@ var request = require('request');
 var CONSTANTS = require('../../utils/constants');
 var models = require('../../models/index');
 var BetModel = models.BetModel;
-var NestedBetModel = models.NestedBetModel;
+var TeamModel = models.TeamModel;
 var Q = require('q');
 var _ = require('lodash');
 var qlimit = require('qlimit');
 var limit = qlimit(10);
 /**
- * 检测战队是否存在
+ * 同步战队到Temp
  */
-exports.checkTeamExist = function () {
+exports.synchroTeamsToTemp = function () {
     return BetModel.find({exist_production: { '$nin': CONSTANTS.EXIST_PRODUCTION.EXIST }}).then(function (bets) {
     if(bets.length == 0){
         return "success"
     }
     else
         return  Q.all(bets.map(limit(function (bet) {
-            var teamA = bet.gamer_1 || null,
-                teamB = bet.gamer_2 || null;
-                /**
-                 * 查询战队teamA是否存在
-                 */
-                var urlA = CONSTANTS.SERVER_URL + '/teamsdetailforname?teamName=' + teamA.nick + '&gameType=' + CONSTANTS.translateGameType(bet.game);
-                return Q.promise(function (resolve, reject) {
-                    request.get({url: urlA, json: true}, function (err, res, body) {
-                        if (!err && res.statusCode === 200) {
-                            if (body.status) {
-                                console.log('战队 ' + teamA.nick + ' 存在');
-                                bet.teamA = body.data._id;
-                                resolve(bet);
-                            }else {
-                                /**
-                                 * 队伍不存在 更新战队状态
-                                 */
-                                console.log('队伍不存在 更新战队状态');
-                                // 队伍不存在 更新战队状态
-                                bet.teamStatus = CONSTANTS.EXIST_PRODUCTION.NO_EXIST;
-                                resolve(bet);
-                            }
+
+            var teamNames = [bet.gamer_1, bet.gamer_2];
+                return Q.all(teamNames.map(function(teamName){
+                    var newTeam = {teamName: teamName, gameType: CONSTANTS.translateGameType(bet.game)};
+                    return TeamModel.findOne({teamName: teamName, gameType: CONSTANTS.translateGameType(bet.game)}).then(function (team) {
+                        if(team){
+                            return '已存在'
+                        }else{
+                            console.log('创建temp team');
+                            return new TeamModel(newTeam).save();
                         }
                     })
-                }).then(function (bet) {
-                    /**
-                     * 查询战队teamB是否存在
-                     */
-                    var urlB = CONSTANTS.SERVER_URL + '/teamsdetailforname?teamName=' + teamB.nick + '&gameType=' + CONSTANTS.translateGameType(bet.game);
-                    return Q.promise(function (resolve, reject) {
-                        request.get({url: urlB, json: true}, function (err, res, body) {
-                            if (!err && res.statusCode === 200) {
-                                if (body.status) {
-                                    console.log('战队 ' + teamB.nick + ' 存在');
-                                    bet.teamB = body.data._id;
-                                    resolve(bet);
-                                }else {
-                                    /**
-                                     * 队伍不存在 更新战队状态
-                                     */
-                                    console.log('队伍不存在 更新战队状态');
-                                    // 队伍不存在 更新战队状态
-                                    bet.teamStatus = CONSTANTS.EXIST_PRODUCTION.NO_EXIST;
-                                    resolve(bet);
-
-                                }
-                            }
-                        })
-                });
-            }).then(function (bet) {
-                bet.teamStatus = bet.teamB && bet.teamA? CONSTANTS.EXIST_PRODUCTION.EXIST: CONSTANTS.EXIST_PRODUCTION.NO_EXIST;
-                    /**
-                     *  BetModel  更新战队
-                     */
-                return BetModel.update({ id: bet.id }, {'$set': {teamA: bet.teamA, teamB: bet.teamB, teamStatus: bet.teamStatus}})
-            }).then(function () {
-                    /**
-                     *  BetModel  更新战队
-                     */
-                return NestedBetModel.update({ game_id: bet.id }, {'$set': {teamA: bet.teamA, teamB: bet.teamB, teamStatus: bet.teamStatus}},{'multi': true});
-            }).then(function () {
-                    return bet;
-            })
-        }))).then(function (result) {
-            return result;
-        });
+                }))
+        })));
     })
 };

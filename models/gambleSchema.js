@@ -40,9 +40,9 @@ var gambleSchema = new Schema({
             default: 0
         },
         win: {
-            type: Boolean,
+            type: Number,
             required: true,
-            default: false
+            default: 0
         },// 风险金
         riskFund: {
             type: Number
@@ -62,10 +62,11 @@ var gambleSchema = new Schema({
             default: 0
         },
         win: {
-            type: Boolean,
+            type: Number,
             required: true,
-            default: false
-        },// 风险金
+            default: 0
+        },
+        // 风险金
         riskFund: {
             type: Number
         },

@@ -12,9 +12,9 @@ var qlimit = require('qlimit');
 var limit = qlimit(10);
 
 /**
- * 检测赛事是否存在,如果不存在则创建赛事
+ * 同步赛事到Temp
  */
-exports.checkLeaguesExist = function () {
+exports.synchroLeaguesToTemp = function () {
     return BetModel.find({exist_production: { '$nin': CONSTANTS.EXIST_PRODUCTION.EXIST }}).then(function (bets) {
     if(bets.length == 0){
         console.log('success');
@@ -29,7 +29,8 @@ exports.checkLeaguesExist = function () {
                 };
                 LeagueModel.find({ leagueName: bet.tourn }).then(function (results) {
                     if(results || results.length === 0){
-                            return new LeagueModel(league).save()
+                        console.log('创建temp league');
+                        return new LeagueModel(league).save()
                     }else {
                         return null;
                     }
@@ -38,7 +39,5 @@ exports.checkLeaguesExist = function () {
     });
 
 };
-//     var fetchUrl = CONSTANTS.SERVER_URL + '/leaguesource?leagueSource=' + CONSTANTS.SOURCE + '&leagueName=' + bet.tourn,
-//         createUrl = CONSTANTS.SERVER_URL + '/leagues',
-//         putUrl = CONSTANTS.SERVER_URL + '/leaguesupdate',
+
 

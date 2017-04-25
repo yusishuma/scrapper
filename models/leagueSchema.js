@@ -38,7 +38,8 @@ var leagueSchema = new Schema({
         type: Number
     },
     level: {
-        type: Number
+        type: Number,
+        default: CONSTANTS.LEAGUE_LEVEL.FIRST
     },
     /**
      * 赛事是否存在
