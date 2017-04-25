@@ -29,8 +29,8 @@ exports.synchroMatchesToTemp = function () {
                     matchSourceId: bet.id,
                     teamA: bet.gamer_1.nick,
                     teamB: bet.gamer_2.nick,
-                    teamAScore: bet.gamer_1.points,
-                    teamBScore: bet.gamer_2.points,
+                    // teamAScore: bet.gamer_1.points,
+                    // teamBScore: bet.gamer_2.points,
                     league: bet.tourn
                 };
                 return MatchModel.findOne({ matchName: generateMatchName(bet.gamer_1.nick, bet.gamer_2.nick) }).then(function (match) {

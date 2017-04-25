@@ -8,6 +8,10 @@ var spider = require('./egb_spider');
 var Q = require('q');
 var qlimit = require('qlimit');
 var limit = qlimit(10);
+var teamController = require('./team_controller');
+var matchController = require('./match_controller');
+var leagueController = require('./league_controller');
+var gambleController = require('./gamble_controller');
 /**
  * 转换战队名称
  */
@@ -33,7 +37,7 @@ var saveBet = function (bet) {
                 return BetModel.update({ id: oldBet.id }, {'$set':
                     {
                         date: newBet.date,
-                        exist_production: CONSTANTS.EXIST_PRODUCTION.EXIST,
+                        exist_production: CONSTANTS.EXIST_PRODUCTION.NO_EXIST,
                         winner: newBet.winner,
                         gamer_1: newBet.gamer_1,
                         gamer_2: newBet.gamer_2,
@@ -64,7 +68,7 @@ var saveNestedBet = function (nestedBet) {
                return  NestedBetModel.update({ id: oldNestedBet.id }, {'$set':
                     {
                         date: newNestedBet.date,
-                        exist_production: CONSTANTS.EXIST_PRODUCTION.EXIST,
+                        exist_production: CONSTANTS.EXIST_PRODUCTION.NO_EXIST,
                         winner: nestedBet.winner,
                         gamer_1: newNestedBet.gamer_1,
                         gamer_2: newNestedBet.gamer_2,
@@ -83,7 +87,6 @@ var saveNestedBet = function (nestedBet) {
  * 获取 bet 详细信息
  */
 var fetchBetInfo = function (bets) {
-    console.log(bets.length);
     return  Q.all(bets.map(limit(function (bet) {
         var url = CONSTANTS.EGB_URL + '/' + bet.id;
         return Q.Promise(function (resolve, reject) {
@@ -106,27 +109,33 @@ var fetchBetInfo = function (bets) {
         })
     })));
 };
-var refreshprodcutiondb = require('./toProdcutiondb');
 
 /**
  * 备份spider 数据 到 临时数据库
  */
 exports.backupsData = function () {
-
-    spider.fetchBettingData().then(function (data) {
+    spider.fetchBettingData()
+        .then(function (data) {
         if(data.bets && data.nested_bets && data.nested_bets.length > 0 && data.nested_bets.length > 0){
-            console.log(data.nested_bets.length);
             return fetchBetInfo(data.bets).then(function (result) {
-                console.log(result.length, "==================================bets=============================================");
+                console.log(result.length, "==================================抓取数据bets=============================================");
                 return fetchBetInfo(data.nested_bets).then(function (result) {
-                    console.log(result.length, "==================================nested_bets======================================");
-                    return refreshprodcutiondb.refreshProdcutionData();
+                    console.log(result.length, "==================================抓取数据nested_bets======================================");
+                    return "抓取数据完毕"
                 });
             });
 
         }else{
             return '未抓取到数据';
         }
+    }).then(function () {
+        return leagueController.synchroLeaguesToTemp();
+    }).then(function () {
+        return teamController.synchroTeamsToTemp();
+    }).then(function () {
+        return matchController.synchroMatchesToTemp();
+    }).then(function () {
+        return gambleController.synchroGamblesToTemp();
     })
 };
 

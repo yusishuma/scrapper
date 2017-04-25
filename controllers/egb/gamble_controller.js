@@ -42,6 +42,7 @@ var translateGambles = function (bets) {
         var gambleName = bet.game_id
             ? bet.gamer_1.nick
             : '1X2';
+
         var optionA = bet.parent_gamer_1.nick? bet.parent_gamer_1.nick: '';
         var optionB = bet.parent_gamer_1.nick? bet.parent_gamer_2.nick: '';
 
