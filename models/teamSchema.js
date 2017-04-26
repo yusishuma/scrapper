@@ -33,8 +33,8 @@ var teamSchema = new Schema({
     teamName: {
         type: String,
         required: true,
-        unique: true,
-        index: true
+        // unique: true,
+        // index: true
     }
     // ,
     // alias: { // 别名

@@ -78,7 +78,8 @@ app.use(function(req, res, next) {
   err.status = 404;
   next(err);
 });
-require('./controllers/egb/toTemp').backupsData();
+// require('./controllers/egb/toTemp').backupsData();
+require('./controllers/pingbo/pingbo_spider').synchroPingDataToTemp();
 // error handler
 app.use(function(err, req, res, next) {
     "use strict";

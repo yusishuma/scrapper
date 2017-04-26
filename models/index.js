@@ -81,7 +81,7 @@ exports.TeamModel = mongoose.model('team', teamSchema);
 exports.MatchModel = mongoose.model('match', matchSchema);
 
 /**
- * EGB models
+ * EGB PINGBO models
  */
 exports.BetModel = mongoose.model("egb_bet", betSchema);
 exports.NestedBetModel = mongoose.model('egb_nestedBet', nestedBetSchema);

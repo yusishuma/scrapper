@@ -4,23 +4,174 @@ var CONSTANTS = require('../../utils/constants');
 var models = require('../../models/index');
 var BetModel = models.BetModel;
 var NestedBetModel = models.NestedBetModel;
+var MatchModel = models.MatchModel;
+var TeamModel = models.TeamModel;
+var GambleModel = models.GambleModel;
+var LeagueModel = models.LeagueModel;
 var spider = require('./egb_spider');
 var Q = require('q');
 var qlimit = require('qlimit');
 var limit = qlimit(10);
-var teamController = require('./team_controller');
-var matchController = require('./match_controller');
-var leagueController = require('./league_controller');
-var gambleController = require('./gamble_controller');
 /**
- * 转换战队名称
+ * 同步赛事到Temp
  */
-var parseTeamName = function (teamName) {
-    if (teamName.indexOf('(') !== -1) {
-        teamName = teamName.substr(0, teamName.indexOf('('));
-    }
-    return teamName.trim();
+var synchroLeaguesToTemp = function () {
+    return BetModel.find({exist_production: { '$nin': CONSTANTS.EXIST_PRODUCTION.EXIST }}).then(function (bets) {
+        if(bets.length == 0){
+            console.log('success');
+            return "success"
+        }
+        else
+            return Q.all(bets.map(limit( function (bet) {
+                var league = {
+                    gameType: CONSTANTS.translateGameType(bet.game),
+                    leagueName: bet.tourn,
+                    leagueSource: bet.source
+                };
+                LeagueModel.find({ leagueName: bet.tourn }).then(function (results) {
+                    if(results || results.length === 0){
+                        console.log('egb 创建temp league');
+                        return new LeagueModel(league).save()
+                    }else {
+                        return null;
+                    }
+                })
+            })));
+    });
+
 };
+/**
+ * 同步赛程到Temp
+ */
+var synchroMatchesToTemp = function () {
+    return BetModel.find({exist_production: { '$nin': CONSTANTS.EXIST_PRODUCTION.EXIST }}).then(function (bets) {
+        if(bets.length == 0){
+            console.log('success');
+            return "success"
+        }
+        else
+            return Q.all(bets.map(limit(function (bet) {
+                var newMatch = {
+                    gameType: CONSTANTS.translateGameType(bet.game),
+                    matchName: CONSTANTS.generateMatchName(bet.gamer_1.nick, bet.gamer_2.nick),
+                    matchSource: bet.source,
+                    matchSourceId: bet.id,
+                    teamA: bet.gamer_1.nick,
+                    teamB: bet.gamer_2.nick,
+                    league: bet.tourn
+                };
+                return MatchModel.findOne({ matchName: CONSTANTS.generateMatchName(bet.gamer_1.nick, bet.gamer_2.nick) }).then(function (match) {
+                    if(match){
+                        return null;
+                    }else{
+                        console.log('egb 创建temp match');
+                        return new MatchModel(newMatch).save();
+                    }
+                })
+            })));
+    })
+};
+/**
+ * 同步战队到Temp
+ */
+var synchroTeamsToTemp = function () {
+    return BetModel.find({exist_production: { '$nin': CONSTANTS.EXIST_PRODUCTION.EXIST }}).then(function (bets) {
+        if(bets.length == 0){
+            return "success"
+        }
+        else
+            return  Q.all(bets.map(limit(function (bet) {
+
+                var teamNames = [bet.gamer_1.nick, bet.gamer_2.nick];
+                return Q.all(teamNames.map(function(teamName){
+                    var newTeam = {teamName: teamName, gameType: CONSTANTS.translateGameType(bet.game)};
+                    return TeamModel.findOne({teamName: teamName, gameType: CONSTANTS.translateGameType(bet.game)}).then(function (team) {
+                        if(team){
+                            return '已存在'
+                        }else{
+                            console.log('egb 创建temp team');
+                            return new TeamModel(newTeam).save();
+                        }
+                    })
+                }))
+            })));
+    })
+};
+
+/**
+ * 同步赛程到Temp
+ */
+var synchroGamblesToTemp = function () {
+    return BetModel.find({exist_production: { '$nin': CONSTANTS.EXIST_PRODUCTION.EXIST }, teamStatus: CONSTANTS.EXIST_PRODUCTION.EXIST }).then(function (bets) {
+        if(bets.length == 0){
+            console.log('success');
+            return "success"
+        }
+        else// Bet
+            return translateGambles(bets)
+
+    }).then(function () {
+        // NestedBet
+        return NestedBetModel.find({exist_production: { '$nin': CONSTANTS.EXIST_PRODUCTION.EXIST }, teamStatus: CONSTANTS.EXIST_PRODUCTION.EXIST }).then(function (bets) {
+            if(bets.length == 0){
+                console.log('success');
+                return "success"
+            }
+            else
+                return translateGambles(bets)
+        })
+    });
+};
+
+var translateGambles = function (bets) {
+    return Q.all(bets.map(limit(function (bet) {
+        var gambleName = bet.game_id
+            ? bet.gamer_1.nick
+            : '1X2';
+
+        var optionA = bet.parent_gamer_1.nick? bet.parent_gamer_1.nick: '';
+        var optionB = bet.parent_gamer_1.nick? bet.parent_gamer_2.nick: '';
+
+        var newGamble = {
+            gameType: CONSTANTS.translateGameType(bet.game),
+            gambleType: 1,
+            gambleName: gambleName,     //赌局名称
+            endTime: bet.date * 1000,        //赌局期限
+            match: bet.matchId,       //所属赛程ID
+            gambleSource: bet.source,   //赌局数据来源
+            gambleSourceId: bet.id, //赌局来源ID
+            optionA: {
+                name:'',
+                odds: bet.coef_1,
+                win: bet.gamer_1.win
+            },
+            optionB: {
+                name:'',
+                odds: bet.coef_1,
+                win: bet.gamer_1.win
+            }
+        };
+        return LeagueModel.findOne({ leagueName: bet.tourn }).then(function (league) {
+            if(!league){
+                console.log("temp： "+ bet.tourn +"赛事不存在");
+                return ""
+            }else{
+                newGamble.optionA.riskFund = league.riskFund;
+                newGamble.optionB.riskFund = league.riskFund;
+                newGamble.optionA.payCeiling = league.payCeiling;
+                newGamble.optionB.payCeiling = league.payCeiling;
+            }
+
+            return GambleModel.find({ matchName: CONSTANTS.generateMatchName(bet.gamer_1.nick, bet.gamer_2.nick) }).then(function (matches) {
+                if(matches && matches.length > 0){
+                    return null;
+                }else{
+                    return new GambleModel(newGamble).save();
+                }
+            })
+        })
+    })));
+}
 
 /**
  * 保存BET数据
@@ -124,18 +275,18 @@ exports.backupsData = function () {
                     return "抓取数据完毕"
                 });
             });
-
         }else{
+            console.log('未抓取到数据');
             return '未抓取到数据';
         }
     }).then(function () {
-        return leagueController.synchroLeaguesToTemp();
+        return synchroLeaguesToTemp();
     }).then(function () {
-        return teamController.synchroTeamsToTemp();
+        return synchroTeamsToTemp();
     }).then(function () {
-        return matchController.synchroMatchesToTemp();
+        return synchroMatchesToTemp();
     }).then(function () {
-        return gambleController.synchroGamblesToTemp();
+        // return gambleController.synchroGamblesToTemp();
     })
 };
 

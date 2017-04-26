@@ -17,7 +17,7 @@ var connectMongo = function () {
 
         }
         else {
-            logger.info('已连接到mongodb');
+            logger.info('已连接到mongodb', CONSTANTS.MONGODB_ENV.DB_URI);
         }
     });
 };
