@@ -24,19 +24,15 @@ exports.synchroMatchesToTemp = function () {
                 var newMatch = {
                     gameType: CONSTANTS.translateGameType(bet.game),
                     matchName: CONSTANTS.generateMatchName(bet.gamer_1.nick, bet.gamer_2.nick),
-                    endTime: bet.date * 1000,
                     matchSource: bet.source,
                     matchSourceId: bet.id,
                     teamA: bet.gamer_1.nick,
                     teamB: bet.gamer_2.nick,
-                    // teamAScore: bet.gamer_1.points,
-                    // teamBScore: bet.gamer_2.points,
                     league: bet.tourn
                 };
-                return MatchModel.findOne({ matchName: generateMatchName(bet.gamer_1.nick, bet.gamer_2.nick) }).then(function (match) {
+                return MatchModel.findOne({ matchName: CONSTANTS.generateMatchName(bet.gamer_1.nick, bet.gamer_2.nick) }).then(function (match) {
                     if(match){
-                        console.log('更新temp match');
-                        return MatchModel.update({ _id: match._id }, {});
+                        return null;
                     }else{
                         console.log('创建temp match');
                         return new MatchModel(newMatch).save();
