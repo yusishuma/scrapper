@@ -12,6 +12,7 @@ var spider = require('./egb_spider');
 var Q = require('q');
 var qlimit = require('qlimit');
 var limit = qlimit(10);
+var _ = require('lodash');
 /**
  * 同步赛事到Temp
  */
@@ -51,16 +52,18 @@ var synchroMatchesToTemp = function () {
         }
         else
             return Q.all(bets.map(limit(function (bet) {
+                var teamA = CONSTANTS.parseTeamName(bet.gamer_1.nick),
+                    teamB = CONSTANTS.parseTeamName(bet.gamer_2.nick);
                 var newMatch = {
                     gameType: CONSTANTS.translateGameType(bet.game),
-                    matchName: CONSTANTS.generateMatchName(bet.gamer_1.nick, bet.gamer_2.nick),
+                    matchName: CONSTANTS.generateMatchName(teamA, teamB),
                     matchSource: bet.source,
                     matchSourceId: bet.id,
-                    teamA: bet.gamer_1.nick,
-                    teamB: bet.gamer_2.nick,
+                    teamA: teamA,
+                    teamB: teamB,
                     league: bet.tourn
                 };
-                return MatchModel.findOne({ matchName: CONSTANTS.generateMatchName(bet.gamer_1.nick, bet.gamer_2.nick) }).then(function (match) {
+                return MatchModel.findOne({ matchName: CONSTANTS.generateMatchName(teamA, teamB) }).then(function (match) {
                     if(match){
                         return null;
                     }else{
@@ -82,7 +85,7 @@ var synchroTeamsToTemp = function () {
         else
             return  Q.all(bets.map(limit(function (bet) {
 
-                var teamNames = [bet.gamer_1.nick, bet.gamer_2.nick];
+                var teamNames = [CONSTANTS.parseTeamName(bet.gamer_1.nick), CONSTANTS.parseTeamName(bet.gamer_2.nick)];
                 return Q.all(teamNames.map(function(teamName){
                     var newTeam = {teamName: teamName, gameType: CONSTANTS.translateGameType(bet.game)};
                     return TeamModel.findOne({teamName: teamName, gameType: CONSTANTS.translateGameType(bet.game)}).then(function (team) {
@@ -102,7 +105,7 @@ var synchroTeamsToTemp = function () {
  * 同步赛程到Temp
  */
 var synchroGamblesToTemp = function () {
-    return BetModel.find({exist_production: { '$nin': CONSTANTS.EXIST_PRODUCTION.EXIST }, teamStatus: CONSTANTS.EXIST_PRODUCTION.EXIST }).then(function (bets) {
+    return BetModel.find({exist_production: { '$nin': CONSTANTS.EXIST_PRODUCTION.EXIST }}).then(function (bets) {
         if(bets.length == 0){
             console.log('success');
             return "success"
@@ -112,7 +115,7 @@ var synchroGamblesToTemp = function () {
 
     }).then(function () {
         // NestedBet
-        return NestedBetModel.find({exist_production: { '$nin': CONSTANTS.EXIST_PRODUCTION.EXIST }, teamStatus: CONSTANTS.EXIST_PRODUCTION.EXIST }).then(function (bets) {
+        return NestedBetModel.find({exist_production: { '$nin': CONSTANTS.EXIST_PRODUCTION.EXIST }}).then(function (bets) {
             if(bets.length == 0){
                 console.log('success');
                 return "success"
@@ -125,28 +128,51 @@ var synchroGamblesToTemp = function () {
 
 var translateGambles = function (bets) {
     return Q.all(bets.map(limit(function (bet) {
-        var gambleName = bet.game_id
-            ? bet.gamer_1.nick
-            : '1X2';
-
-        var optionA = bet.parent_gamer_1.nick? bet.parent_gamer_1.nick: '';
-        var optionB = bet.parent_gamer_1.nick? bet.parent_gamer_2.nick: '';
-
+        var gambleName = '', teamA = '', teamB = '', optionAName = '', optionBName = '', game_subsidiary = '';
+        if(!bet.game_id){
+            if (bet.gamer_1.nick.indexOf('(') !== -1) {
+                game_subsidiary = _.lowerCase(bet.gamer_1.nick.substr(bet.gamer_1.nick.indexOf('('), bet.gamer_1.nick.length));
+                game_subsidiary = _.replace(game_subsidiary, 'live', '');
+            }
+            teamA = CONSTANTS.parseTeamName(bet.gamer_1.nick);
+            teamB = CONSTANTS.parseTeamName(bet.gamer_2.nick);
+            optionAName = teamA;
+            optionBName = teamB;
+            gambleName = game_subsidiary + ' ' + '1X2'
+        }else{
+            if (bet.parent_gamer_1.nick.indexOf('(') !== -1) {
+                game_subsidiary = _.lowerCase(bet.parent_gamer_1.nick.substr(bet.parent_gamer_1.nick.indexOf('('), bet.parent_gamer_1.nick.length));
+                game_subsidiary = _.replace(game_subsidiary, 'live', '');
+            }
+            teamA = CONSTANTS.parseTeamName(bet.parent_gamer_1.nick);
+            teamB = CONSTANTS.parseTeamName(bet.parent_gamer_2.nick);
+            if(bet.gamer_1.game_name === 'Total kills' || bet.gamer_1.game_name === 'Total time'){
+                gambleName = game_subsidiary + ' ' +  '大小';
+                optionAName = bet.gamer_1.nick;
+                optionBName = bet.gamer_2.nick;
+            }else{
+                gambleName = game_subsidiary + ' ' +  bet.gamer_1.nick;
+                optionAName = teamA;
+                optionBName = teamB;
+            }
+        }
         var newGamble = {
             gameType: CONSTANTS.translateGameType(bet.game),
             gambleType: 1,
             gambleName: gambleName,     //赌局名称
             endTime: bet.date * 1000,        //赌局期限
-            match: bet.matchId,       //所属赛程ID
+            match: CONSTANTS.generateMatchName(teamA, teamB),       //所属赛程ID
             gambleSource: bet.source,   //赌局数据来源
             gambleSourceId: bet.id, //赌局来源ID
             optionA: {
-                name:'',
+                name: optionAName,
+                teamA: teamA,
                 odds: bet.coef_1,
                 win: bet.gamer_1.win
             },
             optionB: {
-                name:'',
+                name: optionBName,
+                teamB: teamB,
                 odds: bet.coef_1,
                 win: bet.gamer_1.win
             }
@@ -161,10 +187,9 @@ var translateGambles = function (bets) {
                 newGamble.optionA.payCeiling = league.payCeiling;
                 newGamble.optionB.payCeiling = league.payCeiling;
             }
-
-            return GambleModel.find({ matchName: CONSTANTS.generateMatchName(bet.gamer_1.nick, bet.gamer_2.nick) }).then(function (matches) {
-                if(matches && matches.length > 0){
-                    return null;
+            return GambleModel.findOne({ gameType: CONSTANTS.translateGameType(bet.game), gambleSource: bet.source, gambleSourceId: bet.id }).then(function (gambels) {
+                if(gambels){
+                    return GambleModel.update({ _id: gambels.gambleId }, { '$set': { endTime: newGamble.endTime, optionA: newGamble.optionA, optionB: newGamble.optionB } });
                 }else{
                     return new GambleModel(newGamble).save();
                 }
@@ -179,6 +204,8 @@ var translateGambles = function (bets) {
 var saveBet = function (bet) {
     console.log("bet.id", bet.id);
     var newBet = new BetModel(bet);
+    // newBet.gamer_1.nick = CONSTANTS.parseTeamName(newBet.gamer_1.nick);
+    // newBet.gamer_2.nick = CONSTANTS.parseTeamName(newBet.gamer_2.nick);
     return BetModel.findOne({id: bet.id.toString()}).then(function (oldBet) {
 
         if (!oldBet) {
@@ -210,6 +237,8 @@ var saveBet = function (bet) {
 var saveNestedBet = function (nestedBet) {
     console.log("nestedBet.id", nestedBet.id);
     var newNestedBet = new NestedBetModel(nestedBet);
+    // newNestedBet.parent_gamer_1.nick = CONSTANTS.parseTeamName(newNestedBet.parent_gamer_1.nick);
+    // newNestedBet.parent_gamer_2.nick = CONSTANTS.parseTeamName(newNestedBet.parent_gamer_2.nick);
     return NestedBetModel.findOne({id: nestedBet.id.toString()}).then(function (oldNestedBet) {
         if (!oldNestedBet) {
             return newNestedBet.save();
@@ -265,6 +294,7 @@ var fetchBetInfo = function (bets) {
  * 备份spider 数据 到 临时数据库
  */
 exports.backupsData = function () {
+
     spider.fetchBettingData()
         .then(function (data) {
         if(data.bets && data.nested_bets && data.nested_bets.length > 0 && data.nested_bets.length > 0){
@@ -286,7 +316,7 @@ exports.backupsData = function () {
     }).then(function () {
         return synchroMatchesToTemp();
     }).then(function () {
-        // return gambleController.synchroGamblesToTemp();
+        return synchroGamblesToTemp();
     })
 };
 

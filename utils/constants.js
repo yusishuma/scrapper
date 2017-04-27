@@ -82,6 +82,15 @@ module.exports = {
         }
     },
     /**
+     * 转换战队名称
+     */
+    parseTeamName: function (teamName) {
+        if (teamName.indexOf('(') !== -1) {
+            teamName = teamName.substr(0, teamName.indexOf('('));
+        }
+        return teamName.trim();
+    },
+    /**
      * 生成Match名称
      */
     generateMatchName: function (teamA, teamB) {
