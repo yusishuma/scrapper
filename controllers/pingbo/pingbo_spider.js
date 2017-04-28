@@ -136,7 +136,7 @@ var fetchOddsdEventData = function () {
             return Q.all(league.events.map(limit(function (event) {
                 event.leagueId = league.id;
                 event.odds = event.periods;
-
+                delete event.periods;
                 return ping_Event.update({ id: event.id }, { '$set': { odds: event.odds }}).then(function (result) {
                     if(result && result.n === 0 && result.ok === 1){
                         return new ping_Event(event).save()
@@ -172,7 +172,7 @@ var fetchPingbetData = function () {
                         if(team){
                             return '已存在'
                         }else{
-                            // console.log('pingbo 创建temp team');
+                            console.log('pingbo 创建temp team');
                             return new TeamModel(newTeam).save();
                         }
                     })
@@ -196,7 +196,7 @@ var fetchPingbetData = function () {
                     }
                 })
             }).then(function () {
-                var gambleName = '', game_subsidiary = '', teamAScore, teamBScore;
+                var gambleName = '', game_subsidiary = '', teamAScore, teamBScore, odd = event.odds[0];
                 var newGambles = [];
                 if (event.home.indexOf('(') !== -1) {
                     game_subsidiary = _.lowerCase(event.home.substr(event.home.indexOf('('), event.home.length));
@@ -211,7 +211,7 @@ var fetchPingbetData = function () {
                     match: CONSTANTS.generateMatchName(teamA, teamB),       //所属赛程ID
                     optionA:{},
                     optionB:{},
-                    gambleSourceAndSourceId: CONSTANTS.SOURCE.PING_BO+event.id,
+                    gambleSourceAndSourceId: CONSTANTS.SOURCE.PING_BO + event.id + '=' + moment().valueOf(),
                     gambleSource: CONSTANTS.SOURCE.PING_BO,   //赌局数据来源
                     gambleSourceId: event.id //赌局来源ID
 
@@ -223,26 +223,25 @@ var fetchPingbetData = function () {
                     teamAScore = event.periods[0].team1Score;
                     teamBScore = event.periods[0].team2Score;
                 }
-                if(event.odds && event.odds.length > 0){
-                    newGamble.endTime = moment(event.odds[0].cutoff).valueOf()       //赌局期限
-                }
-                if(event.odds[0].spreads && event.odds[0].spreads.length > 0){
+                newGamble.endTime = moment(odd.cutoff).valueOf();       //赌局期限
+                if(odd.spreads && odd.spreads.length > 0){
                     newGamble.gambleName = game_subsidiary + '让分';
                     if(event.periods && event.periods.length > 0){
-                        var teamAwin = (teamAScore + event.odds[0].spreads[0].hdp -teamBScore) > 0;
+                        var teamAwin = (teamAScore + odd.spreads[0].hdp -teamBScore) > 0;
                         newGamble.optionA.win = teamAwin? 1: 0;
                         newGamble.optionB.win = !teamAwin? 1: 0;
 
                     }
-                    newGamble.optionA.name = teamA + '让' + event.odds[0].spreads[0].hdp;
+                    newGamble.optionA.name = teamA + '让' + odd.spreads[0].hdp;
                     newGamble.optionA.teamA = teamA;
-                    newGamble.optionA.odds = CONSTANTS.parseOdds(event.odds[0].spreads[0].home, event.odds[0].maxSpread);
+                    newGamble.optionA.odds = CONSTANTS.parseOdds(odd.spreads[0].home, odd.maxSpread);
                     newGamble.optionB.name = teamB;
                     newGamble.optionB.teamB = teamB;
-                    newGamble.optionB.odds = CONSTANTS.parseOdds(event.odds[0].spreads[0].away, event.odds[0].maxSpread);
+                    newGamble.optionB.odds = CONSTANTS.parseOdds(odd.spreads[0].away, odd.maxSpread);
                     newGambles.push(newGamble);
+
                 }
-                if(event.odds[0].moneyline){
+                if(odd.moneyline && odd.moneyline.length > 0){
                     newGamble.gambleName = game_subsidiary + '1X2';
                     if(event.periods && event.periods.length > 0){
                         var teamAwin = (teamAScore - teamBScore) > 0;
@@ -252,30 +251,30 @@ var fetchPingbetData = function () {
                     }
                     newGamble.optionA.name = teamA;
                     newGamble.optionA.teamA = teamA;
-                    newGamble.optionA.odds = CONSTANTS.parseOdds(event.odds[0].moneyline[0].home, event.odds[0].maxMoneyline);
+                    newGamble.optionA.odds = CONSTANTS.parseOdds(odd.moneyline[0].home, odd.maxMoneyline);
 
                     newGamble.optionB.name = teamB;
                     newGamble.optionB.teamB = teamB;
-                    newGamble.optionB.odds = CONSTANTS.parseOdds(event.odds[0].moneyline[0].away, event.odds[0].maxMoneyline);
+                    newGamble.optionB.odds = CONSTANTS.parseOdds(odd.moneyline[0].away, odd.maxMoneyline);
                     newGambles.push(newGamble);
+
                 }
-                if(event.odds[0].totals){
+                if(odd.totals&& odd.totals.length > 0){
                     newGamble.gambleName = game_subsidiary + ' ' +  '大小';
                     if(event.periods && event.periods.length > 0){
-                        var teamAwin = (teamAScore - teamBScore) - event.odds[0].totals[0].points> 0;
+                        var teamAwin = (teamAScore - teamBScore) - odd.totals[0].points> 0;
                         newGamble.optionA.win = teamAwin? 1: 0;
                         newGamble.optionB.win = !teamAwin? 1: 0;
 
                     }
-                    newGamble.optionA.name = '大于' + event.odds[0].totals[0].points;
+                    newGamble.optionA.name = '大于' + odd.totals[0].points;
                     newGamble.optionA.teamA = teamA;
-                    newGamble.optionA.odds = CONSTANTS.parseOdds(event.odds[0].totals[0].over, event.odds[0].maxTotal);
-                    newGamble.optionB.name = '小于' + event.odds[0].totals[0].points;
+                    newGamble.optionA.odds = CONSTANTS.parseOdds(odd.totals[0].over, odd.maxTotal);
+                    newGamble.optionB.name = '小于' + odd.totals[0].points;
                     newGamble.optionB.teamB = teamB;
-                    newGamble.optionB.odds = CONSTANTS.parseOdds(event.odds[0].totals[0].under, event.odds[0].maxTotal);
+                    newGamble.optionB.odds = CONSTANTS.parseOdds(odd.totals[0].under, odd.maxTotal);
                     newGambles.push(newGamble);
                 }
-
             return LeagueModel.findOne({ leagueName: event.leagueName }).then(function (league) {
                 if(!league && gameType && gameType < 4){
                     var newLeague = {
@@ -297,9 +296,10 @@ var fetchPingbetData = function () {
                     newGamble.optionB.payCeiling = league.payCeiling || 10000;
 
                     if(newGamble.gameType && newGamble.gameType < 4 && newGamble.endTime ){
-                        return GambleModel.findOne({ gameType: CONSTANTS.translateGameType(event.game), gambleSource: CONSTANTS.SOURCE.PING_BO, gambleSourceId: event.id }).then(function (gambels) {
-                            if(gambels){
-                                return GambleModel.update({ _id: gambels.gambleId }, { '$set': { endTime: newGamble.endTime, optionA: newGamble.optionA, optionB: newGamble.optionB } });
+                        return GambleModel.findOne({ gambleSourceAndSourceId: newGamble.gambleSourceAndSourceId }).then(function (results) {
+                            if(results){
+                                console.log("pingbo 更新temp Gamble")
+                                return GambleModel.update({ gambleSourceAndSourceId: results.gambleSourceAndSourceId }, { '$set': { endTime: newGamble.endTime, optionA: newGamble.optionA, optionB: newGamble.optionB } });
                             }else{
                                 console.log('pingbo 创建temp Gamble');
                                 return new GambleModel(newGamble).save();
@@ -310,13 +310,12 @@ var fetchPingbetData = function () {
                 }))
             })
         }).then(function () {
-            return  ping_Event.update({ id: event.id }, {'$set': {exist_production: CONSTANTS.EXIST_PRODUCTION.EXIST}})
-        })
+                return  ping_Event.update({ id: event.id }, {'$set': {exist_production: CONSTANTS.EXIST_PRODUCTION.EXIST}})
+            })
     })))
 })
 };
 exports.synchroPingDataToTemp = function () {
-
     fetchSettledEventData().then(function () {
         return fetchOddsdEventData();
     }).then(function () {
