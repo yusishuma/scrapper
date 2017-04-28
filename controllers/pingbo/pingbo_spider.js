@@ -196,15 +196,12 @@ var fetchPingbetData = function () {
                     }
                 })
             }).then(function () {
-
                 var gambleName = '', game_subsidiary = '', teamAScore, teamBScore;
                 var newGambles = [];
-
                 if (event.home.indexOf('(') !== -1) {
                     game_subsidiary = _.lowerCase(event.home.substr(event.home.indexOf('('), event.home.length));
                     game_subsidiary = _.replace(game_subsidiary, 'live', '');
                 }
-
                 var teamA = CONSTANTS.parseTeamName(event.home);
                 var teamB = CONSTANTS.parseTeamName(event.away);
                 var newGamble = {
@@ -312,6 +309,8 @@ var fetchPingbetData = function () {
                     return ''
                 }))
             })
+        }).then(function () {
+            return  ping_Event.update({ id: event.id }, {'$set': {exist_production: CONSTANTS.EXIST_PRODUCTION.EXIST}})
         })
     })))
 })

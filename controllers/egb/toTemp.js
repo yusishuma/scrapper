@@ -164,6 +164,7 @@ var translateGambles = function (bets) {
             match: CONSTANTS.generateMatchName(teamA, teamB),       //所属赛程ID
             gambleSource: bet.source,   //赌局数据来源
             gambleSourceId: bet.id, //赌局来源ID
+            gambleSourceAndSourceId: bet.source + bet.id,
             optionA: {
                 name: optionAName,
                 teamA: teamA,
@@ -193,6 +194,16 @@ var translateGambles = function (bets) {
                 }else{
                     return new GambleModel(newGamble).save();
                 }
+            }).then(function () {
+                /**
+                 *  BetModel  更新是否存在
+                 */
+                return BetModel.update({ id: bet.id }, {'$set': {exist_production: CONSTANTS.EXIST_PRODUCTION.EXIST}})
+            }).then(function () {
+                /**
+                 *  BetModel  更新是否存在
+                 */
+                return NestedBetModel.update({ game_id: bet.id }, {'$set': {exist_production: CONSTANTS.EXIST_PRODUCTION.EXIST}},{'multi': true});
             })
         })
     })));
@@ -204,8 +215,6 @@ var translateGambles = function (bets) {
 var saveBet = function (bet) {
     console.log("bet.id", bet.id);
     var newBet = new BetModel(bet);
-    // newBet.gamer_1.nick = CONSTANTS.parseTeamName(newBet.gamer_1.nick);
-    // newBet.gamer_2.nick = CONSTANTS.parseTeamName(newBet.gamer_2.nick);
     return BetModel.findOne({id: bet.id.toString()}).then(function (oldBet) {
 
         if (!oldBet) {
@@ -237,8 +246,6 @@ var saveBet = function (bet) {
 var saveNestedBet = function (nestedBet) {
     console.log("nestedBet.id", nestedBet.id);
     var newNestedBet = new NestedBetModel(nestedBet);
-    // newNestedBet.parent_gamer_1.nick = CONSTANTS.parseTeamName(newNestedBet.parent_gamer_1.nick);
-    // newNestedBet.parent_gamer_2.nick = CONSTANTS.parseTeamName(newNestedBet.parent_gamer_2.nick);
     return NestedBetModel.findOne({id: nestedBet.id.toString()}).then(function (oldNestedBet) {
         if (!oldNestedBet) {
             return newNestedBet.save();
@@ -302,7 +309,7 @@ exports.backupsData = function () {
                 console.log(result.length, "==================================抓取数据bets=============================================");
                 return fetchBetInfo(data.nested_bets).then(function (result) {
                     console.log(result.length, "==================================抓取数据nested_bets======================================");
-                    return "抓取数据完毕"
+                    return '抓取到数据'
                 });
             });
         }else{
