@@ -92,7 +92,7 @@ var gambleSchema = new Schema({
         type: Number,
         default: 0
     },
-    // 赌局状态 3 代表已结束
+    // 赌局状态 3 代表已结束 4 留盘
     gambleStatus: Number,
     /**
      *  赌局添加到正服的状态
@@ -114,6 +114,11 @@ var gambleSchema = new Schema({
     gambleSourceId: String,
     // 赌局来源
     gambleSource: Number,
+    gambleSourceAndSourceId: {
+        type: String,
+        index: true,
+        unique: true
+    },
     /***********************话题赌局特有字段***/
     // 话题赌局icon
     topicGambleIcon: String,

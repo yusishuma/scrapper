@@ -91,6 +91,15 @@ module.exports = {
         return teamName.trim();
     },
     /**
+     * 转化赔率
+     */
+    parseOdds: function (number, maxNum) {
+        if(number < 0){
+            number = -number;
+        }
+        return ((number + maxNum)/number).toFixed(3)
+    },
+    /**
      * 生成Match名称
      */
     generateMatchName: function (teamA, teamB) {

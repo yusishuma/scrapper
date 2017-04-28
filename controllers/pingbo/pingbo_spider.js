@@ -13,6 +13,7 @@ var ping_Event = require('../../models/index').EventModel;
 var LeagueModel = require('../../models/index').LeagueModel;
 var TeamModel = require('../../models/index').TeamModel;
 var MatchModel = require('../../models/index').MatchModel;
+var GambleModel = require('../../models/index').GambleModel;
 var qlimit = require('qlimit');
 var limit = qlimit(10);
 /**
@@ -87,6 +88,7 @@ var fetchSettledEventData = function () {
  * 获取 未结算的场次 保存到备份库
  */
 var fetchUnSettledEventData = function () {
+
     return Q.Promise(function (resolve, reject) { //获取 联赛数据
         request.get({url: "http://api.pinbet88.com/v1/fixtures?sportid=12", headers: CONSTANTS.PING_BO.HEADERS, json: true}, function (err, res, data) {
             console.log("获取 未结算的场次 保存到备份库", res.statusCode);
@@ -154,48 +156,38 @@ var fetchOddsdEventData = function () {
  *  抓取https://www.pinbet88.com数据
  */
 var fetchPingbetData = function () {
-    return ping_Event.find({ exist_production: CONSTANTS.EXIST_PRODUCTION.NO_EXIST }).then(function (events) {
+    return ping_Event.find({ exist_production: CONSTANTS.EXIST_PRODUCTION.NO_EXIST, 'odds': { '$size': 1}}).then(function (events) {
         return Q.all(events.map(limit(function (event) {
             var gameAndLeagueName = event.leagueName.split(' - ');
             var game = gameAndLeagueName[0];
+            var gameType = CONSTANTS.translateGameType(game);
             var leagueName = gameAndLeagueName[1];
-            var league = {
-                gameType: CONSTANTS.translateGameType(game),
-                leagueName: leagueName,
-                leagueSource: CONSTANTS.SOURCE.PING_BO
-            };
-            //同步赛事到Temp
-            LeagueModel.find({ leagueName: leagueName }).then(function (results) {
-                if(results || results.length === 0){
-                    console.log('pingbo 创建temp league');
-                    return new LeagueModel(league).save()
-                }else {
-                    return null;
-                }
-            }).then(function () {//同步战队到Temp
-                var teamNames = [event.home, event.away];
-                return Q.all(teamNames.map(function(teamName){
-                    var newTeam = {teamName: teamName, gameType: CONSTANTS.translateGameType(game)};
-                    return TeamModel.findOne({teamName: teamName, gameType: CONSTANTS.translateGameType(game)}).then(function (team) {
+            var teamA = CONSTANTS.parseTeamName(event.home);
+            var teamB = CONSTANTS.parseTeamName(event.away);
+            //同步战队到Temp
+            var teamNames = [teamA, teamB];
+            return Q.all(teamNames.map(function(teamName){
+                var newTeam = {teamName: teamName, gameType: gameType, teamSource: CONSTANTS.SOURCE.PING_BO};
+                return TeamModel.findOne({teamName: teamName, gameType: gameType}).then(function (team) {
                         if(team){
                             return '已存在'
                         }else{
-                            console.log('pingbo 创建temp team');
+                            // console.log('pingbo 创建temp team');
                             return new TeamModel(newTeam).save();
                         }
                     })
                 }))
-            }).then(function () {
+            .then(function () {//同步赛事到Temp
                 var newMatch = {
-                    gameType: CONSTANTS.translateGameType(game),
-                    matchName: CONSTANTS.generateMatchName(event.home, event.away),
+                    gameType: gameType,
+                    matchName: CONSTANTS.generateMatchName(teamA, teamB),
                     matchSource: CONSTANTS.SOURCE.PING_BO,
                     matchSourceId: event.id,
-                    teamA: event.home,
-                    teamB: event.away,
+                    teamA: teamA,
+                    teamB: teamB,
                     league: leagueName
                 };
-                return MatchModel.findOne({ matchName: CONSTANTS.generateMatchName(event.home, event.away) }).then(function (match) {
+                return MatchModel.findOne({ matchName: CONSTANTS.generateMatchName(teamA, teamB) }).then(function (match) {
                     if(match){
                         return null;
                     }else{
@@ -203,14 +195,129 @@ var fetchPingbetData = function () {
                         return new MatchModel(newMatch).save();
                     }
                 })
+            }).then(function () {
+
+                var gambleName = '', game_subsidiary = '', teamAScore, teamBScore;
+                var newGambles = [];
+
+                if (event.home.indexOf('(') !== -1) {
+                    game_subsidiary = _.lowerCase(event.home.substr(event.home.indexOf('('), event.home.length));
+                    game_subsidiary = _.replace(game_subsidiary, 'live', '');
+                }
+
+                var teamA = CONSTANTS.parseTeamName(event.home);
+                var teamB = CONSTANTS.parseTeamName(event.away);
+                var newGamble = {
+                    gameType: gameType,
+                    gambleType: 1,
+                    gambleName: gambleName,     //赌局名称
+                    match: CONSTANTS.generateMatchName(teamA, teamB),       //所属赛程ID
+                    optionA:{},
+                    optionB:{},
+                    gambleSourceAndSourceId: CONSTANTS.SOURCE.PING_BO+event.id,
+                    gambleSource: CONSTANTS.SOURCE.PING_BO,   //赌局数据来源
+                    gambleSourceId: event.id //赌局来源ID
+
+                };
+                if(event.periods && event.periods.length > 0){
+                    if(event.periods[0].status === 3){
+                        newGamble.gambleStatus = 4
+                    }
+                    teamAScore = event.periods[0].team1Score;
+                    teamBScore = event.periods[0].team2Score;
+                }
+                if(event.odds && event.odds.length > 0){
+                    newGamble.endTime = moment(event.odds[0].cutoff).valueOf()       //赌局期限
+                }
+                if(event.odds[0].spreads && event.odds[0].spreads.length > 0){
+                    newGamble.gambleName = game_subsidiary + '让分';
+                    if(event.periods && event.periods.length > 0){
+                        var teamAwin = (teamAScore + event.odds[0].spreads[0].hdp -teamBScore) > 0;
+                        newGamble.optionA.win = teamAwin? 1: 0;
+                        newGamble.optionB.win = !teamAwin? 1: 0;
+
+                    }
+                    newGamble.optionA.name = teamA + '让' + event.odds[0].spreads[0].hdp;
+                    newGamble.optionA.teamA = teamA;
+                    newGamble.optionA.odds = CONSTANTS.parseOdds(event.odds[0].spreads[0].home, event.odds[0].maxSpread);
+                    newGamble.optionB.name = teamB;
+                    newGamble.optionB.teamB = teamB;
+                    newGamble.optionB.odds = CONSTANTS.parseOdds(event.odds[0].spreads[0].away, event.odds[0].maxSpread);
+                    newGambles.push(newGamble);
+                }
+                if(event.odds[0].moneyline){
+                    newGamble.gambleName = game_subsidiary + '1X2';
+                    if(event.periods && event.periods.length > 0){
+                        var teamAwin = (teamAScore - teamBScore) > 0;
+                        newGamble.optionA.win = teamAwin? 1: 0;
+                        newGamble.optionB.win = !teamAwin? 1: 0;
+
+                    }
+                    newGamble.optionA.name = teamA;
+                    newGamble.optionA.teamA = teamA;
+                    newGamble.optionA.odds = CONSTANTS.parseOdds(event.odds[0].moneyline[0].home, event.odds[0].maxMoneyline);
+
+                    newGamble.optionB.name = teamB;
+                    newGamble.optionB.teamB = teamB;
+                    newGamble.optionB.odds = CONSTANTS.parseOdds(event.odds[0].moneyline[0].away, event.odds[0].maxMoneyline);
+                    newGambles.push(newGamble);
+                }
+                if(event.odds[0].totals){
+                    newGamble.gambleName = game_subsidiary + ' ' +  '大小';
+                    if(event.periods && event.periods.length > 0){
+                        var teamAwin = (teamAScore - teamBScore) - event.odds[0].totals[0].points> 0;
+                        newGamble.optionA.win = teamAwin? 1: 0;
+                        newGamble.optionB.win = !teamAwin? 1: 0;
+
+                    }
+                    newGamble.optionA.name = '大于' + event.odds[0].totals[0].points;
+                    newGamble.optionA.teamA = teamA;
+                    newGamble.optionA.odds = CONSTANTS.parseOdds(event.odds[0].totals[0].over, event.odds[0].maxTotal);
+                    newGamble.optionB.name = '小于' + event.odds[0].totals[0].points;
+                    newGamble.optionB.teamB = teamB;
+                    newGamble.optionB.odds = CONSTANTS.parseOdds(event.odds[0].totals[0].under, event.odds[0].maxTotal);
+                    newGambles.push(newGamble);
+                }
+
+            return LeagueModel.findOne({ leagueName: event.leagueName }).then(function (league) {
+                if(!league && gameType && gameType < 4){
+                    var newLeague = {
+                        gameType: gameType,
+                        leagueName: leagueName,
+                        leagueSource: CONSTANTS.SOURCE.PING_BO
+                    };
+                    return new LeagueModel(newLeague).save()
+                }else{
+
+                    return league;
+                }
+
+            }).then(function (league) {
+                return Q.all(newGambles.map(function (newGamble) {
+                    newGamble.optionA.riskFund = league.riskFund || 1000;
+                    newGamble.optionB.riskFund = league.riskFund || 1000;
+                    newGamble.optionA.payCeiling = league.payCeiling || 10000;
+                    newGamble.optionB.payCeiling = league.payCeiling || 10000;
+
+                    if(newGamble.gameType && newGamble.gameType < 4 && newGamble.endTime ){
+                        return GambleModel.findOne({ gameType: CONSTANTS.translateGameType(event.game), gambleSource: CONSTANTS.SOURCE.PING_BO, gambleSourceId: event.id }).then(function (gambels) {
+                            if(gambels){
+                                return GambleModel.update({ _id: gambels.gambleId }, { '$set': { endTime: newGamble.endTime, optionA: newGamble.optionA, optionB: newGamble.optionB } });
+                            }else{
+                                console.log('pingbo 创建temp Gamble');
+                                return new GambleModel(newGamble).save();
+                            }
+                        })
+                    }
+                    return ''
+                }))
             })
-        })))
-    }).then(function () {
-    }).then(function (data) {
-        return data;
-    })
+        })
+    })))
+})
 };
 exports.synchroPingDataToTemp = function () {
+
     fetchSettledEventData().then(function () {
         return fetchOddsdEventData();
     }).then(function () {
@@ -223,8 +330,3 @@ exports.synchroPingDataToTemp = function () {
         console.log("success")
     });
 };
-
-// (function () {
-//     exports.synchroPingDataToTemp()
-//
-// })();

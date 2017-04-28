@@ -35,6 +35,9 @@ var teamSchema = new Schema({
         required: true,
         // unique: true,
         // index: true
+    },
+    teamSource: {
+        type: Number
     }
     // ,
     // alias: { // 别名
@@ -60,7 +63,9 @@ teamSchema.plugin(deepPopulate, {});
 teamSchema.options.toJSON.transform = function (doc, ret) {
     ret.teamId = ret._id.toString();
     var games = ['CSGO', 'LOL', 'DOTA'];
+    var source = ['后台添加', 'EGB网站', '平博网站'];
     ret.gameType = games[ret.gameType - 1];
+    ret.teamSource = source[ret.teamSource - 1];
     delete ret.__v;
     delete ret._id;
 };
