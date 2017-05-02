@@ -178,6 +178,13 @@ var translateGambles = function (bets) {
                 win: bet.gamer_1.win
             }
         };
+        if(bet.status === 3){
+            newGamble.gambleStatus = 4
+        }else if(bet.status === 2){
+            newGamble.gambleStatus = 3
+        }else{
+            newGamble.gambleStatus = 1
+        }
         return LeagueModel.findOne({ leagueName: bet.tourn }).then(function (league) {
             if(!league){
                 console.log("temp： "+ bet.tourn +"赛事不存在");
