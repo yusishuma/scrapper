@@ -155,7 +155,7 @@ var fetchOddsdEventData = function () {
 /**
  *  抓取https://www.pinbet88.com数据
  */
-var ƒfetchPingbetData = function () {
+var fetchPingbetData = function () {
     return ping_Event.find({ exist_production: CONSTANTS.EXIST_PRODUCTION.NO_EXIST, 'odds': { '$size': 1}}).then(function (events) {
         return Q.all(events.map(limit(function (event) {
             var gameAndLeagueName = event.leagueName.split(' - ');
@@ -211,6 +211,7 @@ var ƒfetchPingbetData = function () {
                     match: CONSTANTS.generateMatchName(teamA, teamB),       //所属赛程ID
                     optionA:{},
                     optionB:{},
+                    isExist: CONSTANTS.EXIST_PRODUCTION.EXIST,
                     gambleSourceAndSourceId: CONSTANTS.SOURCE.PING_BO + event.id + '=' + moment().valueOf(),
                     gambleSource: CONSTANTS.SOURCE.PING_BO,   //赌局数据来源
                     gambleSourceId: event.id //赌局来源ID
@@ -298,8 +299,8 @@ var ƒfetchPingbetData = function () {
                     if(newGamble.gameType && newGamble.gameType < 4 && newGamble.endTime ){
                         return GambleModel.findOne({ gambleSourceAndSourceId: newGamble.gambleSourceAndSourceId }).then(function (results) {
                             if(results){
-                                console.log("pingbo 更新temp Gamble")
-                                return GambleModel.update({ gambleSourceAndSourceId: results.gambleSourceAndSourceId }, { '$set': { endTime: newGamble.endTime, optionA: newGamble.optionA, optionB: newGamble.optionB } });
+                                console.log("pingbo 更新temp Gamble");
+                                return GambleModel.update({ gambleSourceAndSourceId: results.gambleSourceAndSourceId }, { '$set': { endTime: newGamble.endTime, optionA: newGamble.optionA, optionB: newGamble.optionB, isRefreshed: true } });
                             }else{
                                 console.log('pingbo 创建temp Gamble');
                                 return new GambleModel(newGamble).save();

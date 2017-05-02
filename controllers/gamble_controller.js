@@ -28,8 +28,8 @@ exports.getGamblesByList = function (req, res) {
             createdAt: -1
         }
     };
-    if(req.query.gambleName){
-        options.searchOption.gambleName = req.query.gambleName;
+    if(req.query.matchName){
+        options.searchOption.matchName = req.query.matchName;
     }
     if(req.query.gambleName){
         options.searchOption.gambleName = req.query.gambleName;

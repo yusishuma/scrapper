@@ -74,7 +74,7 @@ leagueSchema.pre('save', function (next) {
 });
 leagueSchema.options.toJSON.transform = function (doc, ret) {
     ret.leagueId = ret._id.toString();
-    var games = ['CSGO', 'LOL', 'DOTA'];
+    var games = ['CSGO', 'LOL', 'DOTA 2'];
     ret.gameType = games[ret.gameType - 1];
     delete ret.__v;
     delete ret._id;

@@ -29,6 +29,7 @@
     "mongoose": "^4.9.0",
     "mongoose-deep-populate": "^3.0.0",
     "morgan": "~1.7.0",
+    "node-schedule": "^1.2.1",
     "nodemon": "^1.11.0",
     "npm": "^4.4.1",
     "oauth2orize": "^1.8.0",

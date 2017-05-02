@@ -165,6 +165,7 @@ var translateGambles = function (bets) {
             gambleSource: bet.source,   //赌局数据来源
             gambleSourceId: bet.id, //赌局来源ID
             gambleSourceAndSourceId: bet.source + bet.id,
+            isExist: CONSTANTS.EXIST_PRODUCTION.EXIST,
             optionA: {
                 name: optionAName,
                 teamA: teamA,
@@ -197,7 +198,7 @@ var translateGambles = function (bets) {
             }
             return GambleModel.findOne({ gameType: CONSTANTS.translateGameType(bet.game), gambleSource: bet.source, gambleSourceId: bet.id }).then(function (gambels) {
                 if(gambels){
-                    return GambleModel.update({ _id: gambels.gambleId }, { '$set': { endTime: newGamble.endTime, optionA: newGamble.optionA, optionB: newGamble.optionB } });
+                    return GambleModel.update({ _id: gambels.gambleId }, { '$set': { endTime: newGamble.endTime, optionA: newGamble.optionA, optionB: newGamble.optionB, isRefreshed: true } });
                 }else{
                     return new GambleModel(newGamble).save();
                 }

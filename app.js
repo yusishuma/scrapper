@@ -79,7 +79,13 @@ app.use(function(req, res, next) {
   next(err);
 });
 // require('./controllers/egb/toTemp').backupsData();
-require('./controllers/pingbo/pingbo_spider').synchroPingDataToTemp();
+// require('./controllers/pingbo/pingbo_spider').synchroPingDataToTemp();
+var schedule = require('node-schedule');
+
+schedule.scheduleJob('*/1 * * * *', function(){
+    console.log('The answer to life, the universe, and everything!');
+});
+
 // error handler
 app.use(function(err, req, res, next) {
     "use strict";

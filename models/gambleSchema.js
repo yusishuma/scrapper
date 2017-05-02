@@ -102,6 +102,10 @@ var gambleSchema = new Schema({
         default: CONSTANTS.EXIST_PRODUCTION.EXIST,
         require: true
     },
+    isRefreshed: {//正服数据是否需要更新
+        type: Boolean,
+        default: false
+    },
     /********赛事赌局独有信息********/
     // 归属赛事
     league: {
@@ -150,7 +154,7 @@ gambleSchema.plugin(deepPopulate, {
 });
 gambleSchema.options.toJSON.transform = function (doc, ret) {
     ret.gambleId = ret._id.toString();
-    var games = ['CSGO', 'LOL', 'DOTA'];
+    var games = ['CSGO', 'LOL', 'DOTA 2'];
     ret.gameType = games[ret.gameType - 1];
     delete ret.__v;
     delete ret._id;
