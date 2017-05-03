@@ -122,7 +122,6 @@ exports.synchroGambleToPro = function (req, res) {
              * 创建赌局
              */
             request.post({url: createUrl, form: newGamble, json: true}, function (err, requestGamble, body) {
-                console.log( err, body, requestGamble)
                 if (!err && requestGamble.statusCode === 200) {
                     if (body.status) {
                         console.log('同步创建赌局 ' + newGamble.leagueName + ' 成功！');

@@ -83,7 +83,7 @@ app.use(function(req, res, next) {
 
 // schedule.scheduleJob('*/3 * * * *', function(){
     console.log('The answer to life, the universe, and everything!');
-    require('./controllers/pingbo/pingbo_spider').synchroPingDataToTemp();
+    // require('./controllers/pingbo/pingbo_spider').synchroPingDataToTemp();
     require('./controllers/egb/toTemp').backupsData();
     // require('./controllers/gamble_controller').synchroGambles();
 // });

@@ -48,7 +48,7 @@ var leagueSchema = new Schema({
      */
     isExist: {
         type: Number,
-        default: CONSTANTS.EXIST_PRODUCTION.EXIST,
+        default: CONSTANTS.EXIST_PRODUCTION.NO_EXIST,
         require: true
     },
     // 赛事来源(1 后台 2 egb 3 pingbo)
@@ -71,7 +71,6 @@ leagueSchema.plugin(deepPopulate, {});
 leagueSchema.pre('save', function (next) {
     this.riskFund = CONSTANTS.translaterRiskFund(this.level);
     this.payCeiling = CONSTANTS.translaterPayCeiling(this.level);
-    this.gameType = CONSTANTS.translateGameType(this.gameType);
     next();
 });
 leagueSchema.options.toJSON.transform = function (doc, ret) {
