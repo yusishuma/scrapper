@@ -70,11 +70,17 @@ module.exports = {
                 return 1;
             case 'CS:GO':
                 return 1;
+            case 'CSGO':
+                return 1;
             case 'LoL':
+                return 2;
+            case 'LOL':
                 return 2;
             case 'League of Legends':
                 return 2;
             case 'Dota2':
+                return 3;
+            case 'DOTA2':
                 return 3;
             case 'Dota 2':
                 return 3;

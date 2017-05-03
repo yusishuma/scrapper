@@ -212,7 +212,7 @@ var fetchPingbetData = function () {
                     optionA:{},
                     optionB:{},
                     isExist: CONSTANTS.EXIST_PRODUCTION.EXIST,
-                    gambleSourceAndSourceId: CONSTANTS.SOURCE.PING_BO + event.id + '=' + moment().valueOf(),
+                    gambleSourceAndSourceId: CONSTANTS.SOURCE.PING_BO + event.id + moment().valueOf(),
                     gambleSource: CONSTANTS.SOURCE.PING_BO,   //赌局数据来源
                     gambleSourceId: event.id //赌局来源ID
 
@@ -295,7 +295,7 @@ var fetchPingbetData = function () {
                     newGamble.optionB.riskFund = league.riskFund || 1000;
                     newGamble.optionA.payCeiling = league.payCeiling || 10000;
                     newGamble.optionB.payCeiling = league.payCeiling || 10000;
-
+                    newGamble.league = league.leagueId;
                     if(newGamble.gameType && newGamble.gameType < 4 && newGamble.endTime ){
                         return GambleModel.findOne({ gambleSourceAndSourceId: newGamble.gambleSourceAndSourceId }).then(function (results) {
                             if(results){

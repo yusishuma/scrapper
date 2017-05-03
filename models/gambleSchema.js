@@ -93,13 +93,16 @@ var gambleSchema = new Schema({
         default: 0
     },
     // 赌局状态 3 代表已结束 4 留盘
-    gambleStatus: Number,
+    gambleStatus: {
+        type: Number,
+        default: 1
+    },
     /**
      *  赌局添加到正服的状态
      */
     isExist: {
         type: Number,
-        default: CONSTANTS.EXIST_PRODUCTION.EXIST,
+        default: CONSTANTS.EXIST_PRODUCTION.NO_EXIST,
         require: true
     },
     isRefreshed: {//正服数据是否需要更新
@@ -154,7 +157,7 @@ gambleSchema.plugin(deepPopulate, {
 });
 gambleSchema.options.toJSON.transform = function (doc, ret) {
     ret.gambleId = ret._id.toString();
-    var games = ['CSGO', 'LOL', 'DOTA 2'];
+    var games = ['CSGO', 'LOL', 'DOTA2'];
     ret.gameType = games[ret.gameType - 1];
     delete ret.__v;
     delete ret._id;

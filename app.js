@@ -13,6 +13,8 @@ var app = express();
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var CONSTANTS = require('./utils/constants');
+var schedule = require('node-schedule');
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -78,13 +80,12 @@ app.use(function(req, res, next) {
   err.status = 404;
   next(err);
 });
-// require('./controllers/egb/toTemp').backupsData();
-// require('./controllers/pingbo/pingbo_spider').synchroPingDataToTemp();
-var schedule = require('node-schedule');
 
-schedule.scheduleJob('*/1 * * * *', function(){
+// schedule.scheduleJob('*/3 * * * *', function(){
     console.log('The answer to life, the universe, and everything!');
-});
+    require('./controllers/pingbo/pingbo_spider').synchroPingDataToTemp();
+    require('./controllers/egb/toTemp').backupsData();
+// });
 
 // error handler
 app.use(function(err, req, res, next) {

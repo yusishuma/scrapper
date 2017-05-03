@@ -65,7 +65,8 @@ var synchroMatchesToTemp = function () {
                 };
                 return MatchModel.findOne({ matchName: CONSTANTS.generateMatchName(teamA, teamB) }).then(function (match) {
                     if(match){
-                        return null;
+                        console.log('match 已存在')
+                        return '';
                     }else{
                         console.log('egb 创建temp match');
                         return new MatchModel(newMatch).save();

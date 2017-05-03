@@ -62,7 +62,7 @@ var teamSchema = new Schema({
 teamSchema.plugin(deepPopulate, {});
 teamSchema.options.toJSON.transform = function (doc, ret) {
     ret.teamId = ret._id.toString();
-    var games = ['CSGO', 'LOL', 'DOTA 2'];
+    var games = ['CSGO', 'LOL', 'DOTA2'];
     var source = ['后台添加', 'EGB网站', '平博网站'];
     ret.gameType = games[ret.gameType - 1];
     ret.teamSource = source[ret.teamSource - 1];

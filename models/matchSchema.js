@@ -74,7 +74,7 @@ var matchSchema = new Schema({
 matchSchema.plugin(deepPopulate, {});
 matchSchema.options.toJSON.transform = function (doc, ret) {
     ret.matchId = ret._id.toString();
-    var games = ['CSGO', 'LOL', 'DOTA 2'];
+    var games = ['CSGO', 'LOL', 'DOTA2'];
     ret.gameType = games[ret.gameType - 1];
     delete ret.__v;
     delete ret._id;
