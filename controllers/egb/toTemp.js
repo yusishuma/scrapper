@@ -65,12 +65,14 @@ var synchroMatchesToTemp = function () {
                 };
                 return MatchModel.findOne({ matchName: CONSTANTS.generateMatchName(teamA, teamB) }).then(function (match) {
                     if(match){
-                        console.log('match 已存在')
+                        console.log('match 已存在');
                         return '';
                     }else{
                         console.log('egb 创建temp match');
                         return new MatchModel(newMatch).save();
                     }
+                }).fail(function () {
+                    return ''
                 })
             })));
     })
@@ -107,6 +109,8 @@ var synchroTeamsToTemp = function () {
  */
 var synchroGamblesToTemp = function () {
     return BetModel.find({exist_production: { '$nin': CONSTANTS.EXIST_PRODUCTION.EXIST }}).then(function (bets) {
+        console.log('========================')
+
         if(bets.length == 0){
             console.log('success');
             return "success"
@@ -166,7 +170,6 @@ var translateGambles = function (bets) {
             gambleSource: bet.source,   //赌局数据来源
             gambleSourceId: bet.id, //赌局来源ID
             gambleSourceAndSourceId: bet.source + bet.id,
-            isExist: CONSTANTS.EXIST_PRODUCTION.EXIST,
             optionA: {
                 name: optionAName,
                 teamA: teamA,
@@ -196,6 +199,8 @@ var translateGambles = function (bets) {
                 newGamble.optionB.riskFund = league.riskFund;
                 newGamble.optionA.payCeiling = league.payCeiling;
                 newGamble.optionB.payCeiling = league.payCeiling;
+                newGamble.league = league._id;
+
             }
             return GambleModel.findOne({ gameType: CONSTANTS.translateGameType(bet.game), gambleSource: bet.source, gambleSourceId: bet.id }).then(function (gambels) {
                 if(gambels){

@@ -164,18 +164,24 @@ var fetchPingbetData = function () {
             var leagueName = gameAndLeagueName[1];
             var teamA = CONSTANTS.parseTeamName(event.home);
             var teamB = CONSTANTS.parseTeamName(event.away);
-            //同步战队到Temp
+            if(gameType < 4){
+
+                //同步战队到Temp
             var teamNames = [teamA, teamB];
             return Q.all(teamNames.map(function(teamName){
                 var newTeam = {teamName: teamName, gameType: gameType, teamSource: CONSTANTS.SOURCE.PING_BO};
-                return TeamModel.findOne({teamName: teamName, gameType: gameType}).then(function (team) {
+                    return TeamModel.findOne({teamName: teamName, gameType: gameType}).then(function (team) {
                         if(team){
                             return '已存在'
                         }else{
-                            console.log('pingbo 创建temp team');
-                            return new TeamModel(newTeam).save();
+                            console.log(event.leagueName, game,leagueName,'pingbo 创建temp team', newTeam);
+                            return new TeamModel(newTeam).save().then(function (result) {
+                                console.log(result)
+                                return result
+                            });
                         }
                     })
+
                 }))
             .then(function () {//同步赛事到Temp
                 var newMatch = {
@@ -211,8 +217,6 @@ var fetchPingbetData = function () {
                     match: CONSTANTS.generateMatchName(teamA, teamB),       //所属赛程ID
                     optionA:{},
                     optionB:{},
-                    isExist: CONSTANTS.EXIST_PRODUCTION.EXIST,
-                    gambleSourceAndSourceId: CONSTANTS.SOURCE.PING_BO + event.id + moment().valueOf(),
                     gambleSource: CONSTANTS.SOURCE.PING_BO,   //赌局数据来源
                     gambleSourceId: event.id //赌局来源ID
 
@@ -239,10 +243,11 @@ var fetchPingbetData = function () {
                     newGamble.optionB.name = teamB;
                     newGamble.optionB.teamB = teamB;
                     newGamble.optionB.odds = CONSTANTS.parseOdds(odd.spreads[0].away, odd.maxSpread);
+                    newGamble.gambleSourceAndSourceId = CONSTANTS.SOURCE.PING_BO + event.id + newGamble.gambleName;
                     newGambles.push(newGamble);
 
                 }
-                if(odd.moneyline && odd.moneyline.length > 0){
+                if(odd.moneyline){
                     newGamble.gambleName = game_subsidiary + '1X2';
                     if(event.periods && event.periods.length > 0){
                         var teamAwin = (teamAScore - teamBScore) > 0;
@@ -252,11 +257,12 @@ var fetchPingbetData = function () {
                     }
                     newGamble.optionA.name = teamA;
                     newGamble.optionA.teamA = teamA;
-                    newGamble.optionA.odds = CONSTANTS.parseOdds(odd.moneyline[0].home, odd.maxMoneyline);
+                    newGamble.optionA.odds = CONSTANTS.parseOdds(odd.moneyline.home, odd.maxMoneyline);
 
                     newGamble.optionB.name = teamB;
                     newGamble.optionB.teamB = teamB;
-                    newGamble.optionB.odds = CONSTANTS.parseOdds(odd.moneyline[0].away, odd.maxMoneyline);
+                    newGamble.optionB.odds = CONSTANTS.parseOdds(odd.moneyline.away, odd.maxMoneyline);
+                    newGamble.gambleSourceAndSourceId = CONSTANTS.SOURCE.PING_BO + event.id + newGamble.gambleName;
                     newGambles.push(newGamble);
 
                 }
@@ -274,6 +280,7 @@ var fetchPingbetData = function () {
                     newGamble.optionB.name = '小于' + odd.totals[0].points;
                     newGamble.optionB.teamB = teamB;
                     newGamble.optionB.odds = CONSTANTS.parseOdds(odd.totals[0].under, odd.maxTotal);
+                    newGamble.gambleSourceAndSourceId = CONSTANTS.SOURCE.PING_BO + event.id + newGamble.gambleName;
                     newGambles.push(newGamble);
                 }
             return LeagueModel.findOne({ leagueName: event.leagueName }).then(function (league) {
@@ -290,17 +297,17 @@ var fetchPingbetData = function () {
                 }
 
             }).then(function (league) {
-                return Q.all(newGambles.map(function (newGamble) {
-                    newGamble.optionA.riskFund = league.riskFund || 1000;
-                    newGamble.optionB.riskFund = league.riskFund || 1000;
-                    newGamble.optionA.payCeiling = league.payCeiling || 10000;
-                    newGamble.optionB.payCeiling = league.payCeiling || 10000;
-                    newGamble.league = league.leagueId;
+                return Q.all(newGambles.map(function (item) {
+                    item.optionA.riskFund = league.riskFund || 1000;
+                    item.optionB.riskFund = league.riskFund || 1000;
+                    item.optionA.payCeiling = league.payCeiling || 10000;
+                    item.optionB.payCeiling = league.payCeiling || 10000;
+                    item.league = league._id;
                     if(newGamble.gameType && newGamble.gameType < 4 && newGamble.endTime ){
-                        return GambleModel.findOne({ gambleSourceAndSourceId: newGamble.gambleSourceAndSourceId }).then(function (results) {
+                        return GambleModel.findOne({ gambleSourceAndSourceId: item.gambleSourceAndSourceId }).then(function (results) {
                             if(results){
                                 console.log("pingbo 更新temp Gamble");
-                                return GambleModel.update({ gambleSourceAndSourceId: results.gambleSourceAndSourceId }, { '$set': { endTime: newGamble.endTime, optionA: newGamble.optionA, optionB: newGamble.optionB, isRefreshed: true } });
+                                return GambleModel.update({ gambleSourceAndSourceId: results.gambleSourceAndSourceId }, { '$set': { endTime: item.endTime, optionA: item.optionA, optionB: item.optionB, isRefreshed: true } });
                             }else{
                                 console.log('pingbo 创建temp Gamble');
                                 return new GambleModel(newGamble).save();
@@ -313,6 +320,9 @@ var fetchPingbetData = function () {
         }).then(function () {
                 return  ping_Event.update({ id: event.id }, {'$set': {exist_production: CONSTANTS.EXIST_PRODUCTION.EXIST}})
             })
+        }else {
+            return ''
+        }
     })))
 })
 };

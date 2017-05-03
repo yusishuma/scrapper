@@ -10,6 +10,8 @@
  * @apiParam {Number} gameType 游戏类型【CSGO：1， LOL: 2, DOTA2: 3】
  * @apiParam {Number} limit 每页显示条目数（步长）默认为 20
  * @apiParam {Number} page 当前页数 > = 1
+ * @apiParam {String} matchName 赛程名称
+ * @apiParam {String} gambleName 赌局名称
  * @apiSuccess {Object} data   请求结果
  * @apiSuccess {Object[]} data.gambles   用户名
  * @apiSuccess {Object} data.league   所属赛事

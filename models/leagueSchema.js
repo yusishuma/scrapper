@@ -77,7 +77,6 @@ leagueSchema.options.toJSON.transform = function (doc, ret) {
     var games = ['CSGO', 'LOL', 'DOTA2'];
     ret.gameType = games[ret.gameType - 1];
     delete ret.__v;
-    delete ret._id;
 };
 
 module.exports = leagueSchema;

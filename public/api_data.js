@@ -132,6 +132,20 @@ define({ api: [
             "field": "page",
             "optional": false,
             "description": "<p>当前页数 &gt; = 1</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "matchName",
+            "optional": false,
+            "description": "<p>赛程名称</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "field": "gambleName",
+            "optional": false,
+            "description": "<p>赌局名称</p>"
           }
         ]
       }

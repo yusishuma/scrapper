@@ -32,21 +32,11 @@ var teamSchema = new Schema({
     // 战队名称
     teamName: {
         type: String,
-        required: true,
-        // unique: true,
-        // index: true
+        required: true
     },
     teamSource: {
         type: Number
     }
-    // ,
-    // alias: { // 别名
-    //     type: [{
-    //         id: String,
-    //         source: Number,
-    //         name: String
-    //     }]
-    // }
 },
     {
         id: false,

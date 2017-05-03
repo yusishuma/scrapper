@@ -8,6 +8,8 @@ var Q = require('q');
 var CONSTANTS = require('../utils/constants');
 var _ = require('lodash');
 var request = require('request');
+var qlimit = require('qlimit');
+var limit = qlimit(10);
 /**
  * 获取赌局列表
  * @param req
@@ -30,6 +32,9 @@ exports.getGamblesByList = function (req, res) {
     };
     if(req.query.matchName){
         options.searchOption.matchName = req.query.matchName;
+        if(req.query.matchName === 'all'){
+            delete options.searchOption.matchName;
+        }
     }
     if(req.query.gambleName){
         options.searchOption.gambleName = req.query.gambleName;
@@ -140,10 +145,11 @@ exports.synchroGambleToPro = function (req, res) {
     })
 };
 
-var synchroGambles = function () {
+exports.synchroGambles = function () {
     var updateUrl = CONSTANTS.SERVER_URL + '/gambleupdate';
-    Gamble.find({ 'isExist': CONSTANTS.EXIST_PRODUCTION.EXIST, isRefreshed: false }).then(function (gambles) {
+    Gamble.find({ 'isExist': CONSTANTS.EXIST_PRODUCTION.EXIST, isRefreshed: false }).populate('league').then(function (gambles) {
         return Q.all(gambles.map(limit(function (gamble) {
+
             var newGamble = {
                 leagueName: gamble.league.leagueName,
                 teamA: gamble.optionA.teamA,
@@ -164,6 +170,7 @@ var synchroGambles = function () {
                 optionBOdds: gamble.optionB.odds
 
             };
+
             /**
              * 更新赌局
              */
@@ -172,14 +179,14 @@ var synchroGambles = function () {
                     if (!err && res.statusCode === 200) {
                         if (body.status) {
                             console.log('同步更新赌局 ' + newGamble.leagueName + ' 成功！');
-
+                            return ''
                         } else {
                             console.log('同步更新赌局 ' + newGamble.leagueName + ' 失败！');
-
+                            return ''
                         }
                     } else {
                         console.log('同步更新赌局 ' + newGamble.leagueName + ' 失败！');
-
+                        return ''
                     }
                 });
             })
