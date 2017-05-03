@@ -89,13 +89,11 @@ exports.updateGamble = function (req, res) {
  */
 exports.synchroGambleToPro = function (req, res) {
     var gambleId = req.body.gambleId;
-    Gamble.findById(gambleId).then(function (gamble) {
+    Gamble.findById(gambleId).populate('league').then(function (gamble) {
         if(!gamble){
             return respondFailure(res, 404, '赌局不存在');
         }
-        return Gamble.update({_id: gambleId}, {'$set': { 'isExist': CONSTANTS.EXIST_PRODUCTION.EXIST, isRefreshed: true}}).then(function () {
             return gamble;
-        });
     }).then(function (gamble) {
         var createUrl = CONSTANTS.SERVER_URL + '/addgamble';
         delete gamble.gambleId;
@@ -103,7 +101,7 @@ exports.synchroGambleToPro = function (req, res) {
             leagueName: gamble.league.leagueName,
             teamA: gamble.optionA.teamA,
             teamB: gamble.optionB.teamB,
-            gameType: CONSTANTS.translateGameType(gamble.gameType),
+            gameType: gamble.gameType,
             optionARiskFund: gamble.optionA.riskFund,
             optionBRiskFund: gamble.optionB.riskFund,
             gambleSource: gamble.gambleSource,
@@ -119,27 +117,33 @@ exports.synchroGambleToPro = function (req, res) {
             optionBOdds: gamble.optionB.odds
 
         };
+        return Q.fcall(function () {
+            /**
+             * 创建赌局
+             */
+            request.post({url: createUrl, form: newGamble, json: true}, function (err, requestGamble, body) {
+                console.log( err, body, requestGamble)
+                if (!err && requestGamble.statusCode === 200) {
+                    if (body.status) {
+                        console.log('同步创建赌局 ' + newGamble.leagueName + ' 成功！');
+                        return Gamble.update({_id: gambleId}, {'$set': { 'isExist': CONSTANTS.EXIST_PRODUCTION.EXIST, isRefreshed: true}}).then(function(){
+                            console.log("=====================");
+                             respondSuccess(res, {}, 201, '同步创建赌局成功');
+                        })
 
-        /**
-         * 创建赌局
-         */
-        request.post({url: createUrl, form: newGamble, json: true}, function (err, res, body) {
-            if (!err && res.statusCode === 200) {
-                if (body.status) {
-                    console.log('同步创建赌局 ' + gamble.leagueName + ' 成功！');
-                    respondSuccess(res, {}, 201, '同步创建赌局成功');
 
+                    } else {
+                        console.log('同步创建赌局 ' + newGamble.leagueName + ' 失败！');
+                        respondFailure(res, 500, '同步创建赌局失败', err, body);
+
+                    }
                 } else {
-                    console.log('同步创建赌局 ' + gamble.leagueName + ' 失败！');
-                    respondFailure(res, 500, '同步创建赌局失败');
+                    console.log('同步创建赌局 ' + newGamble.leagueName + ' 失败！');
+                        respondFailure(res, 500, '同步创建赌局失败', err, body);
 
                 }
-            } else {
-                console.log('同步创建赌局 ' + gamble.leagueName + ' 失败！');
-                respondFailure(res, 500, '同步创建赌局失败');
-
-            }
-        });
+            });
+        })
     }).fail(function (err) {
         return respondFailure(res, 404, '同步创建赌局失败');
     })
@@ -154,7 +158,8 @@ exports.synchroGambles = function () {
                 leagueName: gamble.league.leagueName,
                 teamA: gamble.optionA.teamA,
                 teamB: gamble.optionB.teamB,
-                gameType: CONSTANTS.translateGameType(gamble.gameType),
+                gameType: gamble.gameType,
+                gambleType: gamble.gambleType,
                 optionARiskFund: gamble.optionA.riskFund,
                 optionBRiskFund: gamble.optionB.riskFund,
                 gambleSource: gamble.gambleSource,
@@ -178,8 +183,9 @@ exports.synchroGambles = function () {
                 request.post({url: updateUrl, form: newGamble, json: true}, function (err, res, body) {
                     if (!err && res.statusCode === 200) {
                         if (body.status) {
-                            console.log('同步更新赌局 ' + newGamble.leagueName + ' 成功！');
-                            return ''
+                            return Gamble.update({ _id: gamble._id }, {'$set': { 'isExist': CONSTANTS.EXIST_PRODUCTION.EXIST, isRefreshed: true}}).then(function(){
+                                console.log('同步更新赌局 ' + newGamble.leagueName + ' 成功！');
+                            })
                         } else {
                             console.log('同步更新赌局 ' + newGamble.leagueName + ' 失败！');
                             return ''
@@ -192,7 +198,5 @@ exports.synchroGambles = function () {
             })
         })))
 
-    }).fail(function (err) {
-        return respondFailure(res, 404, '同步更新赌局失败');
     })
 };

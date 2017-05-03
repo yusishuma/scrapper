@@ -1,10 +1,7 @@
 'use strict';
 
 module.exports = {
-    DB: {
-        URL: 'mongodb://localhost:27017/bets',
-        LIMIT: 15
-    },
+
     SOURCE: {
         // 后台添加
         BACKSTAGE: 1,
@@ -19,7 +16,7 @@ module.exports = {
             'Accept': 'application/json'
         }
     },
-    SERVER_URL: 'http://47.93.44.14:8000',
+    SERVER_URL: 'http://47.94.3.18:8040',
     GAME_TYPE: {
         CSGO: 1,
         LOL: 2,
@@ -102,8 +99,10 @@ module.exports = {
     parseOdds: function (number, maxNum) {
         if(number < 0){
             number = -number;
+            return ((number + maxNum)/number).toFixed(3)
+        }else{
+            return ((number + maxNum)/maxNum).toFixed(3)
         }
-        return ((number + maxNum)/number).toFixed(3)
     },
     /**
      * 生成Match名称
@@ -139,7 +138,7 @@ module.exports = {
      * @type {{DB_URI: string, RECONNECT_TIME: number}}
      */
     MONGODB_ENV: {
-        DB_URI: 'mongodb://localhost:27017/bets',
+        DB_URI: 'mongodb://47.93.44.14:27017/bets',
         RECONNECT_TIME: 300
     },
     /**

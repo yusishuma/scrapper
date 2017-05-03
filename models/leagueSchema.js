@@ -23,7 +23,9 @@ var leagueSchema = new Schema({
     // 赛事名称
     leagueName: {
         type: String,
-        required: true
+        required: true,
+        index: true,
+        unique: true
     },
     // 赛事图片
     leagueImageUrl: {
