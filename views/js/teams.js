@@ -5,7 +5,7 @@ var totalCount = 0;
 var pageSize = 20
 var urlPage = getUrlParam("page");
 var currentPageNo = urlPage ? urlPage : 1;
-var server_url = 'http://localhost:3090';
+var server_url = 'http://47.93.44.14:3090';
 
 $(function(){
     initBtn();

@@ -103,7 +103,7 @@ var fetchUnSettledEventData = function () {
             return Q.all(league.events.map(limit(function (event) {
                 event.leagueId = league.id;
                 event.starts = moment(event.starts).valueOf();
-                if(event.status === 'I'){
+                if(event.liveStatus === 0){
                     return ping_Event.update({ id: event.id }, { '$set': { home: event.home, away: event.away, starts: event.starts, status: event.status }}).then(function (result) {
                         if(result && result.n === 0 && result.ok === 1){
                             return new ping_Event(event).save()

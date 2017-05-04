@@ -9,7 +9,7 @@ $(function(){
     initBtn();
     // upData();
 })
-var server_url = 'http://localhost:3090';
+var server_url = 'http://47.93.44.14:3090';
 
 function initBtn () {
     // 刷新当前页面
