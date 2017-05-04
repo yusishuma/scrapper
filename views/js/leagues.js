@@ -124,6 +124,7 @@ $('.save').live('click',function(){
             }
         },
         error: function(e) {
+            alert('同步赛事失败');
         }
     })
 })

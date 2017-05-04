@@ -118,3 +118,32 @@ exports.synchroLeagueToPro = function (req, res) {
         return respondFailure(res, 404, '同步创建赛事失败');
     })
 };
+
+exports.synchroLeagues = function () {
+    return League.find({ 'isExist': CONSTANTS.EXIST_PRODUCTION.NO_EXIST }).then(function (leagues) {
+        return Q.all(leagues.map(limit(function (league) {
+            var updateUrl = CONSTANTS.SERVER_URL + '/getleague?leagueName=' + league.leagueName;
+            /**
+             * 更新赌局
+             */
+            return Q.fcall(function () {
+                request.get({url: updateUrl, json: true}, function (err, res, body) {
+                    if (!err && res.statusCode === 200) {
+                        if (body.status) {
+                            return League.update({ _id: league._id }, {'$set': { 'isExist': CONSTANTS.EXIST_PRODUCTION.EXIST }}).then(function(){
+                                console.log('同步更新赌局 ' + league.leagueName + ' 成功！');
+                            })
+                        } else {
+                            console.log('同步更新赌局 ' + league.leagueName + ' 失败！');
+                            return ''
+                        }
+                    } else {
+                        console.log('同步更新赌局 ' + league.leagueName + ' 失败！');
+                        return ''
+                    }
+                });
+            })
+        })))
+
+    })
+}

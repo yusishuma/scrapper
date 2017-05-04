@@ -117,3 +117,31 @@ exports.synchroTeamToPro = function (req, res) {
         return respondFailure(res, 404, '同步创建战队失败');
     })
 };
+exports.synchroTeams = function () {
+    return Team.find({ 'isExist': CONSTANTS.EXIST_PRODUCTION.NO_EXIST }).then(function (teams) {
+        return Q.all(teams.map(limit(function (team) {
+            var updateUrl = CONSTANTS.SERVER_URL + '/getteam?teamName=' + team.teamName;
+            /**
+             * 更新赌局
+             */
+            return Q.fcall(function () {
+                request.get({url: updateUrl, json: true}, function (err, res, body) {
+                    if (!err && res.statusCode === 200) {
+                        if (body.status) {
+                            return Team.update({ _id: team._id }, {'$set': { 'isExist': CONSTANTS.EXIST_PRODUCTION.EXIST }}).then(function(){
+                                console.log('同步更新赌局 ' + team.teamName + ' 成功！');
+                            })
+                        } else {
+                            console.log('同步更新赌局 ' + team.teamName + ' 失败！');
+                            return ''
+                        }
+                    } else {
+                        console.log('同步更新赌局 ' + team.teamName + ' 失败！');
+                        return ''
+                    }
+                });
+            })
+        })))
+
+    })
+}

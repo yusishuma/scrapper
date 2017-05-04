@@ -69,7 +69,7 @@ function initBtn () {
                     "<tr>"+
                         "<td rowspan='2' class='td'>" + (i+1) + "</td>"+
                         "<td rowspan='2' class='td'>" + data.gambleName + "</td>"+
-                        "<td rowspan='2' class='td'><a href='detail.html'>" + data.league.leagueName + "</a></td>"+
+                        "<td rowspan='2' class='td'><a href='leagues.html'>" + data.league.leagueName + "</a></td>"+
                         "<td rowspan='2' class='td'>" + data.match + "</td>"+
                         "<td rowspan='2' class='td'>" + endTime + "</td>"+
                         "<td>下注项2名称</td>"+
@@ -244,6 +244,8 @@ function createGame () {
             }
         },
         error: function(e) {
+            alert('同步赌局失败');
+
         }
     })
 }

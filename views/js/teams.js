@@ -39,6 +39,7 @@ function initBtn () {
             });
         },
         error: function(e) {
+            alert('同步战队失败');
         }
     })
 }
