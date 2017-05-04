@@ -178,7 +178,7 @@ var translateGambles = function (bets) {
             optionB: {
                 name: optionBName,
                 teamB: teamB,
-                odds: bet.coef_1,
+                odds: bet.coef_2,
                 win: bet.gamer_1.win
             }
         };
