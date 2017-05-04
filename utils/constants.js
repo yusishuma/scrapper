@@ -17,6 +17,14 @@ module.exports = {
         }
     },
     SERVER_URL: 'http://47.94.3.18:8040',
+    /**
+     * 数据库 配置
+     * @type {{DB_URI: string, RECONNECT_TIME: number}}
+     */
+    MONGODB_ENV: {
+        DB_URI: 'mongodb://localhost:27017/bets',
+        RECONNECT_TIME: 300
+    },
     GAME_TYPE: {
         CSGO: 1,
         LOL: 2,
@@ -133,14 +141,7 @@ module.exports = {
         MAX_AGE: 24 * 60 * 60 * 1000 * 30,
         TOKEN_LIFE: 24 * 60 * 60 * 1000 * 30
     },
-    /**
-     * 数据库 配置
-     * @type {{DB_URI: string, RECONNECT_TIME: number}}
-     */
-    MONGODB_ENV: {
-        DB_URI: 'mongodb://47.93.44.14:27017/bets',
-        RECONNECT_TIME: 300
-    },
+
     /**
      *  赛事等级
      */

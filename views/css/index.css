@@ -1,0 +1,89 @@
+#scrapper {
+  width: 100%;
+  margin: 0 auto;
+  height: 1000px;
+  border-top: 0.1px solid #000;
+}
+#scrapper .header {
+  margin: 15px 0 0 100px;
+}
+#scrapper .header .header_left {
+  height: 25px;
+  line-height: 25px;
+  border: 1px solid #858585;
+}
+#scrapper .header .header_right {
+  margin-left: 50px;
+  height: 25px;
+  line-height: 25px;
+  border: 1px solid #858585;
+}
+#scrapper .list {
+  margin: 40px 0 0 50px;
+}
+#scrapper .list tr td {
+  text-align: center;
+  padding: 0 6px;
+}
+#scrapper .list tr td input {
+  text-align: center;
+  color: #e25d29;
+}
+#scrapper .list tr:nth-child(2n+1) {
+  background: #00c5ff;
+}
+#scrapper .list tr .td {
+  background: #fff;
+}
+#scrapper .list tr .td a {
+  color: #95431e;
+  text-decoration: underline;
+}
+#scrapper .list tr .add_td {
+  background: #95c648;
+}
+#scrapper .list tr .add_td a {
+  color: #fff;
+  display: inline-block;
+}
+#scrapper .list tr .add_td a:hover {
+  text-decoration: underline;
+}
+#scrapper .message {
+  width: 450px;
+  padding: 20px 5px;
+  display: none;
+  position: fixed;
+  top: 300px;
+  right: 10px;
+  background: #fff;
+  z-index: 99;
+}
+#scrapper .message .message_table tr {
+  height: 30px;
+  line-height: 30px;
+}
+#scrapper .message .message_table tr td {
+  padding: 0 15px;
+}
+#scrapper .message .message_table .message_tr td {
+  padding: 30px 18px;
+}
+#scrapper .message .message_table .message_tr td a {
+  display: inline-block;
+  width: 100px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  background: green;
+  border-radius: 5px;
+  border: 1px solid #c9c8c9;
+  color: #fff;
+}
+#scrapper .message .message_table .message_tr td a:hover {
+  color: #000;
+}
+#scrapper ul {
+  margin: 10px 400px;
+  height: 100px;
+}

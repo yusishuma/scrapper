@@ -150,7 +150,7 @@ exports.synchroGambleToPro = function (req, res) {
 
 exports.synchroGambles = function () {
     var updateUrl = CONSTANTS.SERVER_URL + '/gambleupdate';
-    Gamble.find({ 'isExist': CONSTANTS.EXIST_PRODUCTION.EXIST, isRefreshed: false }).populate('league').then(function (gambles) {
+    return Gamble.find({ 'isExist': CONSTANTS.EXIST_PRODUCTION.EXIST, isRefreshed: false }).populate('league').then(function (gambles) {
         return Q.all(gambles.map(limit(function (gamble) {
 
             var newGamble = {

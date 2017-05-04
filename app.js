@@ -14,7 +14,7 @@ var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var CONSTANTS = require('./utils/constants');
 var schedule = require('node-schedule');
-
+var Q = require('q');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -22,8 +22,9 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, 'upload')));
+// app.use(express.static(path.join(__dirname, 'public')));
+// app.use(express.static(path.join(__dirname, 'upload')));
+app.use(express.static(path.join(__dirname, 'views')));
 app.use(session({
     secret: CONSTANTS.SESSION.SECRET,
     store: new MongoStore({
@@ -81,12 +82,18 @@ app.use(function(req, res, next) {
   next(err);
 });
 
-// schedule.scheduleJob('*/3 * * * *', function(){
-    console.log('The answer to life, the universe, and everything!');
-    // require('./controllers/pingbo/pingbo_spider').synchroPingDataToTemp();
-    require('./controllers/egb/toTemp').backupsData();
-    // require('./controllers/gamble_controller').synchroGambles();
-// });
+schedule.scheduleJob('*/3 * * * *', function(){
+    // Q.fcall(function () {
+    //     require('./controllers/pingbo/pingbo_spider').synchroPingDataToTemp();
+    //
+    // }).then(function () {
+    //     require('./controllers/egb/toTemp').backupsData();
+    //
+    // }).then(function () {
+    //     require('./controllers/gamble_controller').synchroGambles();
+    //
+    // })
+});
 
 // error handler
 app.use(function(err, req, res, next) {

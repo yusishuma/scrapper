@@ -109,7 +109,6 @@ var synchroTeamsToTemp = function () {
  */
 var synchroGamblesToTemp = function () {
     return BetModel.find({exist_production: { '$nin': CONSTANTS.EXIST_PRODUCTION.EXIST }}).then(function (bets) {
-        console.log('========================')
 
         if(bets.length == 0){
             console.log('success');
@@ -316,7 +315,7 @@ var fetchBetInfo = function (bets) {
  */
 exports.backupsData = function () {
 
-    spider.fetchBettingData()
+    return spider.fetchBettingData()
         .then(function (data) {
         if(data.bets && data.nested_bets && data.nested_bets.length > 0 && data.nested_bets.length > 0){
             return fetchBetInfo(data.bets).then(function (result) {

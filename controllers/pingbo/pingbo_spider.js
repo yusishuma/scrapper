@@ -176,7 +176,6 @@ var fetchPingbetData = function () {
                         }else{
                             console.log(event.leagueName, game,leagueName,'pingbo 创建temp team', newTeam);
                             return new TeamModel(newTeam).save().then(function (result) {
-                                console.log(result)
                                 return result
                             });
                         }
@@ -327,7 +326,7 @@ var fetchPingbetData = function () {
 })
 };
 exports.synchroPingDataToTemp = function () {
-    fetchSettledEventData().then(function () {
+    return fetchSettledEventData().then(function () {
         return fetchOddsdEventData();
     }).then(function () {
         return fetchUnSettledEventData();
@@ -335,7 +334,5 @@ exports.synchroPingDataToTemp = function () {
         return fetchLeagueData();
     }).then(function () {
         return fetchPingbetData();
-    }).then(function () {
-        console.log("success")
-    });
+    })
 };

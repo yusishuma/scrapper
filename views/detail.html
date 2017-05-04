@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>赛事列表</title>
+    <script type="text/javascript" src="public/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="js/detail.js"></script>
+    <script type="text/javascript" src="public/js/page.js"></script>
+    <link rel="stylesheet" type="text/css" href="public/css/reset.css">
+    <link rel="stylesheet" type="text/css" href="css/detail.css">
+    <link rel="stylesheet" type="text/css" href="public/css/page.css">
+</head>
+<body>
+    <div class="detail">
+        <div class="main">
+            <select id= "selectedId" class="detail_header" onchange="javascript:initBtn()">
+                <!-- value 定义送往服务器的选项值。 -->
+                <option value ="1">CSGO</option>
+                <option value ="2">LOL</option>
+                <option value ="3">DOTA2</option>
+            </select>
+            <div class="detail_list">
+                <table class="detail_table" border="2" cellspacing="0" bordercolor="#868686">
+                    <tbody id= "tbodyid"></tbody>
+                        <!-- <div id="leagueId" style="display: none;"></div> -->
+                    <!-- 循环加载的部分 -->
+                    <!-- <tr>
+                        <td>1</td>
+                        <td>LPL</td>
+                        <td>
+                            <select class="detail_select">
+                                <option value ="1">1</option>
+                                <option value ="2">2</option>
+                                <option value ="3">3</option>
+                            </select>
+                        </td>
+                        <td>10000</td>
+                        <td>1000</td>
+                    </tr> -->
+                    <!-- 循环结束 -->
+                </table>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+        <!-- 分页 -->
+        <!-- maxshowpageitem：显示几页  pagelistcount：一页显示几条数据 -->
+        <ul class="page" maxshowpageitem="3" id="page"></ul>
+    </div>
+</body>
+<script type="text/javascript">
+</script>
+</html>

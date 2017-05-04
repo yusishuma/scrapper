@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>战队列表</title>
+    <script type="text/javascript" src="public/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="js/teams.js"></script>
+    <script type="text/javascript" src="public/js/page.js"></script>
+    <link rel="stylesheet" type="text/css" href="public/css/reset.css">
+    <link rel="stylesheet" type="text/css" href="css/teams.css">
+    <link rel="stylesheet" type="text/css" href="public/css/page.css">
+</head>
+<body>
+    <div class="teams">
+        <select id= "selectedId" class="teams_header" onchange="javascript:initBtn()">
+                <!-- value 定义送往服务器的选项值。 -->
+                <option value ="1">CSGO</option>
+                <option value ="2">LOL</option>
+                <option value ="3">DOTA2</option>
+            </select>
+        <table class="teams_table" border="2" cellspacing="0" bordercolor="#868686">
+            <!-- <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>队伍</th>
+                    <th>游戏类型</th>
+                </tr>
+            </thead> -->
+            <tbody id= "tbodyid"></tbody>
+        </table>
+        <!-- 分页 -->
+        <!-- maxshowpageitem：显示几页  pagelistcount：一页显示几条数据 -->
+        <ul class="page" maxshowpageitem="3" id="page"></ul>
+    </div>
+</body>
+</html>

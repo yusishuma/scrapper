@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>赌局列表</title>
+    <script type="text/javascript" src="public/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" src="dist/sweetalert-dev.js"></script>
+    <script type="text/javascript" src="dist/sweetalert.min.js"></script>
+    <script type="text/javascript" src="public/js/page.js"></script>
+    <link rel="stylesheet" type="text/css" href="public/css/reset.css">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <link rel="stylesheet" type="text/css" href="dist/sweetalert.css">
+    <link rel="stylesheet" type="text/css" href="public/css/page.css">
+</head>
+<body>
+    <div id="scrapper">
+        <div class="header">
+            <select class="header_left" id="selectedId">
+                <option value ="1">CSGO</option>
+                <option value ="2">LOL</option>
+                <option value="3">DOTA2</option>
+            </select>
+            <select class="header_right" id="matchId" onchange="javascript:initBtn()">
+                <!-- <option>全部</option> -->
+                <!-- <option name="">EDG VS RNG</option>
+                <option>OMG VS LGD</option>
+                <option>EDG VS RNG</option>
+                <option>OMG VS LGD</option> -->
+            </select>
+        </div>
+        <table class="list" border="1" cellspacing="0" bordercolor="#868686" align="center">
+            <tbody id= "tbodyid"></tbody>
+        <!-- <tr>
+                <td rowspan="2">序号</td>
+                <td rowspan="2">赌局名称</td>
+                <td rowspan="2">所属赛事</td>
+                <td rowspan="2">所属比赛</td>
+                <td rowspan="2">截止时间</td>
+                <td>下注项1名称</td>
+                <td>下注项1赔率</td>
+                <td>单注赔付上限</td>
+                <td>风险金</td>
+                <td rowspan="4" class="add_td"><a href="">添加赌局</a></td>
+            </tr>
+            <tr>
+                <td>EDG</td>
+                <td>1.2</td>
+                <td><input type="text" value="1000"></input></td>
+                <td><input type="text" value="100000"></input></td>
+            </tr>
+            <tr>
+                <td rowspan="2" class="td">1</td>
+                <td rowspan="2" class="td">胜负</td>
+                <td rowspan="2" class="td"><a href="html/detail.html">ESEC</a></td>
+                <td rowspan="2" class="td">EDG VS RNG</td>
+                <td rowspan="2" class="td">2017/12/12 <br/> 17:10:00</td>
+                <td>下注项2名称</td>
+                <td>下注项2赔率</td>
+                <td>单注赔付上限</td>
+                <td>风险金</td>
+            </tr>
+            <tr>
+                <td>EDG</td>
+                <td>1.2</td>
+                <td><input type="text" value="1000"></input></td>
+                <td><input type="text" value="100000"></input></td>
+            </tr> -->
+        </table>
+        <!-- 右边的信息展示 -->
+        <div class="message">
+            <table class="message_table" border="1">
+                <tr class="message_table_tr">
+                    <td>所属赛事：<span class="message_leagueName"></span></td>
+                    <td>所属比赛：<span class="message_match"></span></td>
+                </tr>
+                <tr>
+                    <td>截止时间：<span class="message_endtime"></span></td>
+                    <td>赌局名称：<span class="message_gambleName"></span></td>
+                </tr>
+                <tr>
+                    <td>下注项1名称：<span class="message_oA_win"></span></td>
+                    <td>下注项2名称：<span class="message_oB_win"></span></td>
+                </tr>
+                <tr>
+                    <td>下注项1赔率：<span class="message_oA_odds"></span></td>
+                    <td>下注项2赔率：<span class="message_oB_odds"></span></td>
+                </tr>
+                <tr>
+                    <td>下注项1的单注赔付上限：<span class="message_oA_payCeiling"></span></td>
+                    <td>下注项2的单注赔付上限：<span class="message_oB_payCeiling"></span></td>
+                </tr>
+                <tr>
+                    <td>下注项1的风险金：<span class="message_oA_riskFund"></span></td>
+                    <td>下注项2的风险金：<span class="message_oB_riskFund"></span></td>
+                </tr>
+                <tr class="message_tr">
+                    <td><a class="savaBtn" data-gambleId='' href="javascript:createGame();">确认</a></td>
+                    <td><a href="javascript:cancel();">取消</a></td>
+                </tr>
+            </table>
+        </div>
+        <!-- 分页 -->
+        <!-- maxshowpageitem：显示几页  pagelistcount：一页显示几条数据 -->
+        <!-- <ul class="page" maxshowpageitem="3" pagelistcount="5" id="page"></ul> -->
+        <ul class="page" maxshowpageitem="3" id="page"></ul>
+    </div>
+</body>
+</html>
+

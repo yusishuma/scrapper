@@ -1,0 +1,40 @@
+.detail {
+  width: 100%;
+  margin: 0 auto;
+  height: 1000px;
+  border-top: 0.1px solid #000;
+}
+.detail .detail_header {
+  margin: 50px 0 0 300px;
+  height: 25px;
+  line-height: 25px;
+  border: 1px solid #858585;
+}
+.detail .detail_list {
+  margin: 30px 0 0 250px;
+}
+.detail .detail_list .detail_table {
+  float: left;
+}
+.detail .detail_list .detail_table .detail_table_tr1 {
+  background: #03c501;
+}
+.detail .detail_list .detail_table tr {
+  background: #d1d1d1;
+}
+.detail .detail_list .detail_table tr td {
+  text-align: center;
+  padding: 5px 60px;
+}
+.detail .detail_list .detail_table tr td a {
+  display: inline-block;
+  width: 60px;
+  color: #c52d8e;
+}
+.detail .detail_list .detail_table tr td a:hover {
+  text-decoration: underline;
+}
+.detail ul {
+  margin: 10px 600px;
+  height: 100px;
+}

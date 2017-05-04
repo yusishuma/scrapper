@@ -1,0 +1,96 @@
+#scrapper{
+    width: 100%;
+    margin:0 auto;
+    height: 1000px;
+    border-top:0.1px solid #000;
+    .header{
+        margin:15px 0 0 100px;
+        .header_left{
+            height: 25px;
+            line-height: 25px;
+            border: 1px solid #858585;
+        }
+        .header_right{
+            margin-left: 50px;
+            height: 25px;
+            line-height: 25px;
+            border: 1px solid #858585;
+        }
+    }
+    .list{
+        margin: 40px 0 0 50px;
+        tr{
+            td{
+                text-align: center;
+                padding: 0 6px;
+                input{
+                    text-align: center;
+                    color: #e25d29;
+                }
+            }
+            &:nth-child(2n+1){
+                background: #00c5ff;
+            }
+            .td{
+                background: #fff;
+                a{
+                    color: #95431e;
+                    text-decoration: underline;
+                }
+            }
+            .add_td{
+                background: #95c648;
+                a{
+                    color: #fff;
+                    display: inline-block;
+                    &:hover{
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+    }
+    .message{
+        width: 450px;
+        padding: 20px 5px;
+        background: #fff;
+        display: none;
+        position: fixed;
+        top: 300px;
+        right: 10px;
+        background: #fff;
+        z-index: 99;
+        .message_table{
+            tr{
+                height: 30px;
+                line-height: 30px;
+                td{
+                    padding:0 15px;
+                }
+            }
+            .message_tr{
+                td{
+                    padding: 30px 18px;
+                    a{
+                        display: inline-block;
+                        width: 100px;
+                        height: 30px;
+                        line-height: 30px;
+                        text-align: center;
+                        background: green;
+                        border-radius: 5px;
+                        border: 1px solid #c9c8c9;
+                        color: #fff;
+                        &:hover{
+                            color:#000;
+                        };
+                    }
+                }
+            }
+        }
+    }
+    ul{
+        margin: 10px 400px;
+        height: 100px;
+    }
+}

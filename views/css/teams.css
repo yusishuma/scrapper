@@ -1,0 +1,37 @@
+.teams {
+  width: 100%;
+  margin: 0 auto;
+  height: 1000px;
+  border-top: 0.1px solid #000;
+}
+.teams .teams_header {
+  margin: 50px 0 0 300px;
+  height: 25px;
+  line-height: 25px;
+  border: 1px solid #858585;
+}
+.teams .teams_table {
+  margin: 30px 0 0 250px;
+}
+.teams .teams_table .detail_table_tr1 {
+  background: #03c501;
+}
+.teams .teams_table tr {
+  background: #fff;
+}
+.teams .teams_table tr td {
+  text-align: center;
+  padding: 5px 60px;
+}
+.teams .teams_table tr a {
+  display: inline-block;
+  width: 70px;
+  color: #c52d8e;
+}
+.teams .teams_table tr a:hover {
+  text-decoration: underline;
+}
+.teams ul {
+  margin: 10px 450px;
+  height: 100px;
+}
