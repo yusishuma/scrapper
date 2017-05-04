@@ -1,6 +1,9 @@
+// var server_url = 'http://47.93.44.14:3090';
+var server_url = 'http://localhost:3090';
+
 var login = function(){
         $.ajax({
-        url:"http://47.93.44.14:3090/api/register",
+        url:server_url + "/api/register",
         type:"POST",
         dataType:"json",
         data:{

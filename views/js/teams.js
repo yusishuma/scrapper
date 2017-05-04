@@ -5,15 +5,15 @@ var totalCount = 0;
 var pageSize = 20
 var urlPage = getUrlParam("page");
 var currentPageNo = urlPage ? urlPage : 1;
+// var server_url = 'http://47.93.44.14:3090';
+var server_url = 'http://localhost:3090';
+
 $(function(){
     initBtn();
-    // upData();
 })
 function initBtn () {
-    // 刷新当前页面
-    // window.location.reload()
     $.ajax({
-        url:"http://47.93.44.14:3090/api/teams?limit=1000000&gameType="+$("#selectedId").val()+"&page="+currentPageNo,
+        url:server_url + "/api/teams?limit=1000000&gameType="+$("#selectedId").val()+"&page="+currentPageNo,
         type:"GET",
         dataType:"json",
         success:function (res) {
@@ -29,10 +29,10 @@ function initBtn () {
                 $str.push("<tr class='detail_table_tr1'><td>序号</td><td>队伍</td><td>游戏类型</td><td>操作</td></tr>");
                 for (var i = 0; i < currentArr.length; i++) {
                     var data = currentArr[i]
-                    $str.push("<tr><td>" + (i+1) + "</td>"+
+                    $str.push("<tr id='"+data.teamId+"'><td>" + (i+1) + "</td>"+
                         "<td>" + data.teamName + "</td>"+
                         "<td>" + data.gameType + "</td>"+
-                        "<td><a data-leaveId='"+data.teamId+"' class='addBtn'>队伍已添加</a></td>"+
+                        "<td><a data-leaveId='"+data.teamId+"' class='addBtn' onclick=\"synchroDataTeam('"+data.teamId+"')\">队伍已添加</a></td>"+
                     "</tr>");
             }
             $('#tbodyid').html($str.join(","));
@@ -68,27 +68,25 @@ function getUrlParam(name) {
     if (r != null) return unescape(r[2]); return null; //返回参数值
 }
 // 同步创建战队
-$('.addBtn').live('click',function(){
-    // alert($(this).attr('data-leaveId'));
+function synchroDataTeam (teamId) {
     $.ajax({
         url:"http://47.93.44.14:3090/api/teams",
         type:"POST",
         dataType:"json",
         data:{
             // 获取标签放在引号里
-            teamId:$('.addBtn').attr('data-leaveId')
+            teamId:teamId
         },
         success:function (res) {
-            window.location.reload();
-            console.log(res);
             if(res.status == 1){
                 alert(res.msg);
+                $('#' + teamId).hide();
             }
         },
         error: function(e) {
         }
     })
-})
+}
 
 
 

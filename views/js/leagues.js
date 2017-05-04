@@ -9,11 +9,14 @@ $(function(){
     initBtn();
     // upData();
 })
+// var server_url = 'http://47.93.44.14:3090';
+var server_url = 'http://localhost:3090';
+
 function initBtn () {
     // 刷新当前页面
     // window.location.reload()
     $.ajax({
-        url:"http://47.93.44.14:3090/api/leagues?limit=1000000&gameType="+$("#selectedId").val()+"&page="+currentPageNo,
+        url:server_url + "/api/leagues?limit=1000000&gameType="+$("#selectedId").val()+"&page="+currentPageNo,
         type:"GET",
         dataType:"json",
         success:function (res) {
@@ -29,7 +32,7 @@ function initBtn () {
                 $str.push("<tr class='detail_table_tr1'><td>序号</td><td>赛事</td><td>赛事等级</td><td>风险金</td><td>单注赔付上限</td><td>操作</td></tr>");
                 for (var i = 0; i < currentArr.length; i++) {
                     var data = currentArr[i]
-                    $str.push("<tr><td>" + (i+1) + "</td>"+
+                    $str.push("<tr class='"+data.leagueId+"'><td>" + (i+1) + "</td>"+
                         "<td style='display: none;'>" + data.leagueId + "</td>"+
                         "<td>" + data.leagueName + "</td>"+
                         "<td>"+
@@ -42,7 +45,7 @@ function initBtn () {
                         "</td>"+
                         "<td>" + data.riskFund + "</td>"+
                         "<td>" + data.payCeiling + "</td>"+
-                        "<td><a data-leaveId='"+data.leagueId+"' class='save'>保存</a></td>"+
+                        "<td><a data-leaveId='"+data.leagueId+"' class='save' onclick=\"synchroData('"+data.leagueId+"')\">保存</a></td>"+
                     "</tr>");
             }
             $('#tbodyid').html($str.join(","));
@@ -83,19 +86,15 @@ function getUrlParam(name) {
 function upData (leagueId) {
     // alert(leagueId);
     $.ajax({
-        url:"http://47.93.44.14:3090/api/leagues/" + leagueId,
+        url:server_url + "/api/leagues/" + leagueId,
         type:"PUT",
         dataType:"json",
         data:{
             level : $("#"+ leagueId).val()
         },
         success:function (res) {
-            // console.log(res);
             if(res.status == 1){
-                window.location.reload();
-                var data = res.data;
-                console.log(data);
-                // 把获取的数据放在标签里
+                alert(res.msg);
             }
         },
         error: function(e) {
@@ -105,26 +104,22 @@ function upData (leagueId) {
 }
 
 // 同步赛事赌局
-$('.save').live('click',function(){
-    // alert($(this).attr('data-leaveId'));
-    // alert('保存成功！');
+function synchroData (leagueId) {
     $.ajax({
         url:"http://47.93.44.14:3090/api/leagues",
         type:"POST",
         dataType:"json",
         data:{
             // 获取标签放在引号里
-            leagueId:$(this).attr('data-leaveId')
+            leagueId:leagueId
         },
         success:function (res) {
-            window.location.reload();
-            console.log(res);
             if(res.status == 1){
                 alert(res.msg);
+                $("." + leagueId).hide();
             }
         },
         error: function(e) {
-            alert('同步赛事失败');
         }
     })
-})
+}

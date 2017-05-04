@@ -15,14 +15,15 @@ $('#selectedId').live('change',function(){
     matchBtn();
     initBtn();
 })
+// var server_url = 'http://47.93.44.14:3090';
+var server_url = 'http://localhost:3090';
+
 // 根据赌局筛选
 function initBtn () {
-    var url = "http://47.93.44.14:3090/api/gambles?limit=1000000&gameType="+$("#selectedId").val()+"&page="+currentPageNo;
+    var url = server_url + "/api/gambles?limit=1000000&gameType="+$("#selectedId").val()+"&page="+currentPageNo;
     if($("#matchId").val() !== null){
         url = url + "&matchName="+$("#matchId").val();
     }
-    // alert(currentPageNo)
-    // console.log($("#matchId").val())
     $.ajax({
         url: url,
         type:"GET",
@@ -38,7 +39,7 @@ function initBtn () {
                 var currentArr = personsList.slice((currentPageNo - 1) * pageSize, currentPageNo * pageSize);
                 var $str = [];
                 for (var i = 0; i < currentArr.length; i++) {
-                    var data = currentArr[i]
+                    var data = currentArr[i];
                     var time = new Date(data.endTime);
                     Y = time.getFullYear() + '-';
                     M = (time.getMonth()+1 < 10 ? '0'+(time.getMonth()+1) : time.getMonth()+1) + '-';
@@ -47,8 +48,7 @@ function initBtn () {
                     m = time.getMinutes() + ':';
                     s = time.getSeconds();
                     var endTime = Y+M+D+h+m+s;
-                    // console.log(Y+M+D+h+m+s);
-                    $str.push("<tr>"+
+                    $str.push("<tr id = tr1"+ data.gambleId +">"+
                         "<td rowspan='2'>序号</td>"+
                         "<td rowspan='2'>赌局名称</td>"+
                         "<td rowspan='2'>所属赛事</td>"+
@@ -60,13 +60,13 @@ function initBtn () {
                         "<td>风险金</td>"+
                         "<td rowspan='4' class='add_td'><a href='javascript:;' data-id='"+ data.gambleId +"' class='add_a'>添加赌局</a></td>"+
                     "</tr>"+
-                    "<tr>"+
+                    "<tr id = tr2"+ data.gambleId +">"+
                         "<td>" + data.optionA.name + "</td>"+
                         "<td>" + data.optionA.odds + "</td>"+
                         "<td><input type='text' value='" + data.optionA.payCeiling + "' onchange=\"upData('"+data.gambleId+"')\" class='optionA_payCeiling' data-a='' data-gama=''></input></td>"+
                         "<td><input type='text' value='" + data.optionA.riskFund + "' onchange=\"upData('"+data.gambleId+"')\" class='optionA_riskFund' data-b='' data-gamb=''></input></td>"+
                     "</tr>"+
-                    "<tr>"+
+                    "<tr id = tr3"+ data.gambleId +">"+
                         "<td rowspan='2' class='td'>" + (i+1) + "</td>"+
                         "<td rowspan='2' class='td'>" + data.gambleName + "</td>"+
                         "<td rowspan='2' class='td'><a href='leagues.html'>" + data.league.leagueName + "</a></td>"+
@@ -77,7 +77,7 @@ function initBtn () {
                         "<td>单注赔付上限</td>"+
                         "<td>风险金</td>"+
                     "</tr>"+
-                    "<tr>"+
+                    "<tr id = tr4"+ data.gambleId +">"+
                         "<td>" + data.optionB.name + "</td>"+
                         "<td>" + data.optionB.odds + "</td>"+
                         "<td><input type='text' value='" + data.optionB.payCeiling + "' onchange=\"upData('"+data.gambleId+"')\" class='ptionB_payCeiling' data-c='' data-gamc=''></input></td>"+
@@ -94,20 +94,18 @@ function initBtn () {
 // 根据赛程筛选
 function matchBtn () {
     $.ajax({
-        url:"http://47.93.44.14:3090/api/matches?limit=128&gameType="+$("#selectedId").val()+"&page="+currentPageNo,
+        url:server_url + "/api/matches?limit=128&gameType="+$("#selectedId").val()+"&page="+currentPageNo,
         type:"GET",
         dataType:"json",
         success:function (res) {
             console.log(res);
             console.log($("#selectedId").val());
-            // console.log($("#matchId").val());
             //缓存到本地
             matchList = res.data.matches;
             var $str = [];
             $str.push("<option value='all'>显示全部</option>");
             for (var i = 0; i < matchList.length; i++) {
                 var data = matchList[i]
-                // console.log(data.matchName);
                 $str.push("<option value='"+ data.matchName +"'>" + data.matchName + "</option>");
             }
             $('#matchId').html($str.join(","));
@@ -194,13 +192,12 @@ $('.add_a').live('click',function(){
         // 12.下注项2风险金
         $('.message_oB_riskFund').html(data12);
         $('.savaBtn').attr("data-gambleId",$(this).attr('data-id'));
-        // alert($('.message_tr').find('.savaBtn').attr('data-gambleId'));
 })
 // 更新赌局
 function upData (gambleId) {
     console.log(gambleId)
     $.ajax({
-        url:"http://47.93.44.14:3090/api/gambles/" + gambleId,
+        url:server_url + "/api/gambles/" + gambleId,
         type:"PUT",
         dataType:"json",
         data:{
@@ -214,10 +211,8 @@ function upData (gambleId) {
             }
         },
         success:function (res) {
-            console.log(res);
             if(res.status == 1){
-                // window.location.reload();
-                // alert(res.msg);
+                alert(res.msg);
             }
         },
         error: function(e) {
@@ -227,19 +222,21 @@ function upData (gambleId) {
 
 // 同步创建赌局
 function createGame () {
-    // alert($('.savaBtn').attr('data-gambleId'));
-    // alert("添加赌局成功！");
     $(".message").hide();
+    var gambleId = $('.savaBtn').attr('data-gambleId');
     $.ajax({
-        url:"http://47.93.44.14:3090/api/gambles",
+        url:server_url + "/api/gambles",
         type:"POST",
         dataType:"json",
         data:{
-            gambleId:$('.savaBtn').attr('data-gambleId')
+            gambleId: gambleId
         },
         success:function (res) {
-            console.log(res);
             if(res.status == 1){
+                $('#tr1' + gambleId).hide();
+                $('#tr2' + gambleId).hide();
+                $('#tr3' + gambleId).hide();
+                $('#tr4' + gambleId).hide();
                 alert(res.msg);
             }
         },

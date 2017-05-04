@@ -160,7 +160,7 @@ var fetchOddsdEventData = function () {
  *  抓取https://www.pinbet88.com数据
  */
 var fetchPingbetData = function () {
-    return ping_Event.find({ exist_production: CONSTANTS.EXIST_PRODUCTION.NO_EXIST, 'odds': { '$size': 1}}).then(function (events) {
+    return ping_Event.find({ exist_production: CONSTANTS.EXIST_PRODUCTION.NO_EXIST, 'odds.lineId': { '$exists': 1}}).then(function (events) {
 
         return Q.all(events.map(limit(function (event) {
             var gameAndLeagueName = event.leagueName.split(' - ');

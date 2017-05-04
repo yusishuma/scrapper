@@ -32,7 +32,8 @@ var teamSchema = new Schema({
     // 战队名称
     teamName: {
         type: String,
-        required: true
+        index: true,
+        unique: true
     },
     teamSource: {
         type: Number
