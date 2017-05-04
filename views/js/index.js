@@ -61,7 +61,7 @@ function initBtn () {
                         "<td rowspan='4' class='add_td'><a href='javascript:;' data-id='"+ data.gambleId +"' class='add_a'>添加赌局</a></td>"+
                     "</tr>"+
                     "<tr>"+
-                        "<td>" + data.optionA.win + "</td>"+
+                        "<td>" + data.optionA.name + "</td>"+
                         "<td>" + data.optionA.odds + "</td>"+
                         "<td><input type='text' value='" + data.optionA.payCeiling + "' onchange=\"upData('"+data.gambleId+"')\" class='optionA_payCeiling' data-a='' data-gama=''></input></td>"+
                         "<td><input type='text' value='" + data.optionA.riskFund + "' onchange=\"upData('"+data.gambleId+"')\" class='optionA_riskFund' data-b='' data-gamb=''></input></td>"+
@@ -78,7 +78,7 @@ function initBtn () {
                         "<td>风险金</td>"+
                     "</tr>"+
                     "<tr>"+
-                        "<td>" + data.optionB.win + "</td>"+
+                        "<td>" + data.optionB.name + "</td>"+
                         "<td>" + data.optionB.odds + "</td>"+
                         "<td><input type='text' value='" + data.optionB.payCeiling + "' onchange=\"upData('"+data.gambleId+"')\" class='ptionB_payCeiling' data-c='' data-gamc=''></input></td>"+
                         "<td><input type='text' value='" + data.optionB.riskFund + "' onchange=\"upData('"+data.gambleId+"')\" class='optionB_riskFund' data-d='' data-gamd=''></input></td>"+

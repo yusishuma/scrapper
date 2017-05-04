@@ -150,53 +150,80 @@ exports.synchroGambleToPro = function (req, res) {
 
 exports.synchroGambles = function () {
     var updateUrl = CONSTANTS.SERVER_URL + '/gambleupdate';
-    return Gamble.find({ 'isExist': CONSTANTS.EXIST_PRODUCTION.EXIST, isRefreshed: false }).populate('league').then(function (gambles) {
-        return Q.all(gambles.map(limit(function (gamble) {
+    return Q.fcall(function () {
+        return Gamble.find({ 'isExist': CONSTANTS.EXIST_PRODUCTION.NO_EXIST }).then(function (gambles) {
 
-            var newGamble = {
-                leagueName: gamble.league.leagueName,
-                teamA: gamble.optionA.teamA,
-                teamB: gamble.optionB.teamB,
-                gameType: gamble.gameType,
-                gambleType: gamble.gambleType,
-                optionARiskFund: gamble.optionA.riskFund,
-                optionBRiskFund: gamble.optionB.riskFund,
-                gambleSource: gamble.gambleSource,
-                gambleSourceId: gamble.gambleSourceId,
-                gambleStatus: gamble.gambleStatus,
-                endTime: gamble.endTime,
-                gambleName: gamble.gambleName,
-                optionAPayCeiling: gamble.optionA.payCeiling,
-                optionBPayCeiling: gamble.optionB.payCeiling,
-                gambleOptionA: gamble.optionA.name,
-                gambleOptionB: gamble.optionB.name,
-                optionAOdds: gamble.optionA.odds,
-                optionBOdds: gamble.optionB.odds,
-                gambleSourceAndSourceId: gamble.gambleSourceAndSourceId
+            return Q.all(gambles.map(limit(function (gamble) {
+                var getUrl = CONSTANTS.SERVER_URL + '/gamblesource?gambleSourceAndSourceId='+ gamble.gambleSourceAndSourceId;
 
-            };
+                /**
+                 * 更新赌局
+                 */
+                return Q.fcall(function () {
+                    request.get({url: getUrl, json: true}, function (err, res, body) {
+                        if (!err && res.statusCode === 200) {
+                            if (body.status) {
+                                return Gamble.update({ gambleSourceAndSourceId: gamble.gambleSourceAndSourceId }, {'$set': { 'isExist': CONSTANTS.EXIST_PRODUCTION.EXIST }})
+                            } else {
+                                return ''
+                            }
+                        } else {
+                            return ''
+                        }
+                    });
+                })
+            })))
+        })
+    }).then(function () {
+        return Gamble.find({ 'isExist': CONSTANTS.EXIST_PRODUCTION.EXIST, isRefreshed: false }).populate('league').then(function (gambles) {
+            return Q.all(gambles.map(limit(function (gamble) {
 
-            /**
-             * 更新赌局
-             */
-            return Q.fcall(function () {
-                request.post({url: updateUrl, form: newGamble, json: true}, function (err, res, body) {
-                    if (!err && res.statusCode === 200) {
-                        if (body.status) {
-                            return Gamble.update({ _id: gamble._id }, {'$set': { 'isExist': CONSTANTS.EXIST_PRODUCTION.EXIST, isRefreshed: true}}).then(function(){
-                                console.log('同步更新赌局 ' + newGamble.leagueName + ' 成功！');
-                            })
+                var newGamble = {
+                    leagueName: gamble.league.leagueName,
+                    teamA: gamble.optionA.teamA,
+                    teamB: gamble.optionB.teamB,
+                    gameType: gamble.gameType,
+                    gambleType: gamble.gambleType,
+                    optionARiskFund: gamble.optionA.riskFund,
+                    optionBRiskFund: gamble.optionB.riskFund,
+                    gambleSource: gamble.gambleSource,
+                    gambleSourceId: gamble.gambleSourceId,
+                    gambleStatus: gamble.gambleStatus,
+                    endTime: gamble.endTime,
+                    gambleName: gamble.gambleName,
+                    optionAPayCeiling: gamble.optionA.payCeiling,
+                    optionBPayCeiling: gamble.optionB.payCeiling,
+                    gambleOptionA: gamble.optionA.name,
+                    gambleOptionB: gamble.optionB.name,
+                    optionAOdds: gamble.optionA.odds,
+                    optionBOdds: gamble.optionB.odds,
+                    gambleSourceAndSourceId: gamble.gambleSourceAndSourceId
+
+                };
+
+                /**
+                 * 更新赌局
+                 */
+                return Q.fcall(function () {
+                    request.post({url: updateUrl, form: newGamble, json: true}, function (err, res, body) {
+                        if (!err && res.statusCode === 200) {
+                            if (body.status) {
+                                return Gamble.update({ _id: gamble._id }, {'$set': { 'isExist': CONSTANTS.EXIST_PRODUCTION.EXIST, isRefreshed: true}}).then(function(){
+                                    console.log('同步更新赌局 ' + newGamble.leagueName + ' 成功！');
+                                })
+                            } else {
+                                console.log('同步更新赌局 ' + newGamble.leagueName + ' 失败！');
+                                return ''
+                            }
                         } else {
                             console.log('同步更新赌局 ' + newGamble.leagueName + ' 失败！');
                             return ''
                         }
-                    } else {
-                        console.log('同步更新赌局 ' + newGamble.leagueName + ' 失败！');
-                        return ''
-                    }
-                });
-            })
-        })))
+                    });
+                })
+            })))
 
+        })
     })
+
 };

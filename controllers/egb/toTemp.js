@@ -142,7 +142,8 @@ var translateGambles = function (bets) {
             teamB = CONSTANTS.parseTeamName(bet.gamer_2.nick);
             optionAName = teamA;
             optionBName = teamB;
-            gambleName = game_subsidiary + ' ' + '1X2'
+            gambleName = game_subsidiary + ' 独赢';
+
         }else{
             if (bet.parent_gamer_1.nick.indexOf('(') !== -1) {
                 game_subsidiary = _.lowerCase(bet.parent_gamer_1.nick.substr(bet.parent_gamer_1.nick.indexOf('('), bet.parent_gamer_1.nick.length));

@@ -15,7 +15,7 @@ var TeamModel = require('../../models/index').TeamModel;
 var MatchModel = require('../../models/index').MatchModel;
 var GambleModel = require('../../models/index').GambleModel;
 var qlimit = require('qlimit');
-var limit = qlimit(10);
+var limit = qlimit(5);
 /**
  * 获取 联赛列表 保存到备份库
  */
@@ -161,6 +161,7 @@ var fetchOddsdEventData = function () {
  */
 var fetchPingbetData = function () {
     return ping_Event.find({ exist_production: CONSTANTS.EXIST_PRODUCTION.NO_EXIST, 'odds': { '$size': 1}}).then(function (events) {
+
         return Q.all(events.map(limit(function (event) {
             var gameAndLeagueName = event.leagueName.split(' - ');
             var game = gameAndLeagueName[0];
@@ -178,15 +179,14 @@ var fetchPingbetData = function () {
                         if(team){
                             return '已存在'
                         }else{
-                            console.log(event.leagueName, game,leagueName,'pingbo 创建temp team', newTeam);
-                            return new TeamModel(newTeam).save().then(function (result) {
-                                return result
-                            });
+                            console.log('pingbo 创建temp team');
+                            return new TeamModel(newTeam).save()
                         }
                     })
 
                 }))
             .then(function () {//同步赛事到Temp
+
                 var newMatch = {
                     gameType: gameType,
                     matchName: CONSTANTS.generateMatchName(teamA, teamB),
@@ -198,7 +198,7 @@ var fetchPingbetData = function () {
                 };
                 return MatchModel.findOne({ matchName: CONSTANTS.generateMatchName(teamA, teamB) }).then(function (match) {
                     if(match){
-                        return null;
+                        return '';
                     }else{
                         console.log('pingbo 创建temp match');
                         return new MatchModel(newMatch).save();
@@ -233,7 +233,7 @@ var fetchPingbetData = function () {
                 }
                 newGamble.endTime = moment(odd.cutoff).valueOf();       //赌局期限
                 if(odd.spreads && odd.spreads.length > 0){
-                    newGamble.gambleName = game_subsidiary + '让分';
+                    newGamble.gambleName = game_subsidiary + ' 让分';
                     if(event.periods && event.periods.length > 0){
                         var teamAwin = (teamAScore + odd.spreads[0].hdp -teamBScore) > 0;
                         newGamble.optionA.win = teamAwin? 1: 0;
@@ -251,7 +251,7 @@ var fetchPingbetData = function () {
 
                 }
                 if(odd.moneyline){
-                    newGamble.gambleName = game_subsidiary + '1X2';
+                    newGamble.gambleName = game_subsidiary + ' 独赢';
                     if(event.periods && event.periods.length > 0){
                         var teamAwin = (teamAScore - teamBScore) > 0;
                         newGamble.optionA.win = teamAwin? 1: 0;
@@ -286,8 +286,8 @@ var fetchPingbetData = function () {
                     newGamble.gambleSourceAndSourceId = CONSTANTS.SOURCE.PING_BO + event.id + newGamble.gambleName;
                     newGambles.push(newGamble);
                 }
-            return LeagueModel.findOne({ leagueName: event.leagueName }).then(function (league) {
-                if(!league && gameType && gameType < 4){
+            return LeagueModel.findOne({ leagueName: leagueName }).then(function (league) {
+                if(!league){
                     var newLeague = {
                         gameType: gameType,
                         leagueName: leagueName,
@@ -295,7 +295,6 @@ var fetchPingbetData = function () {
                     };
                     return new LeagueModel(newLeague).save()
                 }else{
-
                     return league;
                 }
 
@@ -306,14 +305,16 @@ var fetchPingbetData = function () {
                     item.optionA.payCeiling = league.payCeiling || 10000;
                     item.optionB.payCeiling = league.payCeiling || 10000;
                     item.league = league._id;
-                    if(newGamble.gameType && newGamble.gameType < 4 && newGamble.endTime ){
+                    if(item.gameType && item.gameType < 4 && item.endTime ){
                         return GambleModel.findOne({ gambleSourceAndSourceId: item.gambleSourceAndSourceId }).then(function (results) {
                             if(results){
                                 console.log("pingbo 更新temp Gamble");
                                 return GambleModel.update({ gambleSourceAndSourceId: results.gambleSourceAndSourceId }, { '$set': { endTime: item.endTime, optionA: item.optionA, optionB: item.optionB, isRefreshed: true } });
                             }else{
                                 console.log('pingbo 创建temp Gamble');
-                                return new GambleModel(newGamble).save();
+                                return new GambleModel(item).save().then(function (result) {
+                                    return '';
+                                });
                             }
                         })
                     }
