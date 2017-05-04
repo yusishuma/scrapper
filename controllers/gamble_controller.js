@@ -114,8 +114,8 @@ exports.synchroGambleToPro = function (req, res) {
             gambleOptionA: gamble.optionA.name,
             gambleOptionB: gamble.optionB.name,
             optionAOdds: gamble.optionA.odds,
-            optionBOdds: gamble.optionB.odds
-
+            optionBOdds: gamble.optionB.odds,
+            gambleSourceAndSourceId: gamble.gambleSourceAndSourceId
         };
         return Q.fcall(function () {
             /**
@@ -171,7 +171,8 @@ exports.synchroGambles = function () {
                 gambleOptionA: gamble.optionA.name,
                 gambleOptionB: gamble.optionB.name,
                 optionAOdds: gamble.optionA.odds,
-                optionBOdds: gamble.optionB.odds
+                optionBOdds: gamble.optionB.odds,
+                gambleSourceAndSourceId: gamble.gambleSourceAndSourceId
 
             };
 

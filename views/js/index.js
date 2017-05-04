@@ -79,7 +79,7 @@ function initBtn () {
                     "</tr>"+
                     "<tr>"+
                         "<td>" + data.optionB.win + "</td>"+
-                        "<td>" + data.optionA.odds + "</td>"+
+                        "<td>" + data.optionB.odds + "</td>"+
                         "<td><input type='text' value='" + data.optionB.payCeiling + "' onchange=\"upData('"+data.gambleId+"')\" class='ptionB_payCeiling' data-c='' data-gamc=''></input></td>"+
                         "<td><input type='text' value='" + data.optionB.riskFund + "' onchange=\"upData('"+data.gambleId+"')\" class='optionB_riskFund' data-d='' data-gamd=''></input></td>"+
                     "</tr>");
