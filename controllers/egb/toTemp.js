@@ -91,7 +91,7 @@ var synchroTeamsToTemp = function () {
                 var teamNames = [CONSTANTS.parseTeamName(bet.gamer_1.nick), CONSTANTS.parseTeamName(bet.gamer_2.nick)];
                 return Q.all(teamNames.map(function(teamName){
                     var newTeam = {teamName: teamName, gameType: CONSTANTS.translateGameType(bet.game), teamSource: CONSTANTS.SOURCE.EGB};
-                    return TeamModel.findOne({teamName: teamName, gameType: CONSTANTS.translateGameType(bet.game)}).then(function (team) {
+                    return TeamModel.findOne({teamName: teamName}).then(function (team) {
                         if(team){
                             return '已存在'
                         }else{
