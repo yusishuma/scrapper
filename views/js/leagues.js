@@ -9,7 +9,6 @@ $(function(){
     initBtn();
     // upData();
 })
-// var server_url = 'http://47.93.44.14:3090';
 var server_url = 'http://localhost:3090';
 
 function initBtn () {
@@ -84,7 +83,6 @@ function getUrlParam(name) {
 }
 // 更新赛事
 function upData (leagueId) {
-    // alert(leagueId);
     $.ajax({
         url:server_url + "/api/leagues/" + leagueId,
         type:"PUT",
@@ -106,7 +104,7 @@ function upData (leagueId) {
 // 同步赛事赌局
 function synchroData (leagueId) {
     $.ajax({
-        url:"http://47.93.44.14:3090/api/leagues",
+        url: server_url + "/api/leagues",
         type:"POST",
         dataType:"json",
         data:{
