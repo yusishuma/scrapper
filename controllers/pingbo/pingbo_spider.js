@@ -103,13 +103,17 @@ var fetchUnSettledEventData = function () {
             return Q.all(league.events.map(limit(function (event) {
                 event.leagueId = league.id;
                 event.starts = moment(event.starts).valueOf();
-                return ping_Event.update({ id: event.id }, { '$set': { home: event.home, away: event.away, starts: event.starts, status: event.status }}).then(function (result) {
-                    if(result && result.n === 0 && result.ok === 1){
-                        return new ping_Event(event).save()
-                    }else {
-                        return result;
-                    }
-                })
+                if(event.status !== 'H'){
+                    return ping_Event.update({ id: event.id }, { '$set': { home: event.home, away: event.away, starts: event.starts, status: event.status }}).then(function (result) {
+                        if(result && result.n === 0 && result.ok === 1){
+                            return new ping_Event(event).save()
+                        }else {
+                            return result;
+                        }
+                    })
+                }else {
+                    return '';
+                }
             }))).then(function (results) {
                 return results;
             })
