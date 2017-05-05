@@ -175,7 +175,7 @@ var fetchPingbetData = function () {
             var teamNames = [teamA, teamB];
             return Q.all(teamNames.map(function(teamName){
                 var newTeam = {teamName: teamName, gameType: gameType, teamSource: CONSTANTS.SOURCE.PING_BO};
-                    return TeamModel.findOne({teamName: teamName, gameType: gameType}).then(function (team) {
+                    return TeamModel.findOne({teamName: teamName}).then(function (team) {
                         if(team){
                             return '已存在'
                         }else{

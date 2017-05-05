@@ -29,12 +29,13 @@ var synchroLeaguesToTemp = function () {
                     leagueName: bet.tourn,
                     leagueSource: bet.source
                 };
-                LeagueModel.find({ leagueName: bet.tourn }).then(function (results) {
-                    if(results || results.length === 0){
+                LeagueModel.findOne({ leagueName: bet.tourn }).then(function (results) {
+
+                    if(results){
+                        return '已存在'
+                    }else{
                         console.log('egb 创建temp league');
                         return new LeagueModel(league).save()
-                    }else {
-                        return null;
                     }
                 })
             })));
@@ -136,8 +137,11 @@ var translateGambles = function (bets) {
     return Q.all(bets.map(limit(function (bet) {
         var gambleName = '', teamA = '', teamB = '', optionAName = '', optionBName = '', game_subsidiary = '';
         if(!bet.game_id){
+
             var gameNameStr = _.replace(_.replace(bet.gamer_1.nick, '(L.)', ''), 'Live', '');
-            game_subsidiary = _.lowerCase(gameNameStr.substr(gameNameStr.indexOf('('), gameNameStr.length));
+            if(gameNameStr.indexOf('(') !== -1){
+                game_subsidiary = _.lowerCase(gameNameStr.substr(gameNameStr.indexOf('('), gameNameStr.length));
+            }
 
             teamA = CONSTANTS.parseTeamName(bet.gamer_1.nick);
             teamB = CONSTANTS.parseTeamName(bet.gamer_2.nick);
@@ -154,7 +158,7 @@ var translateGambles = function (bets) {
             }
             teamA = CONSTANTS.parseTeamName(bet.parent_gamer_1.nick);
             teamB = CONSTANTS.parseTeamName(bet.parent_gamer_2.nick);
-            if(bet.gamer_1.game_name === 'Total kills' || bet.gamer_1.game_name === 'Total time'){
+            if(bet.gamer_1.game_name === 'Total kills' || bet.gamer_1.game_name === 'Total time' || bet.gamer_1.game_name === 'Total rounds'){
                 gambleName = game_subsidiary + ' ' +  '大小';
                 var str ='';
                 if( gameNameStr.split('on').length > 0){
