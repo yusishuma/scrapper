@@ -149,6 +149,8 @@ var translateGambles = function (bets) {
             var gameNameStr = _.replace(_.replace(bet.gamer_1.nick, '(L.)', ''), 'Live', '');
             if(gameNameStr.indexOf('on') !== -1){
                 game_subsidiary = gameNameStr.split('on')[1]
+            }else{
+                gameNameStr = bet.gamer_1.nick;
             }
             teamA = CONSTANTS.parseTeamName(bet.parent_gamer_1.nick);
             teamB = CONSTANTS.parseTeamName(bet.parent_gamer_2.nick);
@@ -157,11 +159,12 @@ var translateGambles = function (bets) {
                 var str ='';
                 if( gameNameStr.split('on').length > 0){
                     str = gameNameStr.split('on')[0].replace('Over', '');
+                    str = gameNameStr.split('on')[0].replace('over', '');
                 }
                 optionAName = '大于 ' + str;
                 optionBName = '小于 ' + str;
             }else{
-                gambleName = game_subsidiary + ' 独赢';
+                gambleName = bet.gamer_1.nick;
                 optionAName = teamA;
                 optionBName = teamB;
             }
@@ -174,7 +177,7 @@ var translateGambles = function (bets) {
             match: CONSTANTS.generateMatchName(teamA, teamB),       //所属赛程ID
             gambleSource: bet.source,   //赌局数据来源
             gambleSourceId: bet.id, //赌局来源ID
-            gambleSourceAndSourceId: bet.endTime + bet.id + gambleName,
+            gambleSourceAndSourceId: bet.date + bet.id + gambleName,
             optionA: {
                 name: optionAName,
                 teamA: teamA,
@@ -321,28 +324,28 @@ var fetchBetInfo = function (bets) {
  */
 exports.backupsData = function () {
 
-    // return spider.fetchBettingData()
-    //     .then(function (data) {
-    //     if(data.bets && data.nested_bets && data.nested_bets.length > 0 && data.nested_bets.length > 0){
-    //         return fetchBetInfo(data.bets).then(function (result) {
-    //             console.log(result.length, "==================================抓取数据bets=============================================");
-    //             return fetchBetInfo(data.nested_bets).then(function (result) {
-    //                 console.log(result.length, "==================================抓取数据nested_bets======================================");
-    //                 return '抓取到数据'
-    //             });
-    //         });
-    //     }else{
-    //         console.log('未抓取到数据');
-    //         return '未抓取到数据';
-    //     }
-    // }).then(function () {
-    //     return synchroLeaguesToTemp();
-    // }).then(function () {
-    //     return synchroTeamsToTemp();
-    // }).then(function () {
-    //     return synchroMatchesToTemp();
-    // }).then(function () {
+    return spider.fetchBettingData()
+        .then(function (data) {
+        if(data.bets && data.nested_bets && data.nested_bets.length > 0 && data.nested_bets.length > 0){
+            return fetchBetInfo(data.bets).then(function (result) {
+                console.log(result.length, "==================================抓取数据bets=============================================");
+                return fetchBetInfo(data.nested_bets).then(function (result) {
+                    console.log(result.length, "==================================抓取数据nested_bets======================================");
+                    return '抓取到数据'
+                });
+            });
+        }else{
+            console.log('未抓取到数据');
+            return '未抓取到数据';
+        }
+    }).then(function () {
+        return synchroLeaguesToTemp();
+    }).then(function () {
+        return synchroTeamsToTemp();
+    }).then(function () {
+        return synchroMatchesToTemp();
+    }).then(function () {
          synchroGamblesToTemp();
-    // })
+    })
 };
 

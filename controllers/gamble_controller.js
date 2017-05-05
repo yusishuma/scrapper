@@ -36,7 +36,12 @@ exports.getGamblesByList = function (req, res) {
             delete options.searchOption.match;
         }
     }
-
+    if(req.query.startTime && req.query.startTime){
+        options.searchOption.match = req.query.matchName;
+        if(req.query.matchName === 'all'){
+            delete options.searchOption.match;
+        }
+    }
     if(req.query.gambleName){
         options.searchOption.gambleName = req.query.gambleName;
     }

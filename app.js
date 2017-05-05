@@ -82,24 +82,24 @@ app.use(function(req, res, next) {
   next(err);
 });
 
-schedule.scheduleJob('*/3 * * * *', function(){
+// schedule.scheduleJob('*/3 * * * *', function(){
     Q.fcall(function () {
-         require('./controllers/pingbo/pingbo_spider').synchroPingDataToTemp();
+         return require('./controllers/pingbo/pingbo_spider').synchroPingDataToTemp();
 
     }).then(function () {
-         require('./controllers/egb/toTemp').backupsData();
+        return require('./controllers/egb/toTemp').backupsData();
 
     }).then(function () {
-         require('./controllers/league_controller').synchroLeagues();
+        return require('./controllers/league_controller').synchroLeagues();
 
     }).then(function () {
-         require('./controllers/gamble_controller').synchroGambles();
+        return require('./controllers/gamble_controller').synchroGambles();
 
     }).then(function () {
-         require('./controllers/team_controller').synchroTeams();
+        return require('./controllers/team_controller').synchroTeams();
 
     })
-});
+// });
 
 // error handler
 app.use(function(err, req, res, next) {
