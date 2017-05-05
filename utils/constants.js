@@ -1,5 +1,5 @@
 'use strict';
-
+var _ = require('lodash');
 module.exports = {
 
     SOURCE: {
@@ -96,8 +96,10 @@ module.exports = {
      * 转换战队名称
      */
     parseTeamName: function (teamName) {
+        teamName = _.replace(teamName, '(Live)', '');
         if (teamName.indexOf('(') !== -1) {
             teamName = teamName.substr(0, teamName.indexOf('('));
+
         }
         return teamName.trim();
     },

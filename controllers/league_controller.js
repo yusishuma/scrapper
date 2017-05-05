@@ -128,23 +128,17 @@ exports.synchroLeagues = function () {
             /**
              * 更新赌局
              */
-            return Q.fcall(function () {
-                request.get({url: updateUrl, json: true}, function (err, res, body) {
-                    if (!err && res.statusCode === 200) {
-                        if (body.status) {
-                            return League.update({ leagueName: league.leagueName }, {'$set': { 'isExist': CONSTANTS.EXIST_PRODUCTION.EXIST }}).then(function(){
-                                console.log('同步更新赌局 ' + league.leagueName + ' 成功！');
-                            })
-                        } else {
-                            console.log('同步更新赌局 ' + league.leagueName + ' 失败！');
-                            return ''
-                        }
+            request.get({url: updateUrl, json: true}, function (err, res, body) {
+                if (!err && res.statusCode === 200) {
+                    if (body.status) {
+                        return League.update({ leagueName: league.leagueName }, {'$set': { 'isExist': CONSTANTS.EXIST_PRODUCTION.EXIST }})
                     } else {
-                        console.log('同步更新赌局 ' + league.leagueName + ' 失败！');
                         return ''
                     }
-                });
-            })
+                } else {
+                    return ''
+                }
+            });
         })))
 
     })

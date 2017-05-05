@@ -204,23 +204,17 @@ exports.synchroGambles = function () {
                 /**
                  * 更新赌局
                  */
-                return Q.fcall(function () {
-                    request.post({url: updateUrl, form: newGamble, json: true}, function (err, res, body) {
-                        if (!err && res.statusCode === 200) {
-                            if (body.status) {
-                                return Gamble.update({ _id: gamble._id }, {'$set': { 'isExist': CONSTANTS.EXIST_PRODUCTION.EXIST, isRefreshed: true}}).then(function(){
-                                    console.log('同步更新赌局 ' + newGamble.leagueName + ' 成功！');
-                                })
-                            } else {
-                                console.log('同步更新赌局 ' + newGamble.leagueName + ' 失败！');
-                                return ''
-                            }
+                request.post({url: updateUrl, form: newGamble, json: true}, function (err, res, body) {
+                    if (!err && res.statusCode === 200) {
+                        if (body.status) {
+                            return Gamble.update({ gambleSourceAndSourceId: gamble.gambleSourceAndSourceId }, {'$set': { 'isExist': CONSTANTS.EXIST_PRODUCTION.EXIST, isRefreshed: true}})
                         } else {
-                            console.log('同步更新赌局 ' + newGamble.leagueName + ' 失败！');
                             return ''
                         }
-                    });
-                })
+                    } else {
+                        return ''
+                    }
+                });
             })))
 
         })

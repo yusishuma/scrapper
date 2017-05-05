@@ -8,7 +8,8 @@ var Q = require('q');
 var CONSTANTS = require('../utils/constants');
 var _ = require('lodash');
 var request = require('request');
-
+var qlimit = require('qlimit');
+var limit = qlimit(10);
 /**
  * 获取战队列表
  * @param req
@@ -119,28 +120,23 @@ exports.synchroTeamToPro = function (req, res) {
 };
 exports.synchroTeams = function () {
     return Team.find({ 'isExist': CONSTANTS.EXIST_PRODUCTION.NO_EXIST }).then(function (teams) {
+        console.log(teams.length);
         return Q.all(teams.map(limit(function (team) {
             var updateUrl = CONSTANTS.SERVER_URL + '/getteam?teamName=' + team.teamName;
             /**
              * 更新赌局
              */
-            return Q.fcall(function () {
                 request.get({url: updateUrl, json: true}, function (err, res, body) {
                     if (!err && res.statusCode === 200) {
                         if (body.status) {
-                            return Team.update({ _id: team._id }, {'$set': { 'isExist': CONSTANTS.EXIST_PRODUCTION.EXIST }}).then(function(){
-                                console.log('同步更新赌局 ' + team.teamName + ' 成功！');
-                            })
+                            return Team.update({ teamName: team.teamName }, {'$set': { 'isExist': CONSTANTS.EXIST_PRODUCTION.EXIST }})
                         } else {
-                            console.log('同步更新赌局 ' + team.teamName + ' 失败！');
                             return ''
                         }
                     } else {
-                        console.log('同步更新赌局 ' + team.teamName + ' 失败！');
                         return ''
                     }
                 });
-            })
         })))
 
     })
