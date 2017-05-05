@@ -158,12 +158,12 @@ var translateGambles = function (bets) {
             }
             teamA = CONSTANTS.parseTeamName(bet.parent_gamer_1.nick);
             teamB = CONSTANTS.parseTeamName(bet.parent_gamer_2.nick);
-            if(bet.gamer_1.game_name === 'Total kills' || bet.gamer_1.game_name === 'Total time' || bet.gamer_1.game_name === 'Total rounds'){
+            if(bet.gamer_1.game_name){
                 gambleName = game_subsidiary + ' ' +  '大小';
                 var str ='';
                 if( gameNameStr.split('on').length > 0){
                     str = gameNameStr.split('on')[0].replace('Over', '');
-                    str = gameNameStr.split('on')[0].replace('over', '');
+                    str = str.replace('over', '');
                 }
                 optionAName = '大于 ' + str;
                 optionBName = '小于 ' + str;

@@ -82,7 +82,7 @@ app.use(function(req, res, next) {
   next(err);
 });
 
-// schedule.scheduleJob('*/3 * * * *', function(){
+schedule.scheduleJob('*/3 * * * *', function(){
     Q.fcall(function () {
          return require('./controllers/pingbo/pingbo_spider').synchroPingDataToTemp();
 
@@ -99,7 +99,7 @@ app.use(function(req, res, next) {
         return require('./controllers/team_controller').synchroTeams();
 
     })
-// });
+});
 
 // error handler
 app.use(function(err, req, res, next) {
