@@ -36,6 +36,7 @@ exports.getGamblesByList = function (req, res) {
             delete options.searchOption.match;
         }
     }
+
     if(req.query.gambleName){
         options.searchOption.gambleName = req.query.gambleName;
     }

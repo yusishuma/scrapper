@@ -174,7 +174,7 @@ var translateGambles = function (bets) {
             match: CONSTANTS.generateMatchName(teamA, teamB),       //所属赛程ID
             gambleSource: bet.source,   //赌局数据来源
             gambleSourceId: bet.id, //赌局来源ID
-            gambleSourceAndSourceId: bet.source + bet.id + gambleName,
+            gambleSourceAndSourceId: bet.endTime + bet.id + gambleName,
             optionA: {
                 name: optionAName,
                 teamA: teamA,
