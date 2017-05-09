@@ -255,7 +255,8 @@ var saveBet = function (bet) {
                         gamer_1: newBet.gamer_1,
                         gamer_2: newBet.gamer_2,
                         coef_1: newBet.coef_1,
-                        coef_2: newBet.coef_2
+                        coef_2: newBet.coef_2,
+                        status: newNestedBet.status
                     }
                 })
             } else {
@@ -286,7 +287,8 @@ var saveNestedBet = function (nestedBet) {
                         gamer_1: newNestedBet.gamer_1,
                         gamer_2: newNestedBet.gamer_2,
                         coef_1: newNestedBet.coef_1,
-                        coef_2: newNestedBet.coef_2
+                        coef_2: newNestedBet.coef_2,
+                        status: newNestedBet.status
                     }
                 })
             } else {
@@ -309,6 +311,7 @@ var fetchBetInfo = function (bets) {
                         resolve(null);
                     }
                     if(body && body.bet){
+                        body.bet.status = bet.status;
                         if (body.bet.parent_gamer_1) {
                             resolve(saveNestedBet(body.bet));
                         } else {
