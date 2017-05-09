@@ -84,19 +84,19 @@ app.use(function(req, res, next) {
 
 schedule.scheduleJob('*/3 * * * *', function(){
     Q.fcall(function () {
-         return require('./controllers/pingbo/pingbo_spider').synchroPingDataToTemp();
+          require('./controllers/pingbo/pingbo_spider').synchroPingDataToTemp();
 
     }).then(function () {
-        return require('./controllers/egb/toTemp').backupsData();
+         require('./controllers/egb/toTemp').backupsData();
 
     }).then(function () {
-        return require('./controllers/league_controller').synchroLeagues();
+         require('./controllers/league_controller').synchroLeagues();
 
     }).then(function () {
-        return require('./controllers/gamble_controller').synchroGambles();
+         require('./controllers/gamble_controller').synchroGambles();
 
     }).then(function () {
-        return require('./controllers/team_controller').synchroTeams();
+         require('./controllers/team_controller').synchroTeams();
 
     })
 });

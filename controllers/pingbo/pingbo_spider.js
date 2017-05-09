@@ -309,7 +309,7 @@ var fetchPingbetData = function () {
                         return GambleModel.findOne({ gambleSourceAndSourceId: item.gambleSourceAndSourceId }).then(function (results) {
                             if(results){
                                 console.log("pingbo 更新temp Gamble");
-                                return GambleModel.update({ gambleSourceAndSourceId: results.gambleSourceAndSourceId }, { '$set': { endTime: item.endTime, optionA: item.optionA, optionB: item.optionB, isRefreshed: true } });
+                                return GambleModel.update({ gambleSourceAndSourceId: results.gambleSourceAndSourceId }, { '$set': { gambleStatus: item.gambleStatus, endTime: item.endTime, optionA: item.optionA, optionB: item.optionB, isRefreshed: true } });
                             }else{
                                 console.log('pingbo 创建temp Gamble');
                                 return new GambleModel(item).save().then(function (result) {

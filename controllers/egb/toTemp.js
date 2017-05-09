@@ -216,7 +216,7 @@ var translateGambles = function (bets) {
             }
             return GambleModel.findOne({ gameType: newGamble.gameType, gambleSourceAndSourceId: newGamble.gambleSourceAndSourceId }).then(function (gambels) {
                 if(gambels){
-                    return GambleModel.update({ _id: gambels.gambleId }, { '$set': { endTime: newGamble.endTime, optionA: newGamble.optionA, optionB: newGamble.optionB, isRefreshed: true } });
+                    return GambleModel.update({ _id: gambels.gambleId }, { '$set': { gambleStatus: newGamble.gambleStatus, endTime: newGamble.endTime, optionA: newGamble.optionA, optionB: newGamble.optionB, isRefreshed: true } });
                 }else{
                     return new GambleModel(newGamble).save();
                 }
