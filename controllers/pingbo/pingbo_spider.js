@@ -227,6 +227,8 @@ var fetchPingbetData = function () {
                 if(event.periods && event.periods.length > 0){
                     if(event.periods[0].status === 3){
                         newGamble.gambleStatus = 4
+                    }else{
+                        newGamble.gambleStatus = 3
                     }
                     teamAScore = event.periods[0].team1Score;
                     teamBScore = event.periods[0].team2Score;

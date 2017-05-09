@@ -192,7 +192,7 @@ var translateGambles = function (bets) {
                 name: optionBName,
                 teamB: teamB,
                 odds: bet.coef_2,
-                win: bet.gamer_1.win
+                win: bet.gamer_2.win
             }
         };
         if(bet.status === 3){
@@ -256,7 +256,7 @@ var saveBet = function (bet) {
                         gamer_2: newBet.gamer_2,
                         coef_1: newBet.coef_1,
                         coef_2: newBet.coef_2,
-                        status: newNestedBet.status
+                        status: newBet.status
                     }
                 })
             } else {
@@ -331,7 +331,7 @@ var fetchBetInfo = function (bets) {
  */
 exports.backupsData = function () {
 
-    return spider.fetchBettingData()
+     spider.fetchBettingData()
         .then(function (data) {
         if(data.bets && data.nested_bets && data.nested_bets.length > 0 && data.nested_bets.length > 0){
             return fetchBetInfo(data.bets).then(function (result) {
@@ -346,11 +346,11 @@ exports.backupsData = function () {
             return '未抓取到数据';
         }
     }).then(function () {
-        return synchroLeaguesToTemp();
+         synchroLeaguesToTemp();
     }).then(function () {
-        return synchroTeamsToTemp();
+         synchroTeamsToTemp();
     }).then(function () {
-        return synchroMatchesToTemp();
+         synchroMatchesToTemp();
     }).then(function () {
          synchroGamblesToTemp();
     })

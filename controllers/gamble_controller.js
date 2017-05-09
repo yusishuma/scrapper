@@ -118,6 +118,8 @@ exports.synchroGambleToPro = function (req, res) {
             gambleOptionB: gamble.optionB.name,
             optionAOdds: gamble.optionA.odds,
             optionBOdds: gamble.optionB.odds,
+            optionBWin: (gamble.optionB.win === 1) || false,
+            optionAWin: (gamble.optionA.win === 1) || false,
             gambleSourceAndSourceId: gamble.gambleSourceAndSourceId
         };
         return Q.fcall(function () {
@@ -129,18 +131,15 @@ exports.synchroGambleToPro = function (req, res) {
                     if (body.status) {
                         console.log('同步创建赌局 ' + newGamble.leagueName + ' 成功！');
                         return Gamble.update({_id: gambleId}, {'$set': { 'isExist': CONSTANTS.EXIST_PRODUCTION.EXIST, isRefreshed: true}}).then(function(){
-                            console.log("=====================");
                              respondSuccess(res, {}, 201, '同步创建赌局成功');
                         })
-
-
                     } else {
-                        console.log('同步创建赌局 ' + newGamble.leagueName + ' 失败！');
+                        console.log('同步创建赌局 ' + newGamble.leagueName + ' 失败！', err, body);
                         respondFailure(res, 500, '同步创建赌局失败', err, body);
 
                     }
                 } else {
-                    console.log('同步创建赌局 ' + newGamble.leagueName + ' 失败！');
+                    console.log('同步创建赌局 ' + newGamble.leagueName + ' 失败！', err, body);
                         respondFailure(res, 500, '同步创建赌局失败', err, body);
 
                 }
@@ -200,6 +199,8 @@ exports.synchroGambles = function () {
                     gambleOptionB: gamble.optionB.name,
                     optionAOdds: gamble.optionA.odds,
                     optionBOdds: gamble.optionB.odds,
+                    optionBWin: (gamble.optionB.win === 1) || false,
+                    optionAWin: (gamble.optionA.win === 1) || false,
                     gambleSourceAndSourceId: gamble.gambleSourceAndSourceId
 
                 };
